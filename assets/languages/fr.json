@@ -75,6 +75,10 @@
   },
   "auth": {
     "agree_terms": "J'accepte les conditions générales et la politique de confidentialité",
+    "agree_terms_prefix": "J'accepte les ",
+    "terms_of_use": "conditions d'utilisation",
+    "agree_terms_and": " et la ",
+    "privacy_policy": "politique de confidentialité",
     "guest": "Invité",
     "guest_description": "Continuer en tant qu'invité",
     "otp": "Code de vérification",

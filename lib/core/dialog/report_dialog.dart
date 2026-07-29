@@ -48,7 +48,9 @@ void reportDialog({required String title, required String type, required int id}
                   Expanded(
                     child: TextButton(
                       onPressed: () {
-                        ProductDetailsProvider provider = context.read();
+                        ProductDetailsProvider provider =
+                            Constants.globalContext().read<ProductDetailsProvider>();
+                        Navigator.pop(context);
                         provider.createReport(
                           id: id,
                           type: type,

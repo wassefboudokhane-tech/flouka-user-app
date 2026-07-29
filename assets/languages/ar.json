@@ -75,6 +75,10 @@
   },
   "auth": {
     "agree_terms": "أوافق على الشروط وسياسة الخصوصية",
+    "agree_terms_prefix": "أوافق على ",
+    "terms_of_use": "الشروط والأحكام",
+    "agree_terms_and": " و ",
+    "privacy_policy": "سياسة الخصوصية",
     "guest": "زائر",
     "guest_description": "المتابعة كزائر",
     "otp": "رمز التحقق",

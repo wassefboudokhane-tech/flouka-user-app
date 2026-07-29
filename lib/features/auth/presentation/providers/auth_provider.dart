@@ -323,6 +323,10 @@ class AuthProvider extends ChangeNotifier {
     if (!loginFormKey.currentState!.validate()) {
       return;
     }
+    if (!termsAccepted) {
+      showToast(LanguageProvider.translate('validation', 'terms'));
+      return;
+    }
     Map<String, dynamic> data = {};
     // data["token"] = await FirebaseMessaging.instance.getToken() ?? "123";
     for (var element in loginTextFieldList) {
@@ -346,6 +350,14 @@ class AuthProvider extends ChangeNotifier {
         }
       },
     );
+  }
+
+  void continueAsGuest() {
+    if (!termsAccepted) {
+      showToast(LanguageProvider.translate('validation', 'terms'));
+      return;
+    }
+    Constants.globalContext().read<NavBarProvider>().goToNavView();
   }
 
   void successLogout() {
@@ -380,8 +392,7 @@ class AuthProvider extends ChangeNotifier {
     ),
     SocialAuthEntity(
       image: AppImages.guest,
-      onTap: () => Constants.globalContext().read<NavBarProvider>().goToNavView()
-    ,
+      onTap: () => continueAsGuest(),
       text: LanguageProvider.translate('auth', 'guest_description'),
     ),
   ];
