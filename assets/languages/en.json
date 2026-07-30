@@ -38,7 +38,9 @@
     "related_products": "Related products",
     "retail_stores": "Stores",
     "popular_categories": "Popular categories",
-    "store_details": "Store details"
+    "store_details": "Store details",
+    "best_selling": "Best sellers",
+    "under_50": "Under 50 TND"
   },
   "chat": {
     "chat": "Chat",
@@ -66,7 +68,10 @@
     "color": "Color",
     "screen_size": "Screen size",
     "brand_filter": "Filter by brand",
-    "search": "Search for brands..."
+    "search": "Search for brands...",
+    "select_category_first": "Select a category first",
+    "select_category_for_brands": "Select a category to see brands",
+    "no_options": "No options"
   },
   "categories": {
     "search": "Search...",
@@ -82,12 +87,13 @@
     "guest": "Guest",
     "guest_description": "Continue as guest",
     "otp": "Verification code",
-    "auth_welcome": "Welcome! \nEnter your phone number to log in to your account",
+    "auth_welcome": "Join Flouka\nJust your phone — we'll send a quick code",
     "Forgot password": "Forgot password",
     "edit_profile": "Edit account details",
     "complete_profile": "Complete account details",
     "New to Habitual?": "New to Habitual?",
     "Sign up": "Sign up",
+    "resend_otp": "Resend code",
     "resend_otp_after": "Resend code after",
     "Enter the verification code sent to": "Enter the 4-digit code we sent to ",
     "or": "or",
@@ -116,6 +122,9 @@
     "seller": "Seller",
     "app_name": "Flouka",
     "currency": "TND",
+    "cod_badge": "Cash on delivery",
+    "shared_image_hint": "Same photo for every color — pick color and size to order.",
+    "chat_vendor": "Chat with seller",
     "delivery": "Delivery",
     "delivery_to": "Delivery address",
     "payment_method": "Payment method",
@@ -385,6 +394,12 @@
     "name": "Name",
     "address": "Address",
     "phone": "Phone number",
+    "add_address": "Add an address",
+    "edit_address": "Edit address",
+    "default_address_name": "Home",
+    "ask_address_short": "Tell us where to deliver. You can add more addresses later.",
+    "cities_unavailable": "Could not load governorates. Check your connection.",
+    "skip_for_now": "Skip for now",
     "ask_address": "To ensure the best service experience, please add your primary address. If you choose to skip this step, you may be asked to provide your current location temporarily, but a primary address will still be required before placing any order."
   },
   "settings": {

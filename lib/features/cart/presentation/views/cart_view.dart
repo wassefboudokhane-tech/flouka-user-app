@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_styles.dart';
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 import '../providers/cart_provider.dart';
 import '../widgets/cart_list_view_seperated_widget.dart';
@@ -13,10 +13,10 @@ class CartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
-    // final checkoutProvider = Provider.of<CheckoutProvider>(context);
     return Scaffold(
+      backgroundColor: AppColor.canvasColor,
       appBar: AppBar(
-        title: Text(LanguageProvider.translate("global", "cart"),),
+        title: Text(LanguageProvider.translate('global', 'cart')),
       ),
       body: SafeArea(
         child: Column(
@@ -26,9 +26,11 @@ class CartView extends StatelessWidget {
                 onRefresh: () async {
                   cartProvider.refresh();
                 },
-                child:const SingleChildScrollView(
+                child: const SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.pageGutter,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -40,7 +42,7 @@ class CartView extends StatelessWidget {
             ),
             if (cartProvider.data != null && cartProvider.data!.isNotEmpty)
               CustomCartButtonWidget(cartProvider: cartProvider),
-            SizedBox(height: 2.h),
+            const SizedBox(height: 8),
           ],
         ),
       ),

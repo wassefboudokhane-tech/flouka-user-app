@@ -1,7 +1,5 @@
 import 'package:flouka/core/constants/app_images.dart';
-import 'package:flouka/core/dialog/guest_dialog.dart';
 import 'package:flouka/core/helper_function/loading.dart';
-import 'package:flouka/features/auth/presentation/views/profile_view.dart';
 import 'package:flouka/features/cart/presentation/providers/cart_provider.dart';
 import 'package:flouka/features/categories/presentation/providers/subcategory_provider.dart';
 import 'package:flouka/features/categories/presentation/view/categories_view.dart';
@@ -14,24 +12,21 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/helper_function/navigation.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/helper_function/helper_function.dart';
 import '../../../../core/helper_function/location.dart';
-import '../../../address/presentation/providers/city_provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../banners/presentation/provider/banners_provider.dart';
 import '../../../cart/presentation/views/cart_view.dart';
 import '../../../categories/presentation/providers/categories_provider.dart';
 import '../../../categories/presentation/providers/popular_categories_provider.dart';
-import '../../../favorite/presentation/providers/favorite_provider.dart';
 import '../../../filters/presentation/providers/filter_product_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 import '../../../offers_section/presentation/providers/offer_section_provider.dart';
 import '../../../products/presentation/providers/recommend_products_provider.dart';
+import '../../../products/presentation/providers/home_products_provider.dart';
 import '../../../reels/presentation/providers/video_provider.dart';
 import '../../../settings/presentation/views/settings_view.dart';
 import '../../../stores/presentation/providers/stores_provider.dart';
-import '../../../stories/presentation/provider/story_provider.dart';
-import '../../domain/entities/bottom_nav_bar_entity.dart';
+import '../../../stories/presentation/provider/story_provider.dart';import '../../domain/entities/bottom_nav_bar_entity.dart';
 import '../views/nav_bar_view.dart';
 
 class NavBarProvider extends ChangeNotifier {
@@ -95,10 +90,15 @@ class NavBarProvider extends ChangeNotifier {
       Provider.of<CategoryProvider>(Constants.globalContext(), listen: false,).getCategories(),
       Provider.of<PopularCategoriesProvider>(Constants.globalContext(), listen: false,).getCategories(),
       Provider.of<RecommendProductsProvider>(Constants.globalContext(), listen: false,).getRecommendedHomeData(),
+      Provider.of<HomeProductsProvider>(Constants.globalContext(), listen: false,).getProducts(),
     ]);
      Provider.of<VideoProvider>(Constants.globalContext(), listen: false,).refresh();
     if(AuthProvider.isLogin()){
-      Provider.of<CartProvider>(Constants.globalContext(), listen: false).refresh();
+      await Provider.of<CartProvider>(Constants.globalContext(), listen: false)
+          .syncGuestCartAfterLogin();
+    } else {
+      Provider.of<CartProvider>(Constants.globalContext(), listen: false)
+          .loadGuestCart();
     }
   }
 
@@ -106,11 +106,12 @@ class NavBarProvider extends ChangeNotifier {
   void changeIndex(int index) {
    if(index!=currentIndex){
      if (index == 3) {
-       if(!AuthProvider.isLogin()){
-         showGuestDialog();
-         return;
+       final cart = Provider.of<CartProvider>(Constants.globalContext(), listen: false);
+       if (AuthProvider.isLogin()) {
+         cart.refresh();
+       } else {
+         cart.loadGuestCart();
        }
-       Provider.of<CartProvider>(Constants.globalContext(), listen: false).refresh();
      }
      if(index==1){
        Provider.of<SubcategoryProvider>(Constants.globalContext(),listen: false).clear();

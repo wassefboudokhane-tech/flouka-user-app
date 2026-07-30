@@ -62,7 +62,8 @@ class NeighborhoodProvider extends ChangeNotifier implements DropDownClass<Neigh
 
   @override
   String displayedName() {
-    return neighborhood?.name ?? LanguageProvider.translate('inputs', 'area');
+    return neighborhood?.name ??
+        LanguageProvider.translate('inputs', 'neighborhood');
   }
 
   @override

@@ -1,79 +1,52 @@
 import 'package:flouka/core/constants/constants.dart';
-import 'package:flouka/core/models/drop_down_class.dart';
+import 'package:flouka/features/products/presentation/providers/products_details_provider.dart';
+import 'package:flouka/features/products/presentation/providers/product_variant_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flouka/features/products/presentation/providers/product_variant_provider.dart';
 
-import '../../../language/presentation/provider/language_provider.dart';
-import 'products_details_provider.dart';
+class ProductQuantityProvider extends ChangeNotifier {
+  int quantity = 1;
 
-class ProductQuantityProvider extends ChangeNotifier implements DropDownClass<int>{
-  int?quantity;
-  List<int> quantityList() {
-    ProductDetailsProvider productDetailsProvider =Provider.of<ProductDetailsProvider>(Constants.globalContext(),listen: false);
-    late final maxQuantity ;
-    if(productDetailsProvider.data?.stock !=null){
-      maxQuantity = productDetailsProvider.data?.stock?.quantity??0;
-    }else{
-      maxQuantity = productDetailsProvider.variantEntity()?.stock?.quantity??0;
+  int maxQuantity() {
+    final productDetailsProvider = Provider.of<ProductDetailsProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    final hasAttrs =
+        productDetailsProvider.data?.attributes.isNotEmpty ?? false;
+    if (hasAttrs) {
+      return productDetailsProvider.variantEntity()?.stock?.quantity ?? 0;
     }
-
-    return List.generate(maxQuantity, (index) => index + 1);
+    return productDetailsProvider.data?.stock?.quantity ?? 0;
   }
 
   void reset() {
-    quantity = null;
-    notifyListeners();
-  }
-  @override
-  String displayedName() {
-    return "${quantity ?? LanguageProvider.translate('global', 'quantity')}";
-  }
-
-  @override
-  String displayedOptionName(type) {
-    return "${type}";
-  }
-
-  @override
-  Widget? displayedOptionWidget(type) {
-    return null;
-  }
-
-  @override
-  Widget? displayedWidget() {
-    return null;
-  }
-
-  @override
-  List<int> list() {
-    return quantityList();
-  }
-
-  @override
-  Future onTap(int?data) async {
-    quantity=data;
+    quantity = 1;
     notifyListeners();
   }
 
-  @override
-  int? selected() {
-    return quantity;
+  void setQuantity(int value) {
+    final max = maxQuantity();
+    if (max <= 0) {
+      quantity = 1;
+    } else {
+      quantity = value.clamp(1, max);
+    }
+    notifyListeners();
   }
 
-  @override
-  value() {
-    return quantity;
+  void increment() {
+    final max = maxQuantity();
+    if (quantity < max) {
+      quantity++;
+      notifyListeners();
+    }
   }
 
-  @override
-  bool require() {
-    return true;
+  void decrement() {
+    if (quantity > 1) {
+      quantity--;
+      notifyListeners();
+    }
   }
-
-  @override
-  String? titleName() {
-    return null;
-  }
-
 }

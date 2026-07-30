@@ -1,12 +1,11 @@
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/offers_section/domain/entity/offer_section_entity.dart';
-import 'package:flouka/features/products/presentation/providers/categories_product_search_provider.dart';
-import 'package:flouka/features/products/presentation/widgets/hot_deals_home_section.dart';
+import 'package:flouka/features/products/presentation/providers/recommend_products_provider.dart';
+import 'package:flouka/features/products/presentation/widgets/hot_deals_home_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
-import '../../../products/presentation/providers/recommend_products_provider.dart';
 
 class OffersSectionWidget extends StatelessWidget {
   const OffersSectionWidget({super.key, required this.offerSectionEntity});
@@ -14,77 +13,95 @@ class OffersSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (offerSectionEntity.products.isEmpty) return const SizedBox.shrink();
+
+    final cardWidth = 43.w;
+
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 3.w,
-        vertical: 2.h,
+      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
+      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
+      decoration: BoxDecoration(
+        color: offerSectionEntity.color,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColor.borderColor.withValues(alpha: 0.5)),
       ),
-      width: double.infinity,
-      color: offerSectionEntity.color,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        offerSectionEntity.title,
-                        style: TextStyleClass.normalStyle().copyWith(
-                          color: offerSectionEntity.titleColor ?? Colors.white,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      offerSectionEntity.title,
+                      style: TextStyleClass.normalStyle(
+                        color: offerSectionEntity.titleColor ?? Colors.white,
+                      ).copyWith(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w800,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (offerSectionEntity.description.isNotEmpty)
                       Text(
                         offerSectionEntity.description,
-                        style: TextStyleClass.normalStyle().copyWith(
+                        style: TextStyleClass.smallStyle(
                           color: offerSectionEntity.descriptionColor ?? Colors.white,
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w400,
-
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ],
-                  ),
+                  ],
                 ),
-                SizedBox(width: 5.w,),
-                if(offerSectionEntity.buttonText.isNotEmpty)
-                  InkWell(
-                    onTap: (){
-                      // Provider.of<CategoriesProductSearchProvider>(context, listen: false).goToPage({
-                      //   "section_id":offerSectionEntity.id
-                      // });
-                      Provider.of<RecommendProductsProvider>(context,listen: false).goToPage({'title':offerSectionEntity.title,"section_id":offerSectionEntity.id});
-                    },
-                    child: Container(
-                      padding:EdgeInsets.symmetric(vertical: 1.w,horizontal: 3.w),
-                      decoration: BoxDecoration(
-                        color: offerSectionEntity.buttonColor ?? Colors.black,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(
-                        child: Text("${offerSectionEntity.buttonText}",maxLines: 2,
-                          style: TextStyleClass.smallStyle(color:offerSectionEntity.buttonTextColor ?? Colors.white,),
-                        ),
-                      ),
+              ),
+              if (offerSectionEntity.buttonText.isNotEmpty)
+                InkWell(
+                  onTap: () {
+                    Provider.of<RecommendProductsProvider>(context, listen: false)
+                        .goToPage({
+                      'title': offerSectionEntity.title,
+                      'section_id': offerSectionEntity.id,
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 0.8.h,
+                      horizontal: 3.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: offerSectionEntity.buttonColor ?? AppColor.limeColor,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Text(
+                      offerSectionEntity.buttonText,
+                      maxLines: 2,
+                      style: TextStyleClass.captionStyle(
+                        color: offerSectionEntity.buttonTextColor ??
+                            AppColor.deepColor,
+                      ).copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
-
-              ],
+                ),
+            ],
+          ),
+          SizedBox(height: 1.2.h),
+          SizedBox(
+            height: cardWidth * 1.55,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: offerSectionEntity.products.length,
+              separatorBuilder: (_, __) => SizedBox(width: 2.5.w),
+              itemBuilder: (context, index) {
+                return HotDealsHomeContainerWidget(
+                  product: offerSectionEntity.products[index],
+                  width: cardWidth,
+                );
+              },
             ),
           ),
-          HotDealsHomeSection(products: offerSectionEntity.products),
         ],
       ),
     );

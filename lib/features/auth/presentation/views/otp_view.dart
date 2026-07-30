@@ -1,91 +1,88 @@
-import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_theme.dart';
+import 'package:flouka/core/constants/app_images.dart';
+import 'package:flouka/core/constants/constants.dart';
+import 'package:flouka/core/widgets/flouka_primary_button.dart';
 import 'package:flouka/features/auth/presentation/providers/otp_provider.dart';
+import 'package:flouka/features/auth/presentation/widgets/otp_container_with_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_styles.dart';
-import '../../../../core/config/app_theme.dart';
-import '../../../../core/constants/app_images.dart';
-import '../../../../core/constants/constants.dart';
-import '../../../../core/widgets/button_widget.dart';
-import '../widgets/otp_container_with_button_widget.dart';
 
 class OTPView extends StatelessWidget {
   const OTPView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = Provider.of(context);
     return Scaffold(
+      backgroundColor: AppColor.canvasColor,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        systemOverlayStyle: Constants.isTablet?barColor():lightBarColor(),
+        systemOverlayStyle:
+            Constants.isTablet ? barColor() : lightBarColor(),
       ),
       extendBodyBehindAppBar: true,
       body: AnnotatedRegion(
-        value: Constants.isTablet?barColor():lightBarColor(),
-        child: SafeArea(
-          top: false ,
-          child: SizedBox(
-            height: 100.h,
-            width: 100.w,
-            child: Stack(
-              children: [
-                Column(children: [
+        value: Constants.isTablet ? barColor() : lightBarColor(),
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              right: 0,
+              child: IgnorePointer(
+                child: Image.asset(AppImages.topAuth, fit: BoxFit.fitWidth),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: IgnorePointer(
+                child: Image.asset(AppImages.bottomAuth, fit: BoxFit.fitWidth),
+              ),
+            ),
+            SafeArea(
+              child: Column(
+                children: [
                   Expanded(
                     child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.pageGutter + 8,
+                      ),
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       child: Column(
                         children: [
-                          SizedBox(height: 7.h),
-                          // Text(
-                          //   LanguageProvider.translate("auth", "sign Up"),
-                          //   style: TextStyleClass.smallStyle().copyWith(
-                          //     fontWeight: FontWeight.bold,
-                          //     fontSize: 15.sp,
-                          //   ),
-                          // ),
-                          // SizedBox(height: 8.h),
-                          Image.asset(AppImages.logo, width: 20.w),
-                          SizedBox(height: 3.h),
+                          const SizedBox(height: 12),
+                          Image.asset(AppImages.logo, width: 112),
+                          const SizedBox(height: 28),
                           const OtpContainerWithButton(),
-                          // SizedBox(height: 4.h),
-                          // Align(
-                          //   alignment: AlignmentDirectional.centerStart,
-                          //   child: CustomTextWithUnderLineText(
-                          //     customText: "Already have an account?",
-                          //     underLineText: "Login",
-                          //     onTap: () {
-                          //       authProvider.goToLoginView();
-                          //     },
-                          //   ),
-                          // ),
+                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
                   ),
                   Padding(
-                    padding:  EdgeInsets.symmetric(vertical: 1.h),
-                    child: ButtonWidget(
-                      text: "send",
-                      textStyle: TextStyleClass.headStyle().copyWith(
-                        color: Colors.white,
-                        fontSize: 15.sp,
-                      ),
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.pageGutter + 8,
+                      8,
+                      AppSpacing.pageGutter + 8,
+                      16,
+                    ),
+                    child: FloukaPrimaryButton(
+                      text: 'send',
                       onTap: () {
-                        // completeInfoProvider.goToCompleteInfoView();
-                        OtpProvider otpProvider = Provider.of(context, listen: false);
-                        otpProvider.checkCode();
+                        Provider.of<OtpProvider>(context, listen: false)
+                            .checkCode();
                       },
                     ),
                   ),
-                ],),
-                Positioned(
-                    top: 0,right: 0,
-                    child: Image.asset(AppImages.topAuth,fit: BoxFit.fitWidth,)),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -11,8 +11,6 @@ class ProductEntity {
   final num? price;
   final num? offerPrice;
   final num? discountPercentage;
-  final List<AttributeEntity> attributes;
-  final List<VariantEntity> variants;
   final List<ProductImage> images;
   final List<ProductImage> reviewImages;
   final String? image;
@@ -24,6 +22,8 @@ class ProductEntity {
   final List<ProductReviewEntity> reviews;
   final StockEntity? stock;
   bool canRate;
+  List<AttributeEntity> attributes;
+  List<VariantEntity> variants;
 
   ProductEntity({
     required this.id,

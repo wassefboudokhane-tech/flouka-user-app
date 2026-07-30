@@ -1,17 +1,44 @@
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/widgets/flouka_primary_button.dart';
+import 'package:flouka/core/widgets/loading_widget.dart';
+import 'package:flouka/features/address/presentation/providers/address_details_provider.dart';
+import 'package:flouka/features/address/presentation/providers/map_provider.dart';
+import 'package:flouka/features/address/presentation/widgets/address_bottomsheet_widget.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sizer/sizer.dart';
-
-import '../../../../core/widgets/button_widget.dart';
-import '../../../../core/widgets/loading_widget.dart';
-import '../../../language/presentation/provider/language_provider.dart';
-import '../providers/address_details_provider.dart';
-import '../providers/map_provider.dart';
-import '../widgets/address_bottomsheet_widget.dart';
+import 'package:provider/provider.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
+
+  void _confirmLocation(BuildContext context) {
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+    final lat = mapProvider.center?.latitude;
+    final lng = mapProvider.center?.longitude;
+
+    if (lat == null || lng == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            LanguageProvider.translate('global', 'please_select_location'),
+          ),
+        ),
+      );
+      return;
+    }
+
+    Provider.of<AddressDetailsProvider>(context, listen: false)
+        .setData(lat, lng);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const AddressBottomSheet(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,101 +48,54 @@ class MapScreen extends StatelessWidget {
       return const Center(child: LoadingWidget());
     }
 
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: Stack(
-        children: [
-          GoogleMap(
-            // style: mapProv.mapStyleString,
-            initialCameraPosition: CameraPosition(
-              target: mapProv.center!,
-              zoom: mapProv.zoom,
-            ),
-            onMapCreated: (c) {
-              mapProv.onMapCreated(c);
-            },
-            myLocationEnabled: false,
-            myLocationButtonEnabled: false,
-            markers: mapProv.markers,
-            onCameraMove: (pos) => mapProv.onCameraMove(pos),
+    return Stack(
+      children: [
+        GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: mapProv.center!,
+            zoom: mapProv.zoom,
           ),
-          Center(
-            child: Icon(Icons.location_on,size: 8.w,color: Colors.red,),
+          onMapCreated: mapProv.onMapCreated,
+          myLocationEnabled: false,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: !kIsWeb,
+          markers: mapProv.markers,
+          onCameraMove: mapProv.onCameraMove,
+          mapType: MapType.normal,
+        ),
+        const IgnorePointer(
+          child: Center(
+            child: Icon(Icons.location_on, size: 40, color: Colors.red),
           ),
-          Positioned(
-            right: 10,
-            top: 5.h,
+        ),
+        Positioned(
+          right: 16,
+          top: 16,
+          child: Material(
+            color: Colors.white,
+            shape: const CircleBorder(),
+            elevation: 2,
             child: InkWell(
-              onTap: () {
-                mapProv.animateToMyLocation();
-              },
-              child: Opacity(
-                opacity: 0.8,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  padding: const EdgeInsets.all(7),
-                  child: const Icon(Icons.my_location_rounded),
-                ),
+              customBorder: const CircleBorder(),
+              onTap: mapProv.animateToMyLocation,
+              child: const SizedBox(
+                width: 44,
+                height: 44,
+                child: Icon(Icons.my_location_rounded, color: Colors.black87),
               ),
             ),
           ),
-          Positioned(
-            left: 15.w,
-            bottom: 7.h,
-            right: 15.w,
-            child: InkWell(
-              onTap: () {
-                mapProv.animateToMyLocation();
-              },
-              child: ButtonWidget(
-                onTap: () {
-                  final mapProvider = Provider.of<MapProvider>(
-                    context,
-                    listen: false,
-                  );
-                  final lat = mapProvider.center?.latitude;
-                  final lng = mapProvider.center?.longitude;
-
-                  if (lat == null || lng == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          LanguageProvider.translate(
-                            "global",
-                            "please_select_location",
-                          ),
-                        ),
-                      ),
-                    );
-                    return;
-                  }
-
-                  final addressDetailsProvider = Provider.of<AddressDetailsProvider>(
-                    context,
-                    listen: false,
-                  );
-                  addressDetailsProvider.setData(lat, lng);
-
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (_) => const AddressBottomSheet(),
-                  );
-                },
-                text: "confirm_location",
-                width: 89.w,
-                height: 5.5.h,
-                borderRadius: 12,
-              ),
-            ),
+        ),
+        Positioned(
+          left: AppSpacing.pageGutter,
+          right: AppSpacing.pageGutter,
+          bottom: 24,
+          child: FloukaPrimaryButton(
+            onTap: () => _confirmLocation(context),
+            text: 'confirm_location',
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

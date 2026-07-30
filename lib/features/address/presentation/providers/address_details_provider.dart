@@ -23,11 +23,11 @@ import '../../../language/presentation/provider/language_provider.dart';
 import '../../domain/entities/address_entity.dart';
 import '../../domain/usecase/address_usecase.dart';
 import '../../domain/usecase/city_usecase.dart';
+import '../views/address_form_page.dart';
 import '../views/select_address_map_page.dart';
 import 'address_provider.dart';
 import 'area_provider.dart';
 import 'city_provider.dart';
-import 'parts_provider.dart';
 
 class AddressDetailsProvider extends ChangeNotifier {
   final CityUseCases cityUseCases = CityUseCases(sl());
@@ -256,59 +256,80 @@ class AddressDetailsProvider extends ChangeNotifier {
   }
 
 
-  bool firstAddress=false;
-  Future<String?> goToAddressDetailsPage({AddressEntity? addressEntity,bool firstAddress = false}) async {
+  bool firstAddress = false;
+
+  /// Opens the compact address form (GPS in background — no map step).
+  Future<String?> goToAddressDetailsPage({
+    AddressEntity? addressEntity,
+    bool firstAddress = false,
+  }) async {
     try {
-      // AuthProvider authProvider = Provider.of(
-      //   Constants.globalContext(),
-      //   listen: false,
-      // );
-      isMakeDefault = addressEntity?.isDefault??false;
-      if(isMakeDefault){
-        this.firstAddress=true;
+      isMakeDefault = addressEntity?.isDefault ?? false;
+      if (isMakeDefault) {
+        this.firstAddress = true;
       }
-      final authProvider = Provider.of<AuthProvider>(Constants.globalContext(), listen: false,);
-      defaultCountry = addressEntity?.phoneCode==null?(authProvider.userEntity?.phoneCode==null?'+216':'+'+authProvider.userEntity!.phoneCode!):('+'+addressEntity!.phoneCode!);
-      int length = CountryWidget.getLength;
-      print("defaultCountry");
-      print(defaultCountry);
-      print(length);
+      final authProvider = Provider.of<AuthProvider>(
+        Constants.globalContext(),
+        listen: false,
+      );
+      defaultCountry = addressEntity?.phoneCode == null
+          ? (authProvider.userEntity?.phoneCode == null
+              ? '+216'
+              : '+${authProvider.userEntity!.phoneCode!}')
+          : '+${addressEntity!.phoneCode!}';
+      final length = CountryWidget.getLength;
       inputs.firstWhere((element) => element.key == 'phone').length = length;
       otpPhoneCode = defaultCountry;
       inputs.firstWhere((element) => element.key == 'phone').controller.text =
-          addressEntity?.phone ?? (authProvider.userEntity?.phone??"");
+          addressEntity?.phone ?? (authProvider.userEntity?.phone ?? '');
       if (addressEntity != null) {
         otpPhoneCode = addressEntity.phoneCode;
-        title = "edit_address";
+        title = 'edit_address';
         this.addressEntity = addressEntity;
         setData(addressEntity.lat!, addressEntity.lng!);
         setInputsData();
-        navP(const SelectAddressMapPage(),
-          then: (val) async {
-            resetData();
-          },
-        );
       } else {
-        title = "add_address";
-        loading();
-        if(firstAddress){
-         isMakeDefault=true;
-         this.firstAddress=true;
+        title = 'add_address';
+        clear();
+        if (firstAddress) {
+          isMakeDefault = true;
+          this.firstAddress = true;
         }
-        LatLng position = await determinePosition();
+        // Prefill for faster signup
+        final phone = authProvider.userEntity?.phone ?? '';
+        inputs.firstWhere((e) => e.key == 'phone').controller.text = phone;
+        inputs.firstWhere((e) => e.key == 'name').controller.text =
+            LanguageProvider.translate('address', 'default_address_name');
+
+        loading();
+        try {
+          final position = await determinePosition();
+          setData(position.latitude, position.longitude);
+        } catch (_) {
+          // Tunis centre as safe fallback when GPS unavailable (web / denied)
+          setData(36.8065, 10.1815);
+        }
         navPop();
-        setData(position.latitude, position.longitude);
-        navP(
-          const SelectAddressMapPage(),
-          then: (val) async {
-            resetData();
-          },
-        );
       }
+
+      await Provider.of<CityProvider>(Constants.globalContext(), listen: false)
+          .getCities();
+
+      navP(
+        const AddressFormPage(),
+        then: (val) async {
+          resetData();
+        },
+      );
     } catch (e) {
       showToast(LanguageProvider.translate('error', 'error'));
     }
-    return "jh";
+    return null;
+  }
+
+  /// Optional map picker (mobile) — kept for advanced edit flows.
+  Future<void> goToMapPicker() async {
+    navP(const SelectAddressMapPage());
   }
 
   void setInputsData() async {

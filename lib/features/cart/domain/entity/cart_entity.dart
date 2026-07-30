@@ -8,10 +8,23 @@ class CartEntity {
   CartVariantEntity? variant;
   num? unitPrice;
   int storeId;
+  /// Present on guest lines — used to sync `store_product_stock_id` after login.
+  int? storeProductStockId;
 
   num get subTotal => (quantity??0) * (unitPrice??0);
 
-  CartEntity({this.id, this.quantity, this.product,this.variant,this.unitPrice,required this.storeId, this.stock});
+  bool get isGuestLine => id != null && id! < 0;
+
+  CartEntity({
+    this.id,
+    this.quantity,
+    this.product,
+    this.variant,
+    this.unitPrice,
+    required this.storeId,
+    this.stock,
+    this.storeProductStockId,
+  });
 }
 
 class CartVariantEntity {

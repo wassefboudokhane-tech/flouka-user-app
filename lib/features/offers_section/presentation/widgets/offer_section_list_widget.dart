@@ -2,7 +2,6 @@ import 'package:flouka/features/offers_section/presentation/providers/offer_sect
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import '../../../home/presentation/widgets/product_home_card_widget.dart';
 import '../../../stores/presentation/widgets/stores_home_section.dart';
 import '../../domain/entity/offer_section_entity.dart';
 import 'offer_section_widget.dart';
@@ -17,32 +16,27 @@ class OfferSectionListWidget extends StatelessWidget {
     return Builder(
       builder: (context) {
         if (offerSectionProvider.data == null) {
-          return const Center(
-            child: SizedBox(),
-          );
+          return const Center(child: SizedBox());
         }
-        List<OfferSectionEntity> offers = offerSectionProvider.data!.where((element) => element.products.isNotEmpty).toList();
+        List<OfferSectionEntity> offers = offerSectionProvider.data!
+            .where((element) => element.products.isNotEmpty)
+            .toList();
 
-        return ListView.separated(shrinkWrap: true,
-          physics:const NeverScrollableScrollPhysics(),
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-          return Column(
-            children: [
-              OffersSectionWidget(
-                offerSectionEntity: offers[index],
-              ),
-              if(index==0)...[
-                const ProductHomeCardWidget(),
-                const StoresHomeSection(),
-                // const RecommendedSection(),
+            return Column(
+              children: [
+                OffersSectionWidget(offerSectionEntity: offers[index]),
+                if (index == 0) const StoresHomeSection(),
               ],
-            ],
-          );
+            );
           },
           itemCount: offers.length,
-          separatorBuilder: (context, index) => SizedBox(height: 2.h,),
+          separatorBuilder: (context, index) => SizedBox(height: 2.h),
         );
-      }
+      },
     );
   }
 }

@@ -62,7 +62,7 @@ class AreaProvider extends ChangeNotifier implements DropDownClass<AreaEntity> {
 
   @override
   String displayedName() {
-    return areaEntity?.name ?? LanguageProvider.translate('inputs', 'area');
+    return areaEntity?.name ?? LanguageProvider.translate('inputs', 'city');
   }
 
   @override

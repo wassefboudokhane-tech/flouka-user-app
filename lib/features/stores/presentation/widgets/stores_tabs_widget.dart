@@ -1,4 +1,7 @@
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/widgets/animation/slide_transition_widget.dart';
+import 'package:flouka/features/stores/presentation/pages/store_reviews_page.dart';
+import 'package:flouka/features/stores/presentation/providers/store_details_provider.dart';
 import 'package:flouka/features/stores/presentation/widgets/all_reviews_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
@@ -6,7 +9,7 @@ import 'package:flouka/features/stores/presentation/providers/stores_provider.da
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/config/app_color.dart';
-import '../../../../core/config/app_styles.dart';
+import '../../../../core/helper_function/navigation.dart';
 import 'store_products_widget.dart';
 
 class StoresTabsWidget extends StatefulWidget {
@@ -107,7 +110,32 @@ class _StoresTabsWidgetState extends State<StoresTabsWidget> {
               duration: const Duration(milliseconds: 300),
               child: storesProvider.current == 0
                   ? const StoreProductsWidget()
-                  : const AllReviewsContainer(),
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                          child: InkWell(
+                            onTap: () {
+                              final storeDetailsProvider = Provider.of<StoreDetailsProvider>(
+                                context,
+                                listen: false,
+                              );
+                              final storeId = storeDetailsProvider.storeDetailsEntity?.id;
+                              if (storeId != null) {
+                                navP(StoreReviewsPage(storeId: storeId));
+                              }
+                            },
+                            child: Text(
+                              LanguageProvider.translate('global', 'see_all'),
+                              style: TextStyleClass.smallStyle(color: AppColor.primaryColor)
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                        const AllReviewsContainer(),
+                      ],
+                    ),
             ),
           ),
           SizedBox(height: 3.h),

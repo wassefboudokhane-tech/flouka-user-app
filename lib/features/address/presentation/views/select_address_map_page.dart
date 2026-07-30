@@ -1,4 +1,6 @@
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
+
 import 'map_screen.dart';
 
 class SelectAddressMapPage extends StatelessWidget {
@@ -7,9 +9,12 @@ class SelectAddressMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: true),
-      backgroundColor: Colors.transparent,
-      body: const Column(children: [Expanded(child: MapScreen())]),
+      backgroundColor: AppColor.canvasColor,
+      appBar: AppBar(
+        backgroundColor: AppColor.deepColor,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: const MapScreen(),
     );
   }
 }

@@ -9,30 +9,39 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
+/// Home catalogue rail — same `get_products` contract as web featured listing.
 class HomeProductsProvider with ChangeNotifier {
   List<ProductEntity> productsList = [];
+  bool loading = false;
   final ProductUseCase productUseCase;
 
   HomeProductsProvider(this.productUseCase);
 
   Future<void> getProducts() async {
-    productsList.clear();
+    loading = true;
+    productsList = [];
     notifyListeners();
-    Map<String,dynamic> dataToUse= {};
-    AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false);
-    if(authProvider.currentLocation !=null){
+
+    final Map<String, dynamic> dataToUse = {
+      'page': 1,
+      'skip': 12,
+    };
+    final AuthProvider authProvider =
+        Provider.of(Constants.globalContext(), listen: false);
+    if (authProvider.currentLocation != null) {
       dataToUse['lat'] = authProvider.currentLocation?.latitude;
       dataToUse['lng'] = authProvider.currentLocation?.longitude;
     }
 
-    Either<DioException, List<ProductEntity>> response = await productUseCase.getProducts(dataToUse);
+    final Either<DioException, List<ProductEntity>> response =
+        await productUseCase.getProducts(dataToUse);
 
-    response.fold((l) => showToast(l.message ?? "Error loading products"), (r) {
-      productsList.addAll(r);
-    });
+    response.fold(
+      (l) => showToast(l.message ?? 'Error loading products'),
+      (r) => productsList = List<ProductEntity>.from(r),
+    );
 
+    loading = false;
     notifyListeners();
   }
-
-  
 }

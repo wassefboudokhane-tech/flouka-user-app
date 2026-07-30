@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -48,6 +45,16 @@ class DefaultFirebaseOptions {
         );
     }
   }
+
+  /// Local web preview only (same Firebase project as mobile).
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBWvfvpWSLeXX_zfP4LOKbzKbSMZn8tJTA',
+    appId: '1:284237387262:web:flouka-user-local',
+    messagingSenderId: '284237387262',
+    projectId: 'flouka-8213d',
+    authDomain: 'flouka-8213d.firebaseapp.com',
+    storageBucket: 'flouka-8213d.firebasestorage.app',
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBWvfvpWSLeXX_zfP4LOKbzKbSMZn8tJTA',

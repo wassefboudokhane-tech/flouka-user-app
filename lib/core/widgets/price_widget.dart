@@ -1,8 +1,7 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-
-import '../../features/language/presentation/provider/language_provider.dart';
-import '../config/app_styles.dart';
 
 class PriceWidget extends StatelessWidget {
   const PriceWidget({super.key, required this.price, this.fontSize, this.color});
@@ -12,27 +11,23 @@ class PriceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = TextStyleClass.priceStyle(color: color ?? AppColor.deepColor)
+        .copyWith(fontSize: fontSize);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-
-
-        Text(
-          price.toString(),
-          style: TextStyleClass.normalStyle().copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: fontSize ?? 14.sp,
-            color:color?? (fontSize == 15.99.sp ? Colors.green : Colors.black),
+        Flexible(
+          child: Text(
+            price.toString(),
+            style: style,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
-        SizedBox(width: 1.w),
+        const SizedBox(width: 4),
         Text(
           LanguageProvider.translate('global', 'currency'),
-          style: TextStyleClass.normalStyle().copyWith(
-            fontWeight: FontWeight.w900,
-            fontSize: fontSize ?? 16.sp,
-            color: color ?? (fontSize == 15.99.sp ? Colors.green : Colors.black),
-          ),
+          style: style,
         ),
       ],
     );

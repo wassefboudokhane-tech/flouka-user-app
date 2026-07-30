@@ -1,11 +1,10 @@
 import 'package:flouka/core/config/app_color.dart';
-import 'package:flouka/core/widgets/button_widget.dart';
-import 'package:flouka/features/orders/presentation/provider/order_provider.dart';
+import 'package:flouka/core/config/app_radius.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/widgets/flouka_primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import '../../../../core/config/app_styles.dart';
-import '../../../address/presentation/providers/address_provider.dart';
 import '../../../address/presentation/widgets/my_address_widget.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
@@ -17,79 +16,115 @@ import '../widgets/coupons_widget.dart';
 import '../widgets/payment_method_list.dart';
 import '../widgets/price_details_widget.dart';
 
+/// Checkout aligned with web `CheckoutClient`.
 class CheckoutView extends StatelessWidget {
   const CheckoutView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final CheckoutProvider checkoutProvider = Provider.of<CheckoutProvider>(context);
-    final CartProvider cartProvider = Provider.of<CartProvider>(context);
-    final AddressProvider addressProvider = Provider.of<AddressProvider>(context);
-    final OrderProvider orderProvider = Provider.of<OrderProvider>(context);
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    final checkoutProvider = Provider.of<CheckoutProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
-      appBar: AppBar(title: Text(LanguageProvider.translate("global", "checkout"),),),
+      backgroundColor: AppColor.canvasColor,
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        title: Text(LanguageProvider.translate('global', 'checkout')),
+      ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.pageGutter,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 2.h),
-
-                    if(authProvider.userEntity?.addressEntity!=null)
-                    MyAddressWidget(addressEntity: authProvider.userEntity!.addressEntity!,),
-                    SizedBox(height: 2.h),
-                    Text(
-                      LanguageProvider.translate("global", "payment_method"),
-                      style: TextStyleClass.normalStyle().copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.sp,
+                    const SizedBox(height: 16),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColor.limeColor.withValues(alpha: 0.35),
+                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                      ),
+                      child: Text(
+                        LanguageProvider.translate('global', 'cod_badge'),
+                        textAlign: TextAlign.center,
+                        style: TextStyleClass.smallStyle(
+                          color: AppColor.deepColor,
+                        ).copyWith(fontWeight: FontWeight.w700),
                       ),
                     ),
-                    SizedBox(height: 1.3.h),
-                    const PaymentMethodsList(),
-
-                    if(cartProvider.data?.isNotEmpty ?? false)...[
-                      SizedBox(height: 1.3.h),
+                    const SizedBox(height: 16),
+                    Text(
+                      LanguageProvider.translate('global', 'address'),
+                      style: TextStyleClass.railTitleStyle(),
+                    ),
+                    const SizedBox(height: 8),
+                    if (authProvider.userEntity?.addressEntity != null)
+                      MyAddressWidget(
+                        addressEntity:
+                            authProvider.userEntity!.addressEntity!,
+                      )
+                    else
                       Text(
-                        LanguageProvider.translate("global", "my_orders"),
-                        style: TextStyleClass.normalStyle().copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.sp,
+                        LanguageProvider.translate('global', 'no_address'),
+                        style: TextStyleClass.smallStyle(
+                          color: AppColor.mutedColor,
                         ),
                       ),
-                      SizedBox(height: 1.3.h),
-                      CheckoutItemWidget(
-                        cartEntity: cartProvider.data!,
+                    const SizedBox(height: 16),
+                    Text(
+                      LanguageProvider.translate('global', 'payment_method'),
+                      style: TextStyleClass.railTitleStyle(),
+                    ),
+                    const SizedBox(height: 10),
+                    const PaymentMethodsList(),
+                    if (cartProvider.data?.isNotEmpty ?? false) ...[
+                      const SizedBox(height: 10),
+                      Text(
+                        LanguageProvider.translate('global', 'my_orders'),
+                        style: TextStyleClass.railTitleStyle(),
                       ),
-
+                      const SizedBox(height: 10),
+                      CheckoutItemWidget(cartEntity: cartProvider.data!),
                     ],
-                    SizedBox(height: 1.3.h),
+                    const SizedBox(height: 10),
                     const CheckoutTermsWidget(),
-                    SizedBox(height: 1.3.h),
-                    const CouponsWidget(),
-                    SizedBox(height: 1.3.h),
-                    const PriceDetailesList(),
-                    SizedBox(height: 3.h),
+                    const SizedBox(height: 10),
+                    const CouponsWidget(),                    const SizedBox(height: 10),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColor.softColor,
+                        borderRadius: BorderRadius.circular(AppRadius.card),
+                        border: Border.all(color: AppColor.borderColor),
+                      ),
+                      child: const PriceDetailesList(),
+                    ),
+                    const SizedBox(height: AppSpacing.section),
                   ],
                 ),
               ),
             ),
-            ButtonWidget(onTap: (){
-              checkoutProvider.makeOrder();
-
-            }, text: "confirm",color: AppColor.secondaryColor,),
-            // DraggableImageButton(
-            //   onComplete: () {
-            //     checkoutProvider.makeOrder();
-            //   },
-            // ),
-            SizedBox(height: 2.h),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.pageGutter,
+              ),
+              child: FloukaPrimaryButton(
+                onTap: () => checkoutProvider.makeOrder(),
+                text: 'confirm',
+              ),
+            ),
+            const SizedBox(height: 12),
           ],
         ),
       ),

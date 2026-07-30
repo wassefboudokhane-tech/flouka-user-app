@@ -1,13 +1,12 @@
 import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_radius.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/widgets/button_widget.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import '../providers/on_boarding_provider.dart';
-import '../widgets/custom_dots_indicator.dart';
-import '../widgets/on_boarding_item_widget.dart';
-import '../widgets/skip_with_logo_widget.dart';
 
 class OnBoardingView extends StatelessWidget {
   const OnBoardingView({super.key});
@@ -19,76 +18,162 @@ class OnBoardingView extends StatelessWidget {
       backgroundColor: onBoardingProvider.selected.color,
       body: AnimatedContainer(
         duration: Duration(milliseconds: 400),
-        width: 100.w,
-        height: 100.h,
+        width: double.infinity,
+        height: double.infinity,
         color: onBoardingProvider.selected.color,
-        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 3.h),
-        child: Column(
-          children: [
-            SizedBox(height: 6.h,),
-            Row(
-              children: [
-                Text(LanguageProvider.translate('global', 'app_name'),
-                  style: TextStyleClass.normalStyle(color: onBoardingProvider.index==2?
-                  Color(0xffD7FC70):Color(0xff35035C)),),
-                Spacer(),
-                ButtonWidget(onTap: (){
-                  onBoardingProvider.skipButtonPressed();
-                },borderRadius: 8,height: 3.5.h, text: 'skip',takeSmallestWidth: true,color: Colors.transparent,
-                borderColor: onBoardingProvider.index==2?Colors.white:Color(0xff35035C).withAlpha(150),textStyle: TextStyleClass.smallStyle(color: onBoardingProvider.index==2?Colors.white:Color(0xff35035C).withAlpha(150)),),
-              ],
-            ),
-            SizedBox(height: 4.h,),
-            Image.asset(onBoardingProvider.selected.image.replaceAll('*lang*', LanguageProvider.languageCode()??"fr"),
-            fit: BoxFit.contain,width: 80.w,height: 38.h,),
-            Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(LanguageProvider.translate('on_boarding', onBoardingProvider.selected.title1),style: TextStyleClass.headStyle(color: onBoardingProvider.index==0?Color(0xff35035C):Colors.white),),
-                  Text(LanguageProvider.translate('on_boarding',onBoardingProvider.selected.title2),style: TextStyleClass.headStyle(color: onBoardingProvider.selected.textColor,),),
-                  SizedBox(height: 1.h,),
-                  Text(LanguageProvider.translate('on_boarding',onBoardingProvider.selected.description),style: TextStyleClass.normalStyle(color: onBoardingProvider.selected.descColor,),),
-
-                  Row(
-                    spacing: 3.w,
-                    children: [
-                      ...List.generate(3, (index){
-                        return Expanded(
-                          child: InkWell(
-                            onTap: (){
-                              onBoardingProvider.onNextButtonPressed(index);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 1.h),
-                              child: Container(
-                                height: 3,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: index==onBoardingProvider.index?onBoardingProvider.selected.stepColor:Colors.white.withAlpha(80)
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter, vertical: 20),
+        child: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final imageMaxH = (constraints.maxHeight * 0.36).clamp(120.0, 280.0);
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    LanguageProvider.translate('global', 'app_name'),
+                                    style: TextStyleClass.normalStyle(
+                                      color: onBoardingProvider.index == 2
+                                          ? AppColor.limeColor
+                                          : AppColor.deepColor,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
+                                ButtonWidget(
+                                  onTap: () {
+                                    onBoardingProvider.skipButtonPressed();
+                                  },
+                                  borderRadius: AppRadius.btn,
+                                  height: 36,
+                                  text: 'skip',
+                                  takeSmallestWidth: true,
+                                  color: Colors.transparent,
+                                  borderColor: onBoardingProvider.index == 2
+                                      ? Colors.white
+                                      : AppColor.deepColor.withAlpha(150),
+                                  textStyle: TextStyleClass.smallStyle(
+                                    color: onBoardingProvider.index == 2
+                                        ? Colors.white
+                                        : AppColor.deepColor.withAlpha(150),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: imageMaxH,
+                                maxWidth: constraints.maxWidth * 0.85,
+                              ),
+                              child: Image.asset(
+                                onBoardingProvider.selected.image.replaceAll(
+                                  '*lang*',
+                                  LanguageProvider.languageCode() ?? "fr",
+                                ),
+                                fit: BoxFit.contain,
                               ),
                             ),
+                          ],
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                LanguageProvider.translate(
+                                  'on_boarding',
+                                  onBoardingProvider.selected.title1,
+                                ),
+                                style: TextStyleClass.headStyle(
+                                  color: onBoardingProvider.index == 0
+                                      ? AppColor.deepColor
+                                      : Colors.white,
+                                ),
+                              ),
+                              Text(
+                                LanguageProvider.translate(
+                                  'on_boarding',
+                                  onBoardingProvider.selected.title2,
+                                ),
+                                style: TextStyleClass.headStyle(
+                                  color: onBoardingProvider.selected.textColor,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                LanguageProvider.translate(
+                                  'on_boarding',
+                                  onBoardingProvider.selected.description,
+                                ),
+                                style: TextStyleClass.normalStyle(
+                                  color: onBoardingProvider.selected.descColor,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  ...List.generate(3, (index) {
+                                    return Expanded(
+                                      child: InkWell(
+                                        onTap: () {
+                                          onBoardingProvider
+                                              .onNextButtonPressed(index);
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 8,
+                                            horizontal: 4,
+                                          ),
+                                          child: Container(
+                                            height: 3,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(AppRadius.pill),
+                                              color: index ==
+                                                      onBoardingProvider.index
+                                                  ? onBoardingProvider
+                                                      .selected.stepColor
+                                                  : Colors.white.withAlpha(80),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              ButtonWidget(
+                                onTap: () {
+                                  onBoardingProvider.onNextButtonPressed();
+                                },
+                                text: 'next',
+                                color: onBoardingProvider.selected.btnColor,
+                                textStyle: TextStyleClass.normalStyle(
+                                  color: onBoardingProvider
+                                      .selected.btnTextColor,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
                           ),
-                        );
-                      }),
-                    ],
-                  ),
-                  SizedBox(height: 4.h,),
-                  ButtonWidget(onTap: (){
-                    onBoardingProvider.onNextButtonPressed();
-                  }, text: 'next',color: onBoardingProvider.selected.btnColor,
-                  textStyle: TextStyleClass.normalStyle(color: onBoardingProvider.selected.btnTextColor),),
-                  SizedBox(height: 3.h,),
-
-
-                ],
-              ),
-            ),
-          ],
+                        ),
+                      ],
+                    ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

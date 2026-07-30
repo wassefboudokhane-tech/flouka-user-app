@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flouka/core/dialog/snack_bar.dart';
 import 'package:flouka/core/models/pagination_class.dart';
 import 'package:flouka/core/models/provider_structure_model.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/user_case/product_use_case.dart';
 import 'package:provider/provider.dart';
 
@@ -61,6 +62,17 @@ class StoresProductProvider extends ChangeNotifier
     refresh();
   }
 
+  String _friendlyLoadError(String? raw) {
+    final msg = raw?.trim() ?? '';
+    if (msg.isEmpty ||
+        msg.contains('SQLSTATE') ||
+        msg.contains('Unknown column') ||
+        msg.contains('distance')) {
+      return LanguageProvider.translate('global', 'empty_search');
+    }
+    return msg;
+  }
+
   @override
   Future getData() async {
     Map<String, dynamic> dataToUse = {
@@ -68,15 +80,25 @@ class StoresProductProvider extends ChangeNotifier
       'store_id': inputs?['store_id'],
     };
 
-    if(searchController.text.isNotEmpty){
+    if (searchController.text.isNotEmpty) {
       dataToUse['search'] = searchController.text;
     }
-    AuthProvider authProvider = Provider.of<AuthProvider>(Constants.globalContext(), listen: false);
-    dataToUse['lat']=authProvider.currentLocation?.latitude;
-    dataToUse['lng']=authProvider.currentLocation?.longitude;
+
+    // Store-scoped catalogue does not need GPS; omit lat/lng unless both are valid.
+    final storeId = inputs?['store_id'];
+    if (storeId == null) {
+      final authProvider =
+          Provider.of<AuthProvider>(Constants.globalContext(), listen: false);
+      final lat = authProvider.currentLocation?.latitude;
+      final lng = authProvider.currentLocation?.longitude;
+      if (lat != null && lng != null) {
+        dataToUse['lat'] = lat;
+        dataToUse['lng'] = lng;
+      }
+    }
 
     final result = await productUseCase.getProducts(dataToUse);
-    result.fold((l) => showToast(l.message ?? "Error loading products"), (r) {
+    result.fold((l) => showToast(_friendlyLoadError(l.message)), (r) {
       pageIndex++;
       data ??= [];
       data!.addAll(r);

@@ -58,37 +58,45 @@ class CompleteInfoProvider extends ChangeNotifier {
     otpPhoneCode = defaultCountry;
     completeInfoTextFieldList = [
       TextFieldModel(
-        label: LanguageProvider.translate("inputs", "Name"),
+        label: LanguageProvider.translate('inputs', 'Name'),
         controller: TextEditingController(text: authProvider.userEntity?.name),
         textInputType: TextInputType.name,
-        validator: (value) => validatePassword(value),
-        key: "name",
-        next: true,
-      ),
-      TextFieldModel(
-        label: LanguageProvider.translate("inputs", "Email"),
-        key: "email",
-        controller: TextEditingController(text: authProvider.userEntity?.email),
-        textInputType: TextInputType.emailAddress,
-        validator: (value) => validateEmail(value),
-        next: true,
-      ),
-      TextFieldModel(
-        label: LanguageProvider.translate("inputs", "phone"),
-        controller: TextEditingController(text: authProvider.userEntity?.phone),
-        textInputType: TextInputType.number,
-        readOnly: userEntity?.loginFrom!="user",
-        length: length,
-        validator: (value){
-          if(userEntity?.loginFrom =="user"){
-           return validatePhone(value);
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return LanguageProvider.translate('validation', 'password_required');
           }
           return null;
-
         },
-        key: "phone",
-        next: false,
+        key: 'name',
+        next: true,
       ),
+      TextFieldModel(
+        label: LanguageProvider.translate('inputs', 'Email'),
+        key: 'email',
+        controller: TextEditingController(text: authProvider.userEntity?.email),
+        textInputType: TextInputType.emailAddress,
+        // Optional on signup — speeds up registration
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) return null;
+          return validateEmail(value);
+        },
+        next: true,
+      ),
+      if (isEdit)
+        TextFieldModel(
+          label: LanguageProvider.translate('inputs', 'phone'),
+          controller: TextEditingController(text: authProvider.userEntity?.phone),
+          textInputType: TextInputType.number,
+          readOnly: true,
+          validator: (value) {
+            if (userEntity?.loginFrom == 'user') {
+              return validatePhone(value);
+            }
+            return null;
+          },
+          key: 'phone',
+          next: false,
+        ),
     ];
     if(isEdit){
       navP(CompleteInfoView(isEdit : isEdit));

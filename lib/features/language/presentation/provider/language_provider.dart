@@ -63,13 +63,17 @@ class LanguageProvider extends ChangeNotifier {
   }
 
   String getTranslate(String key, value) {
-    Map localizedStrings =
+    final localizedStrings =
         ApiHandel.getInstance.languages[_appLocale.languageCode];
-    if (localizedStrings.containsKey(key) &&
-        localizedStrings[key].containsKey(value)) {
-      return localizedStrings[key][value];
+    if (localizedStrings is! Map) {
+      return value?.toString() ?? key;
     }
-    return value;
+    if (localizedStrings.containsKey(key) &&
+        localizedStrings[key] is Map &&
+        localizedStrings[key].containsKey(value)) {
+      return localizedStrings[key][value]?.toString() ?? value?.toString() ?? key;
+    }
+    return value?.toString() ?? key;
   }
 
   static String translate(String key, String value) {

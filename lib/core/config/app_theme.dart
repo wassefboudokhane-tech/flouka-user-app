@@ -1,8 +1,11 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_color.dart';
+import 'app_radius.dart';
+import 'app_spacing.dart';
+import 'app_styles.dart';
 
 ThemeData defaultTheme = ThemeData(
   useMaterial3: false,
@@ -11,38 +14,47 @@ ThemeData defaultTheme = ThemeData(
     backgroundColor: Colors.transparent,
   ),
   unselectedWidgetColor: Colors.white,
-  scaffoldBackgroundColor: AppColor.backgroundColor,
+  scaffoldBackgroundColor: AppColor.canvasColor,
   checkboxTheme: checkboxThemeData,
   dividerColor: Colors.transparent,
   radioTheme: radioThemeData,
   appBarTheme: appBarTheme,
-  fontFamily: "Lato",
+  textTheme: GoogleFonts.rubikTextTheme(),
+  fontFamily: GoogleFonts.rubik().fontFamily,
   splashColor: Colors.transparent,
-);
-
-AppBarTheme appBarTheme = AppBarTheme(
-  backgroundColor: AppColor.secondaryColor,
-  toolbarHeight: 56,
-  centerTitle: true,
-  foregroundColor: AppColor.primaryColor,
-  elevation: 0,
-  iconTheme: const IconThemeData(color: Colors.white),
-  systemOverlayStyle: lightBarColor(),
-  titleTextStyle: TextStyle(
-    fontFamily: "Lato",
-    fontWeight: FontWeight.bold,
-    fontSize: 16.sp,
-    color: Colors.white,
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: AppColor.limeColor,
+      foregroundColor: AppColor.deepColor,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.btn),
+      ),
+    ),
   ),
 );
 
-EdgeInsets globalPadding = EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h);
+AppBarTheme appBarTheme = AppBarTheme(
+  backgroundColor: AppColor.deepColor,
+  toolbarHeight: 56,
+  centerTitle: true,
+  foregroundColor: Colors.white,
+  elevation: 0,
+  iconTheme: const IconThemeData(color: Colors.white),
+  systemOverlayStyle: lightBarColor(),
+  titleTextStyle: TextStyleClass.semiHeadStyle(color: Colors.white).copyWith(
+    fontWeight: FontWeight.w700,
+    fontSize: 16,
+  ),
+);
+
+EdgeInsets globalPadding = AppSpacing.pagePaddingWith(top: 8, bottom: 8);
 
 CheckboxThemeData checkboxThemeData = CheckboxThemeData(
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-  side: const BorderSide(width: 1.5, color: Colors.white),
-  fillColor: WidgetStateProperty.all(Colors.white),
-  checkColor: WidgetStateProperty.all(AppColor.primaryColor),
+  side: BorderSide(width: 1.5, color: AppColor.borderColor),
+  fillColor: WidgetStateProperty.all(AppColor.limeColor),
+  checkColor: WidgetStateProperty.all(AppColor.deepColor),
   overlayColor: WidgetStateProperty.all(
     AppColor.primaryColor.withValues(alpha: 0.1),
   ),
@@ -55,13 +67,16 @@ RadioThemeData radioThemeData = RadioThemeData(
 );
 
 TabBarTheme tabBarTheme = TabBarTheme(
-  labelColor: AppColor.primaryColor,
+  labelColor: AppColor.deepColor,
   indicatorSize: TabBarIndicatorSize.label,
-  unselectedLabelColor: Colors.grey,
+  unselectedLabelColor: AppColor.mutedColor,
 );
 
+bool get _isAndroid =>
+    !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+
 SystemUiOverlayStyle barColor() {
-  if (Platform.isAndroid) {
+  if (_isAndroid) {
     return const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
       statusBarColor: Colors.transparent,
@@ -73,7 +88,7 @@ SystemUiOverlayStyle barColor() {
 }
 
 SystemUiOverlayStyle lightBarColor() {
-  if (Platform.isAndroid) {
+  if (_isAndroid) {
     return const SystemUiOverlayStyle(
       systemNavigationBarIconBrightness: Brightness.dark,
       systemNavigationBarColor: Colors.transparent,

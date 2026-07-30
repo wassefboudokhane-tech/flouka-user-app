@@ -38,7 +38,8 @@
     "related_products": "منتجات ذات صلة",
     "retail_stores": "المتاجر",
     "popular_categories": "الفئات الشائعة",
-    "store_details": "تفاصيل المتجر"
+    "store_details": "تفاصيل المتجر",
+    "best_selling": "الأكثر مبيعًا"
   },
   "chat": {
     "chat": "الدردشة",
@@ -66,7 +67,10 @@
     "color": "اللون",
     "screen_size": "حجم الشاشة",
     "brand_filter": "تصفية العلامة التجارية",
-    "search": "البحث عن علامات تجارية..."
+    "search": "البحث عن علامات تجارية...",
+    "select_category_first": "اختر فئة أولاً",
+    "select_category_for_brands": "اختر فئة لعرض العلامات",
+    "no_options": "لا توجد خيارات"
   },
   "categories": {
     "search": "بحث ...",
@@ -82,12 +86,13 @@
     "guest": "زائر",
     "guest_description": "المتابعة كزائر",
     "otp": "رمز التحقق",
-    "auth_welcome": "مرحبا بك ! \n أدخل رقم هاتفك لتسجيل الدخول إلي حسابك",
+    "auth_welcome": "انضم إلى فلوكة\nرقم هاتفك فقط — نرسل رمزًا سريعًا",
     "Forgot password": "نسيت كلمة المرور",
     "edit_profile": "تعديل بيانات الحساب",
     "complete_profile": "إكمال بيانات الحساب",
     "New to Habitual?": "جديد في Habitual؟",
     "Sign up": "اشترك",
+    "resend_otp": "إعادة إرسال الرمز",
     "resend_otp_after": "إعادة إرسال الرمز",
     "Enter the verification code sent to": "أدخل الرمز المكون من 4 أرقام الذي أرسلناه إلى ",
     "or": "أو",
@@ -116,6 +121,9 @@
     "seller": "البائع",
     "app_name": "فلوكه",
     "currency": "TND",
+    "cod_badge": "الدفع عند الاستلام",
+    "shared_image_hint": "نفس الصورة لكل الألوان — اختر اللون والحجم للطلب.",
+    "chat_vendor": "محادثة البائع",
     "delivery": "التوصيل",
     "delivery_to": "عنوان التوصيل",
     "payment_method": "طريقة الدفع",
@@ -385,6 +393,12 @@
     "name": "الاسم",
     "address": "العنوان",
     "phone": "رقم الجوال",
+    "add_address": "إضافة عنوان",
+    "edit_address": "تعديل العنوان",
+    "default_address_name": "المنزل",
+    "ask_address_short": "أدخل عنوان التوصيل. يمكنك إضافة عناوين أخرى لاحقاً.",
+    "cities_unavailable": "تعذر تحميل الولايات. تحقق من الاتصال.",
+    "skip_for_now": "تخطي الآن",
     "ask_address": "لضمان أفضل تجربة خدمة، يرجى إضافة عنوانك الرئيسي. إذا اخترت تخطي هذه الخطوة، قد يُطلب منك تقديم موقعك الحالي مؤقتًا، ولكن سيظل العنوان الرئيسي مطلوبًا قبل تقديم أي طلب."
   },
   "settings": {

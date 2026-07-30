@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
@@ -15,6 +15,8 @@ import 'core/models/local_notifications.dart';
 import 'features/language/presentation/provider/language_provider.dart';
 import 'firebase_options.dart';
 import 'flouka_app.dart';
+import 'http_overrides_stub.dart'
+    if (dart.library.io) 'http_overrides_io.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage event) async {
@@ -36,13 +38,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
 
-  HttpOverrides.global = MyHttpOverrides();
+  applyHttpOverrides();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,name: "flouka");
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+      name: kIsWeb ? null : 'flouka',
+    );
+  } catch (e, st) {
+    debugPrint('Firebase init skipped/failed (web preview): $e\n$st');
+  }
 
-  await notificationsFirebase();
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  // await NotificationLocalClass.init();
+  if (!kIsWeb) {
+    await notificationsFirebase();
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  }
 
   await startSharedPref();
 
@@ -60,7 +70,11 @@ void main() async {
     ),
   );
 
-  await ApiHandel.getInstance.init();
+  try {
+    await ApiHandel.getInstance.init();
+  } catch (e, st) {
+    debugPrint('ApiHandel.init failed: $e\n$st');
+  }
 
   final language = LanguageProvider();
   await language.fetchLocale();
@@ -76,14 +90,5 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppProviders(language: language, child: const MainApp());
-  }
-}
-
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) =>
-          true;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -17,11 +18,10 @@ class AddTicketPage extends StatelessWidget {
        SafeArea(
          top: false,
         child: Scaffold(
+      backgroundColor: AppColor.canvasColor,
           extendBody: true,
           appBar: AppBar(title: Text(LanguageProvider.translate("ticket","add_ticket"))),
-          body: SizedBox(
-            width: 100.w,
-            height: 100.h,
+          body: SizedBox(width: double.infinity, height: double.infinity,
             child: Form(
               key:formKey,
               child: Column(

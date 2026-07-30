@@ -312,14 +312,27 @@ class SearchFilterProvider extends ChangeNotifier {
     return '';
   }
 
-  void resetFilters(){
-   for(var filter in mainFilters){
-    filter['value'] = null;
-    filter['active'] = false;
-   }
-   isChangedPrice=false;
-   priceRange = const RangeValues(0, 20000);
-   notifyListeners();
+  void resetFilters() {
+    categoryId = null;
+    subCategoryId = null;
+    for (var filter in mainFilters) {
+      filter['value'] = null;
+      filter['active'] = false;
+      for (var item in filter['children'] ?? []) {
+        if (item is Map) item['active'] = false;
+      }
+      if (filter['title'] == 'sub_category' || filter['title'] == 'brand') {
+        // Keep structure; subcategory/brand children refill when category is chosen.
+        if (filter['title'] == 'sub_category') {
+          filter['children'] = [];
+        }
+      }
+    }
+    apiFilters = [];
+    isChangedPrice = false;
+    selectedPriceRange = null;
+    priceRange = const RangeValues(0, 20000);
+    notifyListeners();
   }
 
   RangeValues? selectedPriceRange;
@@ -392,6 +405,11 @@ class SearchFilterProvider extends ChangeNotifier {
     }
     if(brandIds.isNotEmpty){
       filters['brand_ids[]']=brandIds;
+    }
+    // Export price range to backend keys (aligned with web: min_price / max_price)
+    if (isChangedPrice && selectedPriceRange != null) {
+      filters['min_price'] = selectedPriceRange!.start;
+      filters['max_price'] = selectedPriceRange!.end;
     }
     return filters;
   }

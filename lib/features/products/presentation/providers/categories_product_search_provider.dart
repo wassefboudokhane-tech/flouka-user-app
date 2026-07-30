@@ -110,15 +110,18 @@ class CategoriesProductSearchProvider extends ChangeNotifier
 
  }
 
- void selectCategory(CategoryEntity category) {
-   if(category.id!=this.category?.id){
+ void selectCategory(CategoryEntity? category) {
+   if (category == null) {
+     this.category = null;
+   } else if (category.id != this.category?.id) {
      this.category = category;
-   }else{
+   } else {
      this.category = null;
    }
-   this.subcategory = null;
+   subcategory = null;
    notifyListeners();
-   CategoryProvider provider = Provider.of(Constants.globalContext(), listen: false);
+   CategoryProvider provider =
+       Provider.of(Constants.globalContext(), listen: false);
    provider.notifyListeners();
    refresh();
  }
@@ -148,9 +151,12 @@ class CategoriesProductSearchProvider extends ChangeNotifier
  Future getData() async {
    Map<String, dynamic> dataToUse = {};
    dataToUse['page'] = pageIndex;
+   dataToUse['skip'] = 12;
    if(fromFilter){
      SearchFilterProvider provider = Provider.of(Constants.globalContext(), listen: false);
      dataToUse=provider.getSelectedFilters();
+     dataToUse['page'] = pageIndex;
+     dataToUse['skip'] = 12;
    }else{
      if(categoryId !=null){
        dataToUse['category_id'] = categoryId;
@@ -167,6 +173,12 @@ class CategoriesProductSearchProvider extends ChangeNotifier
      }
      if(inputs!=null && inputs?['section_id'] != null){
        dataToUse['section_id'] = inputs?['section_id'];
+     }
+     if (inputs != null && inputs?['max_price'] != null) {
+       dataToUse['max_price'] = inputs?['max_price'];
+     }
+     if (inputs != null && inputs?['category'] != null) {
+       dataToUse['category'] = inputs?['category'];
      }
 
    }

@@ -1,4 +1,5 @@
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -28,17 +29,16 @@ class TicketMessagePage extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Scaffold(
+      backgroundColor: AppColor.canvasColor,
           appBar: AppBar(
             title:ticketMessageProvider.ticketEntity !=null ?
             Text(LanguageProvider.translate("global","${ticketMessageProvider.ticketEntity?.title}")) :null,
           ),
-          body: SizedBox(
-            width: 100.w,
-            height: 100.h,
+          body: SizedBox(width: double.infinity, height: double.infinity,
             child: Builder(
               builder: (context) {
                 if (ticketMessageProvider.ticketEntity == null) {
-                  // return LoadingAnimationWidget(gif: AppLotties.noChat, width: 100.w, height: 50.h,topPadding: 0,);
+                  // return LoadingAnimationWidget(gif: AppLotties.noChat, width: double.infinity, height: 50.h,topPadding: 0,);
                   return LoadingAnimationWidget(
                     gif: Lotties.loading,
                     width: 40.w,

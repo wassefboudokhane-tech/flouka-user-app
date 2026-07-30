@@ -1,4 +1,6 @@
 import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/constants/app_images.dart';
 import 'package:flouka/core/constants/app_lotties.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,7 @@ class TicketsPage extends StatelessWidget {
                 Provider.of<AddTicketProvider>(context,listen: false).goToAddTicketPage();
               },
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 3.w,),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter,),
                 margin: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.w,),
                 decoration:const BoxDecoration(
                     image: DecorationImage(image: AssetImage(AppImages.addTicket,),fit:BoxFit.contain)
@@ -55,9 +57,7 @@ class TicketsPage extends StatelessWidget {
           onRefresh: () async {
             ticketsProvider.refresh();
           },
-          child: SizedBox(
-            width: 100.w,
-            height: 100.h,
+          child: SizedBox(width: double.infinity, height: double.infinity,
             child: SingleChildScrollView(
               controller: ticketsProvider.scrollController,
               physics: const AlwaysScrollableScrollPhysics(),
@@ -72,9 +72,9 @@ class TicketsPage extends StatelessWidget {
                           height: 10.h,
                           topPadding: 10.h,
                         );
-                        // return LoadingAnimationWidget(gif: AppLotties.noChat, width: 100.w, height: 50.h,topPadding: 0,);
+                        // return LoadingAnimationWidget(gif: AppLotties.noChat, width: double.infinity, height: 50.h,topPadding: 0,);
                       } else if (ticketsProvider.tickets!.isEmpty) {
-                        // return EmptyAnimation(title: "ticket",gif: AppLotties.noSearch,width: 100.w,);
+                        // return EmptyAnimation(title: "ticket",gif: AppLotties.noSearch,width: double.infinity,);
                         return const EmptyAnimation(
                           title: "",
                           gif: Lotties.noSearch,

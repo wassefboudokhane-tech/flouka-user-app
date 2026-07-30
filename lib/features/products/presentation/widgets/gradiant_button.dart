@@ -29,7 +29,7 @@ class gradiantButton extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color:const Color(0xff00A8E1),),
+                border: Border.all(color: AppColor.primaryColor, width: 2),
               ),
               child: ClipOval(
                 child: Container(width: 10.w,height: 10.w,

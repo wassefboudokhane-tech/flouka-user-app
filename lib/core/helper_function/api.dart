@@ -43,15 +43,20 @@ class ApiHandel {
         },
       ),
     );
-    await Future.wait([
-      for (var i in LanguageProvider.languages) Dio().get('${Constants.baseUri}app_languages/user/${i.languageCode}.json'),
-    ]).then((value) {
+    try {
+      final value = await Future.wait([
+        for (var i in LanguageProvider.languages)
+          Dio().get('${Constants.baseUri}app_languages/user/${i.languageCode}.json'),
+      ]);
       Map data = {};
       for (int i = 0; i < LanguageProvider.languages.length; i++) {
         data[LanguageProvider.languages[i].languageCode] = value[i].data;
       }
       languages = data;
-    });
+    } catch (e, st) {
+      debugPrint('Language files load failed (CORS / network): $e\n$st');
+      languages = {};
+    }
   }
 
   Map languages = {};

@@ -1,3 +1,4 @@
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -18,6 +19,7 @@ class SavedAddressesPage extends StatelessWidget {
     final mapProvider = context.watch<MapProvider>();
 
     return Scaffold(
+      backgroundColor: AppColor.canvasColor,
       appBar: AppBar(
         title: Text(LanguageProvider.translate('global', 'saved_addresses')),
       ),

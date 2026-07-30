@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  // static const String baseUri = "https://veda-crumblier-sparkishly.ngrok-free.dev/";
-  static const String baseUri = "https://floka.zeroonez.com/";
+  // Staging marketplace hosts Maison Bayu + Ktita.
+  // Prod (geoBaseUri) has cities/areas seeded; staging get_cities is empty.
+  static const String baseUri = "http://72.60.191.26:3102/";
+  static const String geoBaseUri = "https://floka.zeroonez.com/";
   static const String domain = '${baseUri}api/';
+  static const String geoDomain = '${geoBaseUri}api/';
   //! for navigation
   static final GlobalKey<NavigatorState> navState = GlobalKey<NavigatorState>();
   static final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();

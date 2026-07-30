@@ -1,6 +1,9 @@
 import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/widgets/list_text_field_widget.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -18,13 +21,14 @@ class CreateReviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final reviewProvider = Provider.of<CreateRateProvider>(context);
     return Scaffold(
+      backgroundColor: AppColor.canvasColor,
       appBar: AppBar(
         title: Text(LanguageProvider.translate("orders",product ? "rate_product_title": "rate_store_title")),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.h),
-        height: 100.h,
-        width: 100.w,
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter,vertical: 2.h),
+        height: double.infinity,
+        width: double.infinity,
         child:SafeArea(
           child: Column(
             children: [

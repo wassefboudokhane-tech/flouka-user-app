@@ -1,3 +1,4 @@
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -24,13 +25,14 @@ class UserWalletHome extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Scaffold(
+      backgroundColor: AppColor.canvasColor,
 
           appBar: AppBar(
             title: Text(
               LanguageProvider.translate('settings', 'wallet'),
               style: TextStyleClass.normalStyle().copyWith(
                 fontWeight: FontWeight.bold,
-                fontSize: 17.sp,
+                fontSize: 17,
                 color: Colors.white
               ),
             ),
@@ -42,7 +44,7 @@ class UserWalletHome extends StatelessWidget {
               walletProvider.refresh();
             },
             child: Padding(
-              padding: EdgeInsets.only(bottom: 8.h),
+              padding: const EdgeInsets.only(bottom: 24),
               child: Column(
                 children: [
                   const HeaderWalletWidget(),

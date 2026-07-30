@@ -38,7 +38,9 @@
     "related_products": "Produits associés",
     "retail_stores": "Magasins",
     "popular_categories": "Catégories populaires",
-    "store_details": "Détails du magasin"
+    "store_details": "Détails du magasin",
+    "best_selling": "Meilleures ventes",
+    "under_50": "Moins de 50 TND"
   },
   "chat": {
     "chat": "Discussion",
@@ -66,7 +68,10 @@
     "color": "Couleur",
     "screen_size": "Taille d'écran",
     "brand_filter": "Filtrer par marque",
-    "search": "Rechercher des marques..."
+    "search": "Rechercher des marques...",
+    "select_category_first": "Choisissez d'abord une catégorie",
+    "select_category_for_brands": "Choisissez une catégorie pour voir les marques",
+    "no_options": "Aucune option"
   },
   "categories": {
     "search": "Rechercher...",
@@ -82,12 +87,13 @@
     "guest": "Invité",
     "guest_description": "Continuer en tant qu'invité",
     "otp": "Code de vérification",
-    "auth_welcome": "Bienvenue ! \nEntrez votre numéro de téléphone pour vous connecter à votre compte",
+    "auth_welcome": "Rejoindre Flouka\nVotre numéro seulement — on vous envoie un code",
     "Forgot password": "Mot de passe oublié",
     "edit_profile": "Modifier les détails du compte",
     "complete_profile": "Compléter les détails du compte",
     "New to Habitual?": "Nouveau sur Habitual ?",
     "Sign up": "S'inscrire",
+    "resend_otp": "Renvoyer le code",
     "resend_otp_after": "Renvoyer le code après",
     "Enter the verification code sent to": "Entrez le code à 4 chiffres que nous avons envoyé à ",
     "or": "ou",
@@ -116,6 +122,9 @@
     "seller": "Vendeur",
     "app_name": "Flouka",
     "currency": "TND",
+    "cod_badge": "Paiement à la livraison",
+    "shared_image_hint": "Même photo pour toutes les couleurs — choisissez couleur et taille pour commander.",
+    "chat_vendor": "Contacter le vendeur",
     "delivery": "Livraison",
     "delivery_to": "Adresse de livraison",
     "payment_method": "Moyen de paiement",
@@ -385,6 +394,12 @@
     "name": "Nom",
     "address": "Adresse",
     "phone": "Numéro de téléphone",
+    "add_address": "Ajouter une adresse",
+    "edit_address": "Modifier l'adresse",
+    "default_address_name": "Maison",
+    "ask_address_short": "Indiquez où livrer vos commandes. Vous pourrez en ajouter d'autres plus tard.",
+    "cities_unavailable": "Impossible de charger les gouvernorats. Vérifiez votre connexion.",
+    "skip_for_now": "Passer pour l'instant",
     "ask_address": "Pour garantir la meilleure expérience de service, veuillez ajouter votre adresse principale. Si vous choisissez de passer cette étape, il vous sera peut-être demandé de fournir votre emplacement actuel temporairement, mais une adresse principale sera toujours requise avant de passer une commande."
   },
   "settings": {

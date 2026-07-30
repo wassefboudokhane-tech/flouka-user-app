@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../config/app_color.dart';
+import '../config/app_radius.dart';
+import '../config/app_spacing.dart';
 import '../config/app_styles.dart';
 import '../../features/language/presentation/provider/language_provider.dart';
-import '../constants/constants.dart';
 
 class ButtonWidget extends StatelessWidget {
   final double? width, height, borderRadius, elevation;
@@ -43,11 +44,11 @@ class ButtonWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: takeSmallestWidth ? null : (width ?? 90.w),
-        height: height ?? (Constants.isTablet ? 7.h : 6.5.h),
+        height: height ?? AppSpacing.ctaHeight,
         decoration: BoxDecoration(
-          borderRadius:
-              directionBorderRadius ?? BorderRadius.circular(borderRadius ?? 15),
-          color: color ?? AppColor.primaryColor,
+          borderRadius: directionBorderRadius ??
+              BorderRadius.circular(borderRadius ?? AppRadius.btn),
+          color: color ?? AppColor.limeColor,
 
           border: borderColor == null || color == null
               ? null
@@ -75,9 +76,11 @@ class ButtonWidget extends StatelessWidget {
                 LanguageProvider.translate("buttons", text),
                 style:
                     textStyle ??
-                    TextStyleClass.normalStyle(
-                      color: Colors.white,
-                    ).copyWith(fontSize: 17.sp),
+                    TextStyleClass.buttonStyle(
+                      color: (color == null || color == AppColor.limeColor)
+                          ? AppColor.deepColor
+                          : Colors.white,
+                    ).copyWith(fontWeight: FontWeight.w700),
               ),
               if (isSpaceBetween == true) const SizedBox(),
               if (widgetAfterText) widget ?? const SizedBox(),
@@ -118,9 +121,10 @@ class BorderButtonWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: takeSmallestWidth ? null : (width ?? 90.w),
-        height: height ?? (Constants.isTablet ? 7.h : 6.h),
+        height: height ?? AppSpacing.ctaHeight,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius ?? 10),
+          borderRadius:
+              BorderRadius.circular(borderRadius ?? AppRadius.btn),
           color: Colors.white,
           border: Border.all(color: color ?? AppColor.primaryColor),
         ),

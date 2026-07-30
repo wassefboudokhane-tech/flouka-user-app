@@ -1,13 +1,15 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_radius.dart';
+import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/helper_function/navigation.dart';
+import 'package:flouka/core/widgets/flouka_search_pill.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/presentation/pages/filter_page.dart';
 import 'package:flouka/features/products/presentation/widgets/shop_products_page_filter.dart';
 import 'package:flouka/features/products/presentation/widgets/shop_products_grid.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_color.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/widgets/svg_widget.dart';
-import '../../../../core/widgets/searchbar_container.dart';
 
 class ShopProductsPage extends StatelessWidget {
   const ShopProductsPage({super.key});
@@ -15,43 +17,57 @@ class ShopProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.w),
-        child: Column(
-          children: [
-            SizedBox(height: 6.h),
-            Row(
-              children: [
-                const Expanded(child: SearchbarContainer()),
-                SizedBox(width: 2.w),
-                InkWell(
-                  onTap: () {
-                    navP(const FilterPage());
-                  },
-                  child: Container(
-                    width: 12.w,
-                    height: 5.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: const Color(0xff221F1F).withOpacity(0.2),
-                      ),
+      backgroundColor: AppColor.canvasColor,
+      body: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: AppSpacing.pagePadding,
+          child: Column(
+            children: [
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: FloukaSearchPill(
+                      hint: LanguageProvider.translate('global', 'search'),
                     ),
-                    child: Center(
-                      child: SvgWidget(
-                        svg: AppImages.filter,
-                        color: AppColor.primaryColor,
+                  ),
+                  const SizedBox(width: 8),
+                  InkWell(
+                    onTap: () {
+                      navP(const FilterPage());
+                    },
+                    borderRadius: BorderRadius.circular(AppRadius.btn),
+                    child: Container(
+                      width: AppSpacing.searchHeight,
+                      height: AppSpacing.searchHeight,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(AppRadius.btn),
+                        color: AppColor.limeColor,
+                        border: Border.all(
+                          color: AppColor.deepColor.withValues(alpha: 0.15),
+                        ),
+                      ),
+                      child: Center(
+                        child: SvgWidget(
+                          svg: AppImages.filter,
+                          color: AppColor.deepColor,
+                        ),
                       ),
                     ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              const ShopProductsPageFilter(),
+              const SizedBox(height: 8),
+              const Expanded(
+                child: ShopProductsGrid(
+                  padding: EdgeInsets.only(top: 4, bottom: 24),
                 ),
-              ],
-            ),
-            SizedBox(height: 2.h),
-            const ShopProductsPageFilter(),
-            SizedBox(height: 2.h),
-            const Expanded(child: ShopProductsGrid()),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

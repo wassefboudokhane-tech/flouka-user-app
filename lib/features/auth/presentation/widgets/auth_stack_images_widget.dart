@@ -8,10 +8,12 @@ class AuthStackImagesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final maxH = MediaQuery.sizeOf(context).height;
     return SizedBox(
-      height: 50.h,
+      height: (maxH * 0.42).clamp(180.0, 320.0),
       width: 100.w,
       child: Stack(
+        clipBehavior: Clip.hardEdge,
         children: [
           Positioned.fill(child: Image.asset(AppImages.circles, fit: BoxFit.fill)),
           Positioned(
@@ -19,7 +21,7 @@ class AuthStackImagesWidget extends StatelessWidget {
             right: 0,
             bottom: -5.h,
             child: Transform.scale(
-              scale: 1.3,
+              scale: 1.15,
               child: Image.asset(AppImages.onboardingImage1, width: 50.w),
             ),
           ),

@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flouka/core/helper_function/location.dart';
-import 'package:flouka/features/address/presentation/views/select_default_address_page.dart';
+import 'package:flouka/features/address/presentation/providers/address_details_provider.dart';
 import 'package:flouka/features/auth/presentation/providers/complete_info_provider.dart';
 import 'package:flouka/features/auth/presentation/providers/otp_provider.dart';
 import 'package:flouka/features/auth/presentation/views/login_view.dart';
@@ -141,12 +141,19 @@ class AuthProvider extends ChangeNotifier {
       String apiToken = ApiHandel.getInstance.dio.options.headers['Authorization'];
       String token = userEntity.token??apiToken.split(' ')[1];
       sharedPreferences.setString('token', token);
+      // Merge guest cart into server before entering the app.
+      await Provider.of<CartProvider>(Constants.globalContext(), listen: false)
+          .syncGuestCartAfterLogin();
       if(!fromAddress || firstAddress){
         if(userEntity.addressEntity != null){
           setLatLng(LatLng(userEntity.addressEntity!.lat!, userEntity.addressEntity!.lng!));
           Provider.of<NavBarProvider>(Constants.globalContext(), listen: false,).goToNavView(fromSplash: fromSplash,);
-        }else{
-          navP(const SelectDefaultAddressPage());
+        } else {
+          // Straight to compact address form (skip map + intermediate prompt)
+          Provider.of<AddressDetailsProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).goToAddressDetailsPage(firstAddress: true);
         }
         if (userEntity.token != null) {
           ApiHandel.getInstance.updateHeader(userEntity.token!);
@@ -365,6 +372,8 @@ class AuthProvider extends ChangeNotifier {
     sharedPreferences.remove('phone');
     sharedPreferences.remove('token');
     userEntity = null;
+    Provider.of<CartProvider>(Constants.globalContext(), listen: false)
+        .resetGuestMergeFlag();
     goToLoginView();
   }
 

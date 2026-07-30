@@ -18,6 +18,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../cart/presentation/providers/cart_operation_provider.dart';
 import '../../../cart/presentation/providers/cart_provider.dart';
 import '../../domain/user_case/product_use_case.dart';
+import '../../domain/utils/synthesize_options.dart';
 import '../pages/products_details_view.dart';
 import 'product_variant_provider.dart' show ProductVariantProvider;
 
@@ -93,8 +94,9 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
       productDetails,
     ) {
       data = productDetails;
+      mergeLiveOrSynthesize(data!);
+      selectDefaultAttributes();
       notifyListeners();
-
     });
 
   }
@@ -130,7 +132,8 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
     this.inputs = inputs;
     imageIndex=0;
     variants = {};
-    Provider.of<ProductQuantityProvider>(Constants.globalContext(),listen: false).quantity = null;
+    Provider.of<ProductQuantityProvider>(Constants.globalContext(), listen: false)
+        .reset();
     final productId = inputs?['product_id'];
 
     if (productId != null && (productsIDs.isEmpty || productsIDs.last != productId)) {

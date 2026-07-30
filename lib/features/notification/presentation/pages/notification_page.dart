@@ -1,4 +1,5 @@
 import 'package:flouka/core/constants/app_lotties.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -17,13 +18,12 @@ class NotificationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     NotificationProvider notificationProvider = Provider.of(context);
     return Scaffold(
+      backgroundColor: AppColor.canvasColor,
       appBar: AppBar(
         title: Text(LanguageProvider.translate('global', 'notifications')),
         elevation: 0,
       ),
-      body: SizedBox(
-        width: 100.w,
-        height: 100.h,
+      body: SizedBox(width: double.infinity, height: double.infinity,
         child: RefreshIndicator(
           onRefresh: () async {
             notificationProvider.refresh();
@@ -36,7 +36,7 @@ class NotificationPage extends StatelessWidget {
                   // return Column(
                   //   children: List.generate(
                   //     8,
-                  //     (index) => ShimmerWidget(width: 100.w, height: 15.h),
+                  //     (index) => ShimmerWidget(width: double.infinity, height: 15.h),
                   //   ),
                   // );
                    return const Center(child: LoadingAnimationWidget(gif: Lotties.loading));

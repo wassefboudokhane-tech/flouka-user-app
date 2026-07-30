@@ -15,44 +15,47 @@ class DeliveryDropdownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider authProvider = Provider.of(context);
-    final AddressProvider addressProvider = Provider.of<AddressProvider>(context);
+    final AuthProvider authProvider = Provider.of(context);
+    final AddressProvider addressProvider =
+        Provider.of<AddressProvider>(context);
+    final hasAddress = authProvider.userEntity?.addressEntity != null;
+    final label = hasAddress
+        ? (authProvider.userEntity?.addressEntity?.addressName ?? '')
+        : LanguageProvider.translate('home', 'select_location');
 
     return InkWell(
       onTap: () {
-        checkGuest((){
+        checkGuest(() {
           addressProvider.goToAddressPage();
         });
       },
       child: Row(
         children: [
-          SvgWidget(svg: AppImages.location, width: 6.w,color: Colors.white),
+          SvgWidget(svg: AppImages.location, width: 5.w, color: Colors.white),
           SizedBox(width: 2.w),
-          if(authProvider.userEntity?.addressEntity != null )
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  LanguageProvider.translate("home", "deliver_to"),
-                  style: TextStyleClass.normalStyle(color: Colors.white).copyWith(fontSize: 14.sp),
+                  LanguageProvider.translate('home', 'deliver_to'),
+                  style: TextStyleClass.smallStyle(color: AppColor.limeColor)
+                      .copyWith(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  authProvider.userEntity?.addressEntity?.addressName??"",
-                  style: TextStyleClass.normalStyle(color: Colors.white).copyWith(fontSize: 14.sp),
+                  label,
+                  style: TextStyleClass.normalStyle(color: Colors.white)
+                      .copyWith(fontWeight: FontWeight.w700, fontSize: 13.sp),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          if(authProvider.userEntity?.addressEntity == null )
-            Expanded(
-              child: Text(
-                LanguageProvider.translate("home", "select_location"),
-                style: TextStyleClass.normalStyle().copyWith(fontSize: 14.sp),
-              ),
-            ),
-          SizedBox(width: 2.w),
-          const Icon(Icons.arrow_drop_down, color: Colors.white,),
+          const Icon(Icons.arrow_drop_down, color: Colors.white),
         ],
       ),
     );

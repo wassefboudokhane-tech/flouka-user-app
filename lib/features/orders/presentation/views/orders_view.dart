@@ -1,17 +1,16 @@
-
 import 'package:flouka/core/constants/app_lotties.dart';
 import 'package:flouka/features/orders/domain/entity/order_entity.dart';
 import 'package:flouka/features/orders/presentation/widget/new_widgets/order_widget.dart';
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flouka/features/orders/presentation/provider/order_provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_styles.dart';
 import '../../../../core/widgets/empty_animation.dart';
 import '../../../../core/widgets/loading_animation_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../language/presentation/provider/language_provider.dart';
-import '../widget/oreder_item_widget.dart';
 
 class OrdersView extends StatelessWidget {
   const OrdersView({super.key});
@@ -21,6 +20,7 @@ class OrdersView extends StatelessWidget {
     final OrderProvider ordersProvider = Provider.of(context);
     // ordersProvider.pagination();
     return Scaffold(
+      backgroundColor: AppColor.canvasColor,
       appBar: AppBar(
         title: Text(
           LanguageProvider.translate("global", "orders"),
@@ -46,10 +46,10 @@ class OrdersView extends StatelessWidget {
             }
             return SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 17),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter),
               child: Column(
                 children: [
-                  SizedBox(height: 3.h),
+                  const SizedBox(height: 24),
 
 
                   ...List.generate(
@@ -66,7 +66,7 @@ class OrdersView extends StatelessWidget {
                   //   ordersProvider.data!.length,
                   //   (index) => OrderItemWidget(orderEntity: ordersProvider.data![index]),
                   // ),
-                  SizedBox(height: 6.h),
+                  const SizedBox(height: 48),
 
                   // Expanded(
                   //   child: ListView.separated(
@@ -93,4 +93,4 @@ class OrdersView extends StatelessWidget {
     );
   }
 }
- // padding: const EdgeInsets.symmetric(horizontal: 17),
+ // padding: const EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter),

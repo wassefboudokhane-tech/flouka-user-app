@@ -18,9 +18,7 @@ class ReviewView extends StatelessWidget {
       appBar: AppBar(
         title: Text(LanguageProvider.translate("global","customer_reviews")),
       ),
-      body: SizedBox(
-        height: 100.h,
-        width: 100.w,
+      body: SizedBox(width: double.infinity, height: double.infinity,
         child: Stack(
           children: [
             ImagesPageViewBuilder(images: review.images,),
