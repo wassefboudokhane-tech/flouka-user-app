@@ -13,6 +13,7 @@ import '../providers/checkout_provider.dart';
 import '../widgets/checkout_item_widget.dart';
 import '../widgets/checkout_terms_widget.dart';
 import '../widgets/coupons_widget.dart';
+import '../widgets/free_delivery_widget.dart';
 import '../widgets/payment_method_list.dart';
 import '../widgets/price_details_widget.dart';
 
@@ -99,7 +100,10 @@ class CheckoutView extends StatelessWidget {
                     const SizedBox(height: 10),
                     const CheckoutTermsWidget(),
                     const SizedBox(height: 10),
-                    const CouponsWidget(),                    const SizedBox(height: 10),
+                    const CouponsWidget(),
+                    const SizedBox(height: 10),
+                    const FreeDeliveryWidget(),
+                    const SizedBox(height: 10),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
