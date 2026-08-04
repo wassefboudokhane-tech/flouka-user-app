@@ -387,7 +387,7 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
-  late List<SocialAuthEntity> authImages = [
+  List<SocialAuthEntity> get authImages => [
     SocialAuthEntity(
       image: AppImages.apple,
       onTap: () => appleLogin(),
