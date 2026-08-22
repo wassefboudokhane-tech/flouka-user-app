@@ -1,26 +1,33 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_radius.dart';
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/dialog/guest_dialog.dart';
+import 'package:flouka/core/dialog/snack_bar.dart';
 import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
-import 'package:flouka/features/products/presentation/providers/products_details_provider.dart';
-import 'package:flouka/features/reels/presentation/models/reel_item.dart';
 import 'package:flouka/features/reels/presentation/providers/video_provider.dart';
-
+import 'package:flouka/features/reels/presentation/widgets/reels_product_overlay_widget.dart';
+import 'package:flouka/features/reels/presentation/widgets/video_widget.dart';
+import 'package:flouka/features/stores/presentation/providers/store_details_provider.dart';
+import 'package:flouka/flouka_app.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_color.dart';
-import '../../../../core/config/app_styles.dart';
-import '../../../../flouka_app.dart';
-import 'smooth_video_progress_widget.dart';
-import 'user_button_actions.dart';
-import 'video_widget.dart';
 
-class ListVideosWidget extends StatelessWidget {
+class ListVideosWidget extends StatefulWidget {
   const ListVideosWidget({super.key});
 
   @override
+  State<ListVideosWidget> createState() => _ListVideosWidgetState();
+}
+
+class _ListVideosWidgetState extends State<ListVideosWidget> {
+  final Set<int> _followedVendors = {};
+  final Set<int> _likedReels = {};
+
+  @override
   Widget build(BuildContext context) {
-    VideoProvider videoProvider = Provider.of(context);
+    final videoProvider = Provider.of<VideoProvider>(context);
     return Builder(
       builder: (context) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -29,175 +36,221 @@ class ListVideosWidget extends StatelessWidget {
             routeObserver.subscribe(videoProvider, route);
           }
         });
-        return Stack(
-          children: [
-            Builder(
-              builder: (context) {
-                if (videoProvider.reelItems == null ||
-                    videoProvider.reelItems!.isEmpty) {
-                  return const SizedBox();
+        if (videoProvider.reelItems == null ||
+            videoProvider.reelItems!.isEmpty) {
+          return const SizedBox();
+        }
+        return PageView(
+          controller: videoProvider.controller,
+          physics: const AlwaysScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          onPageChanged: (val) {
+            videoProvider.stopCurrentVideo(
+              videoProvider.reelItems![videoProvider.previousNextPage],
+            );
+            videoProvider.changePageViewIndex(val);
+            videoProvider.playVideo(videoProvider.reelItems![val]);
+          },
+          children: List.generate(videoProvider.reelItems!.length, (index) {
+            final reelItem = videoProvider.reelItems![index];
+            final reel = reelItem.reel;
+            final followed = _followedVendors.contains(reel.vendorId);
+            final liked = _likedReels.contains(reel.id);
+
+            return InkWell(
+              onDoubleTap: () {
+                if (!AuthProvider.isLogin()) {
+                  showGuestDialog();
+                  return;
                 }
-                return PageView(
-                  controller: videoProvider.controller,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  onPageChanged: (val) {
-                    videoProvider.stopCurrentVideo(
-                      videoProvider.reelItems![videoProvider.previousNextPage],
-                    );
-
-                    videoProvider.changePageViewIndex(val);
-                    // Assuming all are videos for now
-                    videoProvider.playVideo(videoProvider.reelItems![val]);
-                  },
-                  children: List.generate(videoProvider.reelItems!.length, (index) {
-                    ReelItem reelItem = videoProvider.reelItems![index];
-                    return InkWell(
-                      onDoubleTap: () {
-                        AuthProvider auth = Provider.of(context, listen: false);
-
-                        if (!auth.isGuest()) {
-                          // AdsProvider adsProvider = Provider.of(context, listen: false);
-                          // if (auth.userEntity?.id != reelItem.reel.vendor.id) {
-                          //   // adsProvider.changeAdFavouriteState(ad: reelItem.reel);
-                          //   Provider.of<VideoProvider>(context, listen: false).rebuild();
-                          // }
-                        } else {
-                          showGuestDialog();
-                        }
-                      },
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: PageView(
-                              scrollDirection: Axis.horizontal,
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              children: [
-                                VideoWidget(reelItem: reelItem, onTap: () {}),
-                                // Carousel logic removed for now as ReelEntity is primarily video
-                              ],
+                setState(() => _likedReels.add(reel.id));
+              },
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: PageView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        VideoWidget(reelItem: reelItem, onTap: () {}),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    right: 12,
+                    bottom: 160,
+                    child: Column(
+                      children: [
+                        _ReelAction(
+                          icon: liked ? Icons.favorite : Icons.favorite_border,
+                          color: liked ? AppColor.DealColor : Colors.white,
+                          onTap: () {
+                            if (!AuthProvider.isLogin()) {
+                              showGuestDialog();
+                              return;
+                            }
+                            setState(() {
+                              if (liked) {
+                                _likedReels.remove(reel.id);
+                              } else {
+                                _likedReels.add(reel.id);
+                              }
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 14),
+                        _ReelAction(
+                          icon: Icons.bookmark_border,
+                          onTap: () {
+                            if (!AuthProvider.isLogin()) {
+                              showGuestDialog();
+                              return;
+                            }
+                            showToast(
+                              LanguageProvider.translate(
+                                'reels',
+                                'save_soon',
+                              ),
+                              isSnack: true,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    left: 16,
+                    right: 72,
+                    bottom: 96,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            ClipOval(
+                              child: Container(
+                                width: 34,
+                                height: 34,
+                                color: Colors.white.withValues(alpha: 0.2),
+                                child: reel.vendorLogo.isNotEmpty
+                                    ? CachedNetworkImage(
+                                        imageUrl: reel.vendorLogo,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                              ),
                             ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            bottom: 0.h,
-                            right: 0,
-                            child: Column(
-                              children: [
-                                // UserButtonActionsWidget(reelEntity: reelItem.reel),
-                                SizedBox(height: 1.h),
-                                InkWell(
-                                  onTap: () {
-                                    // Provider.of<AdsDetailsProvider>(context, listen: false).goToAdsDetailsPage(id: reelItem.reel.id, similar: false);
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 2.w),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            if (reelItem.controller != null)
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 1.w,
-                                                ),
-                                                child: InkWell(
-                                                  onTap: () {
-                                                    reelItem.toggleMute();
-                                                    videoProvider.rebuild();
-                                                  },
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(2.w),
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.black
-                                                          .withOpacity(0.5),
-                                                    ),
-                                                    child: Icon(
-                                                      reelItem.isMuted
-                                                          ? Icons.volume_off
-                                                          : Icons.volume_up,
-                                                      size: 6.w,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            if(reelItem.reel.title!=null)Expanded(
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 4.w,
-                                                ),
-                                                child: Text(
-                                                  reelItem.reel.title!,
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyleClass.normalStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            if(reelItem.reel.productId!=null)InkWell(
-                                              onTap: (){
-                                                Provider.of<ProductDetailsProvider>(context,listen: false).goToPage({"product_id":reelItem.reel.productId});
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.all(2.w),
-                                                decoration: BoxDecoration(
-                                                  color: AppColor.primaryColor,
-                                                  borderRadius: BorderRadius.circular(
-                                                    2.w,
-                                                  ),
-                                                ),
-                                                child: Text(
-                                                  LanguageProvider.translate(
-                                                    "buttons",
-                                                    "details",
-                                                  ),
-                                                  style: TextStyleClass.normalStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                            const SizedBox(width: 9),
+                            Expanded(
+                              child: Text(
+                                reel.vendorName,
+                                style: TextStyleClass.smallStyle(
+                                  color: Colors.white,
+                                ).copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Material(
+                              color: followed
+                                  ? Colors.white.withValues(alpha: 0.15)
+                                  : AppColor.limeColor,
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.pill),
+                              child: InkWell(
+                                onTap: () async {
+                                  final ok = await context
+                                      .read<StoreDetailsProvider>()
+                                      .toggleFollowVendor(reel.vendorId);
+                                  if (!ok || !mounted) return;
+                                  setState(() {
+                                    if (followed) {
+                                      _followedVendors.remove(reel.vendorId);
+                                    } else {
+                                      _followedVendors.add(reel.vendorId);
+                                    }
+                                  });
+                                },
+                                borderRadius:
+                                    BorderRadius.circular(AppRadius.pill),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  child: Text(
+                                    LanguageProvider.translate(
+                                      'buttons',
+                                      followed ? 'unfollow' : 'follow',
+                                    ),
+                                    style: TextStyleClass.captionStyle(
+                                      color: followed
+                                          ? Colors.white
+                                          : AppColor.deepColor,
+                                    ).copyWith(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 11,
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 2.h),
-                                if (reelItem.controller != null)
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: SmoothVideoProgressWidget(
-                                          videoPlayerController:
-                                              reelItem.controller!,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                else
-                                  SizedBox(height: 4.h),
-                              ],
+                              ),
                             ),
+                          ],
+                        ),
+                        if (reel.title != null) ...[
+                          const SizedBox(height: 11),
+                          Text(
+                            reel.title!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyleClass.normalStyle(
+                              color: Colors.white.withValues(alpha: 0.85),
+                            ).copyWith(fontSize: 13.5, height: 1.45),
                           ),
                         ],
-                      ),
-                    );
-                  }),
-                );
-              },
-            ),
-          ],
+                        ReelsProductOverlayWidget(reelItem: reelItem),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
         );
       },
+    );
+  }
+}
+
+class _ReelAction extends StatelessWidget {
+  const _ReelAction({
+    required this.icon,
+    required this.onTap,
+    this.color = Colors.white,
+  });
+
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black.withValues(alpha: 0.35),
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: SizedBox(
+          width: 44,
+          height: 44,
+          child: Icon(icon, color: color, size: 22),
+        ),
+      ),
     );
   }
 }

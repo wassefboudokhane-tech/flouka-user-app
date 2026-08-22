@@ -1,16 +1,13 @@
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
-import 'package:flouka/core/constants/app_lotties.dart';
-import 'package:flouka/core/widgets/button_widget.dart';
-import 'package:flouka/core/widgets/loading_animation_widget.dart';
+import 'package:flouka/core/widgets/flouka_screen_header.dart';
 import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flouka/features/reviews/presentation/providres/create_rate_provider.dart';
 import 'package:flouka/features/stores/presentation/providers/store_reviews_provider.dart';
 import 'package:flouka/features/stores/presentation/widgets/all_reviews_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/helper_function/navigation.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 
 /// Dedicated store reviews screen — mirrors web /vendors/[id]/reviews.
@@ -38,26 +35,38 @@ class _StoreReviewsPageState extends State<StoreReviewsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final reviewsProvider = context.watch<StoreReviewsProvider>();
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(LanguageProvider.translate('global', 'all_reviews')),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          Provider.of<StoreReviewsProvider>(context, listen: false)
-              .setStoreId(widget.storeId);
-        },
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          controller: Provider.of<StoreReviewsProvider>(context, listen: false).controller,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AllReviewsContainer(),
-              _WriteReviewSection(storeId: widget.storeId),
-              SizedBox(height: 4.h),
-            ],
-          ),
+      backgroundColor: AppColor.canvasColor,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            FloukaScreenHeader(
+              title: LanguageProvider.translate('global', 'all_reviews'),
+            ),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  Provider.of<StoreReviewsProvider>(context, listen: false)
+                      .setStoreId(widget.storeId);
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: reviewsProvider.controller,
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const AllReviewsContainer(),
+                      _WriteReviewSection(storeId: widget.storeId),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -65,41 +74,62 @@ class _StoreReviewsPageState extends State<StoreReviewsPage> {
 }
 
 class _WriteReviewSection extends StatelessWidget {
-  final int storeId;
   const _WriteReviewSection({required this.storeId});
+
+  final int storeId;
 
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = AuthProvider.isLogin();
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.pageGutter,
+        16,
+        AppSpacing.pageGutter,
+        0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             LanguageProvider.translate('global', 'write_a_review'),
-            style: TextStyleClass.normalStyle(),
+            style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                .copyWith(fontWeight: FontWeight.w700),
           ),
-          SizedBox(height: 1.h),
+          const SizedBox(height: 10),
           if (!isLoggedIn)
             Text(
               LanguageProvider.translate('global', 'login_required'),
-              style: TextStyleClass.smallStyle(color: Colors.grey.shade600),
+              style: TextStyleClass.captionStyle(color: AppColor.mutedColor),
             )
           else
-            ButtonWidget(
-              onTap: () {
-                Provider.of<CreateRateProvider>(context, listen: false)
-                    .gotoReviewPage(itemId: storeId, orderId: 0, product: false);
-              },
-              text: LanguageProvider.translate('buttons', 'write_review'),
+            SizedBox(
               width: double.infinity,
-              height: 5.h,
-              borderRadius: 8,
-              color: AppColor.primaryColor,
-              textStyle:
-                  TextStyleClass.normalStyle(color: Colors.white),
+              height: AppSpacing.ctaHeight,
+              child: ElevatedButton(
+                onPressed: () {
+                  Provider.of<CreateRateProvider>(context, listen: false)
+                      .gotoReviewPage(
+                    itemId: storeId,
+                    orderId: 0,
+                    product: false,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.deepColor,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  elevation: 0,
+                ),
+                child: Text(
+                  LanguageProvider.translate('buttons', 'write_review'),
+                  style: TextStyleClass.smallStyle(color: Colors.white)
+                      .copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
             ),
         ],
       ),

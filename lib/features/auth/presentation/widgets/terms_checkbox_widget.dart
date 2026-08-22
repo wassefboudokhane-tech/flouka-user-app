@@ -1,7 +1,6 @@
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/helper_function/navigation.dart';
 import 'package:flouka/core/widgets/checkbox_widget.dart';
-import 'package:flouka/core/widgets/validation_widget.dart';
 import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flouka/features/settings/domain/entities/settings_entity.dart';
 import 'package:flouka/features/settings/presentation/provider/settings_provider.dart';
@@ -87,12 +86,6 @@ class TermsCheckboxWidget extends StatelessWidget {
               ),
             ],
           ),
-          ValidationWidget(conditions: [
-            {
-              'value': !authProvider.termsAccepted,
-              'text': LanguageProvider.translate('validation', 'terms'),
-            }
-          ]),
         ],
       ),
     );

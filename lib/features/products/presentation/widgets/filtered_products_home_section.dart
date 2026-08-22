@@ -50,11 +50,12 @@ class FilteredProductsHomeSection extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: AppSpacing.cardGap,
                 crossAxisSpacing: AppSpacing.cardGap,
-                childAspectRatio: aspect.clamp(0.48, 0.62),
+                childAspectRatio: aspect,
               ),
               itemBuilder: (context, index) {
                 return HotDealsHomeContainerWidget(
                   product: provider.products![index],
+                  width: cardW,
                 );
               },
             );

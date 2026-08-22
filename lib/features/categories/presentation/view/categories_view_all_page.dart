@@ -1,102 +1,159 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flouka/core/config/app_color.dart';
-import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
-import 'package:flouka/core/widgets/flouka_search_pill.dart';
-import 'package:flouka/core/widgets/svg_widget.dart';
-import 'package:flouka/core/constants/app_images.dart';
-import 'package:flouka/features/categories/presentation/widgets/categories_view_all_filter_widget.dart';
+import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/widgets/flouka_back_button.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/presentation/providers/categories_product_search_provider.dart';
-import 'package:flouka/features/products/presentation/providers/search_filter_provider.dart';
+import 'package:flouka/features/products/presentation/widgets/search_active_filter_chips_widget.dart';
 import 'package:flouka/features/products/presentation/widgets/shop_products_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Search / category listing — aligned with web `/shop` mobile filters.
+/// Search / category listing aligned with hi-fi mockup.
 class CategoriesViewAllPage extends StatelessWidget {
   const CategoriesViewAllPage({super.key, this.isSection = false});
   final bool isSection;
 
   @override
   Widget build(BuildContext context) {
-    final categoryProvider =
+    final search =
         Provider.of<CategoriesProductSearchProvider>(context, listen: false);
-    categoryProvider.pagination();
+    search.pagination();
 
     return Scaffold(
       backgroundColor: AppColor.canvasColor,
-      appBar: AppBar(
-        title: Text(LanguageProvider.translate('categories', 'search_title')),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.pageGutter,
-              8,
-              AppSpacing.pageGutter,
-              0,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: FloukaSearchPill(
-                    controller: categoryProvider.searchController,
-                    hint: LanguageProvider.translate('global', 'search'),
-                    onChanged: (_) => categoryProvider.onTextChanged(),
-                    readOnly: false,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                InkWell(
-                  onTap: () {
-                    Provider.of<SearchFilterProvider>(context, listen: false)
-                        .goToFilterPage();
-                  },
-                  borderRadius: BorderRadius.circular(AppRadius.btn),
-                  child: Container(
-                    width: AppSpacing.searchHeight,
-                    height: AppSpacing.searchHeight,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppRadius.btn),
-                      color: AppColor.limeColor,
-                      border: Border.all(
-                        color: AppColor.deepColor.withValues(alpha: 0.15),
-                      ),
-                    ),
-                    child: Center(
-                      child: SvgWidget(
-                        svg: AppImages.filter,
-                        color: AppColor.deepColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(
-              AppSpacing.pageGutter,
-              12,
-              AppSpacing.pageGutter,
-              8,
-            ),
-            child: CategoriesViewAllFilterWidget(),
-          ),
-          const Expanded(
-            child: ShopProductsGrid(
-              padding: EdgeInsets.fromLTRB(
+      body: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
                 AppSpacing.pageGutter,
                 4,
                 AppSpacing.pageGutter,
-                24,
+                10,
+              ),
+              child: Row(
+                children: [
+                  const FloukaBackButton(),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _SearchQueryField(
+                      controller: search.searchController,
+                      onChanged: (_) => search.onTextChanged(),
+                      onClear: () {
+                        search.searchController.clear();
+                        search.onTextChanged();
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            const SearchActiveFilterChipsWidget(),
+            const SearchResultsBarWidget(),
+            const Expanded(
+              child: ShopProductsGrid(
+                padding: EdgeInsets.fromLTRB(
+                  AppSpacing.pageGutter,
+                  0,
+                  AppSpacing.pageGutter,
+                  24,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _SearchQueryField extends StatelessWidget {
+  const _SearchQueryField({
+    required this.controller,
+    required this.onChanged,
+    required this.onClear,
+  });
+
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        final hasText = controller.text.isNotEmpty;
+        return Container(
+          height: 44,
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          decoration: BoxDecoration(
+            color: AppColor.backgroundColor,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: hasText ? AppColor.deepColor : AppColor.borderColor,
+              width: hasText ? 1.5 : 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 14,
+                height: 14,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: hasText ? AppColor.deepColor : AppColor.mutedColor,
+                    width: 1.8,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 9),
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  onChanged: onChanged,
+                  style: TextStyleClass.textFieldStyle().copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.5,
+                  ),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: InputBorder.none,
+                    hintText: LanguageProvider.translate('categories', 'search'),
+                    hintStyle: TextStyleClass.textFieldStyle(
+                      color: AppColor.mutedColor,
+                    ),
+                  ),
+                ),
+              ),
+              if (hasText)
+                InkWell(
+                  onTap: onClear,
+                  borderRadius: BorderRadius.circular(99),
+                  child: Container(
+                    width: 18,
+                    height: 18,
+                    decoration: BoxDecoration(
+                      color: AppColor.canvasColor,
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '×',
+                      style: TextStyleClass.captionStyle(
+                        color: AppColor.mutedColor,
+                      ).copyWith(fontWeight: FontWeight.w600, fontSize: 11),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

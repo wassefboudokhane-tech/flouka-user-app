@@ -58,6 +58,8 @@ class CategoriesProductSearchProvider extends ChangeNotifier
  CategoryEntity? category ;
  CategoryEntity? subcategory ;
  int? categoryId;
+ /// `best_selling` | `newest` — drives API sort / filter params.
+ String sortMode = 'best_selling';
  final ProductUseCase productUseCase;
  CategoriesProductSearchProvider(this.productUseCase);
  Timer? _timer;
@@ -105,9 +107,38 @@ class CategoriesProductSearchProvider extends ChangeNotifier
    category = null;
    subcategory = null;
    inputs = null;
+   sortMode = 'best_selling';
    SearchFilterProvider provider = Provider.of(Constants.globalContext(), listen: false);
    notifyListeners();
 
+ }
+
+ void setSortMode(String mode) {
+   if (sortMode == mode) return;
+   sortMode = mode;
+   refresh();
+ }
+
+ void toggleNewArrivals() {
+   inputs ??= {};
+   if (inputs!['offer_products'] == 1) {
+     inputs!.remove('offer_products');
+     if (sortMode == 'newest') sortMode = 'best_selling';
+   } else {
+     inputs!['offer_products'] = 1;
+     sortMode = 'newest';
+   }
+   refresh();
+ }
+
+ void setMaxPriceFilter(num? max) {
+   inputs ??= {};
+   if (max == null) {
+     inputs!.remove('max_price');
+   } else {
+     inputs!['max_price'] = max;
+   }
+   refresh();
  }
 
  void selectCategory(CategoryEntity? category) {
@@ -179,6 +210,14 @@ class CategoriesProductSearchProvider extends ChangeNotifier
      }
      if (inputs != null && inputs?['category'] != null) {
        dataToUse['category'] = inputs?['category'];
+     }
+     // Sort / new-arrivals from search UI (when not overridden by goToPage inputs)
+     if (sortMode == 'best_selling' && dataToUse['best_selling'] == null) {
+       dataToUse['best_selling'] = 1;
+     }
+     if (sortMode == 'newest' && dataToUse['offer_products'] == null) {
+       // Backend has no dedicated "newest" flag; offer_products approximates new deals.
+       dataToUse['offer_products'] = 1;
      }
 
    }

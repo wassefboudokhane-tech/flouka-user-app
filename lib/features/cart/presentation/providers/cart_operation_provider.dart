@@ -1,5 +1,7 @@
+import 'package:flouka/core/constants/app_lotties.dart';
+import 'package:flouka/core/dialog/guest_dialog.dart';
 import 'package:flouka/core/helper_function/loading.dart';
-import 'package:flouka/core/helper_function/navigation.dart';
+import 'package:flouka/features/address/presentation/providers/address_provider.dart';
 import 'package:flouka/features/cart/data/data_source/guest_cart_local_data_source.dart';
 import 'package:flouka/features/cart/domain/utils/guest_cart_mapper.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
@@ -9,6 +11,7 @@ import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/dialog/success_dialog.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import 'cart_provider.dart';
+import 'checkout_provider.dart';
 
 extension CartOperations on CartProvider {
   Future increaseCart(int cartId) async {
@@ -157,7 +160,7 @@ extension CartOperations on CartProvider {
       await guestCartLocal.save(items);
       data = cartEntitiesFromGuest(items);
       rebuild();
-      successDialog(lottie: 'assets/lottie/success_order.json');
+      _showAddedToCartSuccess();
       return;
     }
 
@@ -167,15 +170,47 @@ extension CartOperations on CartProvider {
     dataToUse['store_product_stock_id'] = storeProductStockId;
     loading();
     final result = await cartUseCase.addToCart(dataToUse);
-    navPop();
+    dismissLoading();
     result.fold(
       (l) {
         showToast(l.message!);
         print('xxxxxxxxxxxx$dataToUse');
       },
       (r) async {
-        successDialog(lottie: 'assets/lottie/success_order.json');
         await refresh();
+        _showAddedToCartSuccess();
+      },
+    );
+  }
+
+  void _showAddedToCartSuccess() {
+    successDialog(
+      msg: 'added_to_cart',
+      lottie: Lotties.successAddToCart,
+      onCheckout: () {
+        final auth = Provider.of<AuthProvider>(
+          Constants.globalContext(),
+          listen: false,
+        );
+        if (auth.userEntity == null) {
+          showGuestDialog();
+          return;
+        }
+        if (auth.userEntity?.addressEntity == null) {
+          showToast(
+            LanguageProvider.translate('error', 'add_address'),
+            isSnack: true,
+          );
+          Provider.of<AddressProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).goToAddressPage();
+          return;
+        }
+        Provider.of<CheckoutProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).goToPage();
       },
     );
   }

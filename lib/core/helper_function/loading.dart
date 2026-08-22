@@ -1,37 +1,31 @@
-import 'package:flouka/core/constants/app_lotties.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:sizer/sizer.dart';
 import '../constants/constants.dart';
 
 bool isLoadingStart = false;
+
+/// Light blocking overlay — thin lime progress bar, no spinning circle.
 void loading() {
+  if (isLoadingStart) return;
   isLoadingStart = true;
   showDialog(
     context: Constants.globalContext(),
     barrierDismissible: false,
-    barrierColor: Colors.white.withValues(alpha: 0),
+    barrierColor: Colors.black.withValues(alpha: 0.18),
     builder: (BuildContext context) {
       return PopScope(
-        canPop: true,
-        child: Opacity(
-          opacity: 0.3,
-          child: Container(
-            width: 100.w,
-            height: 100.h,
-            color: Colors.transparent,
-            child: Center(
-              child: Container(
-                width: 30.w,
-                height: 30.w,
-                padding: EdgeInsets.all(2.w),
-                child: Center(
-                  child: Lottie.asset(
-                    Lotties.loading,
-                    width: 30.w,
-                    height: 30.w,
-                    fit: BoxFit.fill,
-                  ),
+        canPop: false,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(999),
+                child: LinearProgressIndicator(
+                  minHeight: 3,
+                  backgroundColor: AppColor.limeColor.withValues(alpha: 0.35),
+                  color: AppColor.deepColor,
                 ),
               ),
             ),
@@ -42,4 +36,20 @@ void loading() {
   ).then((value) {
     isLoadingStart = false;
   });
+}
+
+/// Closes the loading dialog only — never pops the underlying route.
+void dismissLoading() {
+  if (!isLoadingStart) return;
+  final ctx = Constants.globalContext();
+  if (!ctx.mounted) {
+    isLoadingStart = false;
+    return;
+  }
+  final nav = Navigator.of(ctx, rootNavigator: true);
+  if (nav.canPop()) {
+    nav.pop();
+  } else {
+    isLoadingStart = false;
+  }
 }

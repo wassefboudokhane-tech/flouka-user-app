@@ -1,7 +1,7 @@
 import 'package:flouka/core/constants/app_lotties.dart';
 import 'package:flouka/core/config/app_spacing.dart';
-import 'package:flouka/core/widgets/empty_animation.dart';
 import 'package:flouka/features/products/presentation/providers/categories_product_search_provider.dart';
+import 'package:flouka/features/products/presentation/widgets/search_empty_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/widgets/loading_animation_widget.dart';
@@ -24,7 +24,7 @@ class ShopProductsGrid extends StatelessWidget {
       return const LoadingAnimationWidget(gif: Lotties.loading);
     }
     if (products.isEmpty) {
-      return const EmptyAnimation(gif: Lotties.noSearch, title: '');
+      return const SearchEmptyStateWidget();
     }
 
     return LayoutBuilder(
@@ -39,8 +39,8 @@ class ShopProductsGrid extends StatelessWidget {
         final horizontalPad = AppSpacing.pageGutter * 2;
         final usable = constraints.maxWidth - horizontalPad - AppSpacing.cardGap;
         final cardW = usable / _crossAxisCount;
-        final aspect =
-            cardW / HotDealsHomeContainerWidget.estimatedHeight(cardW);
+        final cardH = HotDealsHomeContainerWidget.estimatedHeight(cardW);
+        final aspect = cardW / cardH;
 
         return GridView.builder(
           padding: pad,
@@ -48,12 +48,13 @@ class ShopProductsGrid extends StatelessWidget {
             crossAxisCount: _crossAxisCount,
             mainAxisSpacing: AppSpacing.cardGap,
             crossAxisSpacing: AppSpacing.cardGap,
-            childAspectRatio: aspect.clamp(0.48, 0.62),
+            childAspectRatio: aspect,
           ),
           itemCount: products.length,
           itemBuilder: (context, index) {
             return HotDealsHomeContainerWidget(
               product: products[index],
+              width: cardW,
             );
           },
         );

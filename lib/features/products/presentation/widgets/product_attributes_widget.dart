@@ -1,15 +1,14 @@
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/utils/parse_product_options.dart';
 import 'package:flouka/features/products/domain/utils/synthesize_options.dart';
+import 'package:flouka/features/products/presentation/providers/product_quantity_provider.dart';
 import 'package:flouka/features/products/presentation/providers/product_variant_provider.dart';
+import 'package:flouka/features/products/presentation/providers/product_variant_provider.dart';
+import 'package:flouka/features/products/presentation/providers/products_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_styles.dart';
-import '../providers/product_quantity_provider.dart';
-import '../providers/products_details_provider.dart';
-import 'add_to_cart_widget.dart';
 
 class ProductAttributesWidget extends StatelessWidget {
   const ProductAttributesWidget({super.key});
@@ -44,17 +43,38 @@ class ProductAttributesWidget extends StatelessWidget {
           ...List.generate(attributes.length, (index) {
             final attr = attributes[index];
             final isColor = isColorAttribute(attr);
+            final selectedId = productDetailsProvider.variants[index];
+            String? selectedLabel;
+            if (selectedId != null) {
+              final match = attr.values.where((v) => v.id == selectedId);
+              if (match.isNotEmpty) selectedLabel = match.first.value;
+            }
             return Padding(
-              padding: EdgeInsets.only(bottom: 1.5.h),
+              padding: const EdgeInsets.only(bottom: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    attr.name,
-                    style: TextStyleClass.semiHeadStyle(color: Colors.black)
-                        .copyWith(fontWeight: FontWeight.w700),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        attr.name,
+                        style: TextStyleClass.smallStyle(
+                          color: AppColor.mutedColor,
+                        ).copyWith(fontWeight: FontWeight.w700, fontSize: 12.5),
+                      ),
+                      if (selectedLabel != null)
+                        Text(
+                          selectedLabel,
+                          style: TextStyleClass.smallStyle(
+                            color: AppColor.deepColor,
+                          ).copyWith(fontWeight: FontWeight.w600, fontSize: 12),
+                        ),
+                    ],
                   ),
-                  SizedBox(height: 0.8.h),
+                  const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -85,54 +105,49 @@ class ProductAttributesWidget extends StatelessWidget {
                                 },
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 3.5.w,
-                              vertical: 0.7.h,
+                              horizontal: isColor ? 0 : 16,
+                              vertical: isColor ? 0 : 9,
                             ),
+                            width: isColor ? 34 : null,
+                            height: isColor ? 34 : null,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? AppColor.deepColor
-                                  : Colors.white,
+                              color: isColor
+                                  ? (swatch != null
+                                      ? _parseHex(swatch)
+                                      : AppColor.softColor)
+                                  : (isHidden
+                                      ? AppColor.canvasColor
+                                      : Colors.white),
                               border: Border.all(
                                 color: isSelected
                                     ? AppColor.deepColor
                                     : AppColor.borderColor,
-                                width: isSelected ? 2 : 1,
+                                width: isSelected ? (isColor ? 2.5 : 2) : 1,
                               ),
-                              borderRadius: BorderRadius.circular(33),
+                              borderRadius: BorderRadius.circular(
+                                isColor ? 99 : 11,
+                              ),
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (swatch != null) ...[
-                                  Container(
-                                    width: 12,
-                                    height: 12,
-                                    decoration: BoxDecoration(
-                                      color: _parseHex(swatch),
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.black.withValues(alpha: 0.12),
-                                      ),
+                            child: isColor
+                                ? null
+                                : Text(
+                                    attribute.value,
+                                    style: TextStyleClass.smallStyle(
+                                      color: isHidden
+                                          ? AppColor.mutedColor
+                                          : isSelected
+                                              ? AppColor.deepColor
+                                              : AppColor.mutedColor,
+                                    ).copyWith(
+                                      fontWeight: isSelected
+                                          ? FontWeight.w700
+                                          : FontWeight.w500,
+                                      fontSize: 12.5,
+                                      decoration: isHidden
+                                          ? TextDecoration.lineThrough
+                                          : null,
                                     ),
                                   ),
-                                  const SizedBox(width: 6),
-                                ],
-                                Text(
-                                  attribute.value,
-                                  style: TextStyleClass.normalStyle(
-                                    color: isHidden
-                                        ? AppColor.mutedColor
-                                        : isSelected
-                                            ? Colors.white
-                                            : AppColor.inkColor,
-                                  ).copyWith(
-                                    fontWeight: isSelected
-                                        ? FontWeight.w700
-                                        : FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       );
@@ -144,7 +159,7 @@ class ProductAttributesWidget extends StatelessWidget {
           }),
           if (isSynthetic && colorAttrIndex >= 0)
             Padding(
-              padding: EdgeInsets.only(bottom: 1.h),
+              padding: const EdgeInsets.only(bottom: 8),
               child: Text(
                 [
                   LanguageProvider.translate('global', 'shared_image_hint'),
@@ -154,9 +169,6 @@ class ProductAttributesWidget extends StatelessWidget {
               ),
             ),
         ],
-        SizedBox(height: 1.h),
-        if (productDetailsProvider.shouldShowAddToCart())
-          const AddToCartWidget(),
       ],
     );
   }

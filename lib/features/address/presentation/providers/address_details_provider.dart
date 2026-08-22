@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flouka/core/pending_address_store.dart';
 import 'package:flouka/features/address/presentation/providers/neighborhood_provider.dart';
 import 'package:flouka/features/cart/presentation/providers/cart_operation_provider.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/widgets/country_widget.dart';
 import '../../../cart/presentation/providers/cart_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
+import '../../../navbar/presentation/provider/nav_bar_provider.dart';
 import '../../domain/entities/address_entity.dart';
 import '../../domain/usecase/address_usecase.dart';
 import '../../domain/usecase/city_usecase.dart';
@@ -60,7 +62,7 @@ class AddressDetailsProvider extends ChangeNotifier {
       controller: TextEditingController(),
       key: 'address',
       label: 'address_details',
-      validator: (value) => validateAddressName(value),
+      validator: (value) => validateAddressDetails(value),
     ),
     TextFieldModel(
       controller: TextEditingController(),
@@ -146,27 +148,105 @@ class AddressDetailsProvider extends ChangeNotifier {
   void addAddress() async {
     Map<String, dynamic> data = addressData();
     loading();
-    Either<DioException, AddressEntity> value = await addressUseCases.createAddress(data,);
-    navPop();
-    value.fold(
-      (l) {
-        showToast(l.message!);
+    Either<DioException, AddressEntity> value =
+        await addressUseCases.createAddress(data);
+    dismissLoading();
+    await value.fold(
+      (l) async {
+        final msg = l.message ?? '';
+        if (_isAuthError(msg)) {
+          await _startOtpThenCreate(data);
+          return;
+        }
+        showToast(msg);
       },
-      (r) {
-        AddressProvider addressProvider = Provider.of(Constants.globalContext(), listen: false,);
-        addressProvider.addAddress(r);
-        Provider.of<AuthProvider>(Constants.globalContext(), listen: false).
-        getProfile(fromAddress: true, firstAddress: this.firstAddress);
-        newSuccessDialog(
-          lottie: Lotties.address,
-          then: () {
-            clear();
-            if(!this.firstAddress){
-              navPop();
-              navPop();
-            }
-          },
-        );
+      (r) async {
+        await _onAddressCreated(r);
+      },
+    );
+  }
+
+  bool _isAuthError(String message) {
+    final text = message.toLowerCase();
+    return text.contains('identifiant') ||
+        text.contains('credential') ||
+        text.contains('unauthenticated') ||
+        text.contains('unauthorized') ||
+        text.contains('token') ||
+        text.contains('401');
+  }
+
+  Future<void> _startOtpThenCreate(Map<String, dynamic> data) async {
+    final auth = Provider.of<AuthProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    auth.clearSessionLocal();
+    final phone = (data['phone'] ?? '').toString().trim();
+    final phoneError = validatePhone(phone);
+    if (phoneError != null) {
+      showToast(phoneError);
+      return;
+    }
+    if (data['phone_code'] != null) {
+      defaultCountry = '+${data['phone_code']}';
+    }
+    PendingAddressStore.data = Map<String, dynamic>.from(data);
+    showToast(
+      LanguageProvider.translate('address', 'verify_phone_to_save'),
+      isSnack: true,
+    );
+    await auth.sendOtpForPhone(phone);
+  }
+
+  Future<void> flushPendingAddress() async {
+    final data = PendingAddressStore.data;
+    PendingAddressStore.clear();
+    if (data == null) return;
+    loading();
+    final value = await addressUseCases.createAddress(data);
+    dismissLoading();
+    await value.fold(
+      (l) async {
+        showToast(l.message ?? LanguageProvider.translate('error', 'error'));
+        Provider.of<NavBarProvider>(Constants.globalContext(), listen: false)
+            .goToNavView();
+      },
+      (r) async {
+        await _onAddressCreated(r, fromPendingOtp: true);
+      },
+    );
+  }
+
+  Future<void> _onAddressCreated(
+    AddressEntity r, {
+    bool fromPendingOtp = false,
+  }) async {
+    final addressProvider = Provider.of<AddressProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    addressProvider.addAddress(r);
+    final auth = Provider.of<AuthProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    if (auth.userEntity != null) {
+      auth.userEntity!.addressEntity = r;
+      auth.rebuild();
+    }
+    final shouldPopTwice = !firstAddress && !fromPendingOtp;
+    newSuccessDialog(
+      lottie: Lotties.address,
+      then: () {
+        clear();
+        if (fromPendingOtp) {
+          Provider.of<NavBarProvider>(Constants.globalContext(), listen: false)
+              .goToNavView();
+          return;
+        }
+        if (!shouldPopTwice) return;
+        _safePopRoutes(2);
       },
     );
   }
@@ -188,10 +268,15 @@ class AddressDetailsProvider extends ChangeNotifier {
     Either<DioException, AddressEntity> value = await addressUseCases.updateAddress(
       data,
     );
-    navPop();
+    dismissLoading();
     value.fold(
       (l) {
-        showToast(l.message!);
+        final msg = l.message ?? '';
+        if (_isAuthError(msg)) {
+          _startOtpThenCreate({...data});
+          return;
+        }
+        showToast(msg);
       },
       (r) {
         AddressProvider addressProvider = Provider.of(Constants.globalContext(), listen: false,);
@@ -206,8 +291,7 @@ class AddressDetailsProvider extends ChangeNotifier {
         successDialog(
           then: () {
             clear();
-            navPop();
-            navPop();
+            _safePopRoutes(2);
           },
         );
       },
@@ -222,11 +306,27 @@ class AddressDetailsProvider extends ChangeNotifier {
 
   void addressButtonAction() {
     if (addressEntity == null) {
-      addAddress();
+      _saveNewAddress();
     } else {
       updateAddress();
     }
+  }
 
+  Future<void> _saveNewAddress() async {
+    if (!AuthProvider.isLogin()) {
+      await _startOtpThenCreate(addressData());
+      return;
+    }
+    addAddress();
+  }
+
+  void _safePopRoutes(int count) {
+    final ctx = Constants.globalContext();
+    if (!ctx.mounted) return;
+    for (var i = 0; i < count; i++) {
+      if (!Navigator.of(ctx).canPop()) break;
+      Navigator.of(ctx).pop();
+    }
   }
 
   Map<String, dynamic> addressData() {

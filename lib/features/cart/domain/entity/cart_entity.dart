@@ -65,3 +65,16 @@ class CartVariantAttributeEntity {
     this.valueCode,
   });
 }
+
+class CartVendorGroup {
+  final int storeId;
+  final List<CartEntity> items;
+
+  const CartVendorGroup({
+    required this.storeId,
+    required this.items,
+  });
+
+  StoreEntity? get store =>
+      items.isNotEmpty ? items.first.product?.store : null;
+}

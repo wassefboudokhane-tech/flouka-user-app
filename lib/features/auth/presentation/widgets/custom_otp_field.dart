@@ -56,6 +56,7 @@ class CustomOTPField extends StatelessWidget {
           ),
         ),
         onCompleted: onCompleted,
+        onChanged: (value) => otpProvider.onOtpChanged(value),
       ),
     );
   }

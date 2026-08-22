@@ -6,6 +6,9 @@ import 'package:toastification/toastification.dart';
 
 import 'core/config/app_theme.dart';
 import 'core/constants/constants.dart';
+import 'core/network/connectivity_status_provider.dart';
+import 'core/widgets/offline_banner_widget.dart';
+import 'core/widgets/session_expired_recovery_widget.dart';
 import 'features/chatbot/presentation/providers/chat_provider.dart';
 import 'features/chatbot/presentation/widgets/floating_chat_bubble.dart';
 import 'features/language/domain/entities/app_localizations.dart';
@@ -72,6 +75,36 @@ class MainApp extends StatelessWidget {
 
 
                             }
+                        ),
+                        Consumer<ConnectivityStatusProvider>(
+                          builder: (context, connectivity, _) {
+                            return Stack(
+                              children: [
+                                if (connectivity.isOffline)
+                                  Positioned(
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: OfflineBannerWidget(
+                                      onRetry: () =>
+                                          connectivity.retryLastAction(),
+                                    ),
+                                  ),
+                                if (connectivity.sessionExpired)
+                                  Positioned.fill(
+                                    child: const ColoredBox(
+                                      color: Colors.black54,
+                                      child: Center(
+                                        child: SingleChildScrollView(
+                                          padding: EdgeInsets.all(16),
+                                          child: SessionExpiredRecoveryWidget(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     );

@@ -3,7 +3,7 @@ import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
-import 'package:flouka/core/widgets/price_widget.dart';
+import 'package:flouka/core/helper_function/convert.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ import '../../../favorite/presentation/providers/favorite_provider.dart';
 import '../../domain/entity/product_entity.dart';
 import '../providers/products_details_provider.dart';
 
-/// Shared marketplace product card — mirrors web `ProductCard`.
+/// Shared marketplace product card — hi-fi refonte (158px, 122px image).
 class HotDealsHomeContainerWidget extends StatelessWidget {
   const HotDealsHomeContainerWidget({
     super.key,
@@ -26,21 +26,29 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
   final bool isSimilar;
   final double? width;
 
-  /// Approximate card height for a given width (1:1 image + meta + CTA).
-  /// Image is inset by [AppSpacing.cardPadding], so below-image block needs
-  /// enough room for vendor, 2-line title, rate, price, COD, and lime CTA.
+  /// Rail / grid cell height — must cover image + vendor + title + price + CTA.
   static double estimatedHeight(double cardWidth) {
-    // Extra headroom for Rubik metrics + COD pill + lime CTA across phone/web.
-    const belowImage = 180.0;
-    return cardWidth + belowImage;
+    // padding 10*2 + image 122 + vendor + title(2 lines) + price + CTA + gaps
+    return AppSpacing.productCardImageHeight + 168;
+  }
+
+  String _ratingLabel() {
+    final rate = product.rate ?? 0;
+    if (rate <= 0) return '';
+    final reviewCount = product.reviews.length;
+    return LanguageProvider.translate('global', 'product_card_rating')
+        .replaceAll('*rate*', rate.toStringAsFixed(1))
+        .replaceAll('*num*', reviewCount.toString());
   }
 
   @override
   Widget build(BuildContext context) {
+    final cardWidth = width ?? AppSpacing.productCardWidth;
     final displayPrice = product.offerPrice ?? product.price ?? 0;
     final hasOffer = product.offerPrice != null;
     final rate = product.rate ?? 0;
     final storeName = product.store?.name;
+    final ratingLabel = _ratingLabel();
 
     return InkWell(
       onTap: () {
@@ -51,221 +59,203 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
       },
       borderRadius: BorderRadius.circular(AppRadius.card),
       child: Container(
-        width: width,
+        width: cardWidth,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.backgroundColor,
           borderRadius: BorderRadius.circular(AppRadius.card),
           border: Border.all(color: AppColor.borderColor),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         padding: const EdgeInsets.all(AppSpacing.cardPadding),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final expand = constraints.hasBoundedHeight &&
-                constraints.maxHeight < double.infinity;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
-              children: [
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(AppRadius.btn),
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [AppColor.softColor, Colors.white],
-                            ),
-                            image: DecorationImage(
-                              image: product.image != null
-                                  ? CachedNetworkImageProvider(product.image!)
-                                  : const AssetImage(AppImages.logo),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: AppSpacing.productCardImageHeight,
+              width: double.infinity,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(AppRadius.btn),
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColor.softColor,
+                            AppColor.backgroundColor,
+                          ],
+                        ),
+                        image: DecorationImage(
+                          image: product.image != null
+                              ? CachedNetworkImageProvider(product.image!)
+                              : const AssetImage(AppImages.logo),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      if (product.discountPercentage != null)
-                        PositionedDirectional(
-                          top: 6,
-                          start: 6,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColor.DealColor,
-                              borderRadius:
-                                  BorderRadius.circular(AppRadius.pill),
-                            ),
-                            child: Text(
-                              '-${product.discountPercentage!.toStringAsFixed(0)}%',
-                              style: TextStyleClass.captionStyle(
-                                      color: Colors.white)
-                                  .copyWith(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      PositionedDirectional(
-                        top: 6,
-                        end: 6,
-                        child: InkWell(
-                          onTap: () {
-                            Provider.of<FavoriteProvider>(context,
-                                    listen: false)
-                                .toggleFavorite(product);
-                          },
-                          child: Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: AppColor.primaryColor,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.1),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Consumer<FavoriteProvider>(
-                              builder: (context, provider, child) {
-                                final isFav = provider.favoriteIds
-                                    .contains(product.id);
-                                return Icon(
-                                  isFav
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: Colors.white,
-                                  size: 16,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                if (storeName != null && storeName.isNotEmpty)
-                  Text(
-                    storeName,
-                    style: TextStyleClass.vendorStyle(),
+                  if (product.discountPercentage != null)
+                    PositionedDirectional(
+                      top: 7,
+                      start: 7,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColor.DealColor,
+                          borderRadius: BorderRadius.circular(AppRadius.pill),
+                        ),
+                        child: Text(
+                          '-${product.discountPercentage!.toStringAsFixed(0)}%',
+                          style: TextStyleClass.captionStyle(
+                            color: AppColor.backgroundColor,
+                          ).copyWith(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  PositionedDirectional(
+                    top: 7,
+                    end: 7,
+                    child: Consumer<FavoriteProvider>(
+                      builder: (context, provider, _) {
+                        final isFav =
+                            provider.favoriteIds.contains(product.id);
+                        return InkWell(
+                          onTap: () => provider.toggleFavorite(product),
+                          customBorder: const CircleBorder(),
+                          child: Container(
+                            width: 26,
+                            height: 26,
+                            decoration: BoxDecoration(
+                              color: isFav
+                                  ? AppColor.primaryColor
+                                  : AppColor.backgroundColor,
+                              shape: BoxShape.circle,
+                              border: isFav
+                                  ? null
+                                  : Border.all(color: AppColor.borderColor),
+                            ),
+                            child: Icon(
+                              isFav
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFav
+                                  ? AppColor.backgroundColor
+                                  : AppColor.primaryColor,
+                              size: 13,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (storeName != null && storeName.isNotEmpty) ...[
+              const SizedBox(height: 6),
+              Text(
+                storeName,
+                style: TextStyleClass.vendorStyle(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+            const SizedBox(height: 2),
+            Text(
+              product.title ?? '',
+              style: TextStyleClass.productTitleStyle(),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            if (rate > 0 && ratingLabel.isNotEmpty) ...[
+              const SizedBox(height: 3),
+              Text(
+                ratingLabel,
+                style: TextStyleClass.captionStyle().copyWith(fontSize: 11),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+            const SizedBox(height: 5),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Flexible(
+                  child: Text(
+                    formatPrice(displayPrice),
+                    style: TextStyleClass.priceStyle(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                const SizedBox(height: 4),
-                Text(
-                  product.title ?? '',
-                  style: TextStyleClass.productTitleStyle(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
-                if (rate > 0) ...[
-                  const SizedBox(height: 2),
+                if (hasOffer) ...[
+                  const SizedBox(width: 6),
                   Text(
-                    '★ ${rate.toStringAsFixed(1)}',
-                    style: TextStyleClass.captionStyle(),
+                    formatPrice(product.price ?? 0),
+                    style: TextStyleClass.captionStyle().copyWith(
+                      decoration: TextDecoration.lineThrough,
+                      fontSize: 11,
+                    ),
                   ),
                 ],
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Flexible(child: PriceWidget(price: displayPrice)),
-                    if (hasOffer) ...[
-                      const SizedBox(width: 4),
-                      Flexible(
-                        child: Text(
-                          '${product.price} ${LanguageProvider.translate('global', 'currency')}',
-                          style: TextStyleClass.captionStyle().copyWith(
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: AppColor.limeColor.withValues(alpha: 0.35),
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                  ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                Expanded(
                   child: Text(
                     LanguageProvider.translate('global', 'cod_badge'),
-                    style: TextStyleClass.captionStyle(color: AppColor.deepColor)
-                        .copyWith(
+                    style: TextStyleClass.captionStyle(
+                      color: AppColor.navColor,
+                    ).copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
-                      color: AppColor.deepColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Provider.of<ProductDetailsProvider>(context, listen: false)
+                        .addToCart(product);
+                  },
+                  customBorder: const CircleBorder(),
+                  child: Container(
+                    width: AppSpacing.productAddBtnSize,
+                    height: AppSpacing.productAddBtnSize,
+                    decoration: BoxDecoration(
+                      color: AppColor.limeColor,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '+',
+                      style: TextStyleClass.smallStyle(
+                        color: AppColor.deepColor,
+                      ).copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        height: 1,
+                      ),
                     ),
                   ),
                 ),
-                if (expand) const Spacer() else const SizedBox(height: 6),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  decoration: BoxDecoration(
-                    color: AppColor.limeColor,
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColor.primaryColor.withValues(alpha: 0.2),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.add_shopping_cart,
-                        color: AppColor.deepColor,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Flexible(
-                        child: Text(
-                          LanguageProvider.translate('buttons', 'add_to_cart'),
-                          style: TextStyleClass.smallStyle(
-                                  color: AppColor.deepColor)
-                              .copyWith(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
-            );
-          },
+            ),
+          ],
         ),
       ),
     );

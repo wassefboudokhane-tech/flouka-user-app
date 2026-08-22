@@ -1,8 +1,10 @@
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_radius.dart';
+import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/helper_function/navigation.dart';
 import 'package:flouka/core/widgets/flouka_primary_button.dart';
+import 'package:flouka/core/widgets/flouka_screen_header.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/presentation/providers/categories_product_search_provider.dart';
 import 'package:flouka/features/products/presentation/providers/search_filter_provider.dart';
@@ -10,25 +12,41 @@ import 'package:flouka/features/products/presentation/widgets/filter_children_wi
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Shop filters — Flouka merch tokens, clear sections + price labels.
+/// Shop filters — hi-fi sections + sticky footer.
 class FilterPage extends StatelessWidget {
   const FilterPage({super.key});
 
+  int _activeCount(SearchFilterProvider provider) {
+    var count = 0;
+    for (final filter in provider.mainFilters) {
+      if (filter['value'] != null) count++;
+    }
+    return count;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final SearchFilterProvider provider = Provider.of(context);
+    final provider = context.watch<SearchFilterProvider>();
+    final activeCount = _activeCount(provider);
 
     return Scaffold(
       backgroundColor: AppColor.canvasColor,
-      appBar: AppBar(
-        title: Text(LanguageProvider.translate('filters', 'filter')),
-      ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            FloukaScreenHeader(
+              title: LanguageProvider.translate('filters', 'filter'),
+              badge: activeCount > 0 ? '$activeCount' : null,
+            ),
             Expanded(
               child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.pageGutter,
+                  0,
+                  AppSpacing.pageGutter,
+                  12,
+                ),
                 itemCount: provider.mainFilters.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
@@ -36,24 +54,27 @@ class FilterPage extends StatelessWidget {
                   final hasValue = text['value'] != null;
                   return Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(AppRadius.card),
+                      color: AppColor.backgroundColor,
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: hasValue
-                            ? AppColor.primaryColor.withValues(alpha: 0.45)
+                            ? AppColor.primaryColor
                             : AppColor.borderColor,
                       ),
                     ),
                     child: Theme(
                       data: Theme.of(context).copyWith(
                         dividerColor: Colors.transparent,
-                        splashColor: AppColor.primaryColor.withValues(alpha: 0.06),
+                        splashColor:
+                            AppColor.primaryColor.withValues(alpha: 0.06),
                       ),
                       child: ExpansionTile(
-                        initiallyExpanded:
-                            text['title'] == 'category' || text['title'] == 'price',
-                        tilePadding: const EdgeInsets.symmetric(horizontal: 14),
-                        childrenPadding: const EdgeInsets.fromLTRB(14, 0, 14, 12),
+                        initiallyExpanded: text['title'] == 'category' ||
+                            text['title'] == 'price',
+                        tilePadding:
+                            const EdgeInsets.symmetric(horizontal: 14),
+                        childrenPadding:
+                            const EdgeInsets.fromLTRB(14, 0, 14, 12),
                         iconColor: AppColor.primaryColor,
                         collapsedIconColor: AppColor.mutedColor,
                         title: Row(
@@ -64,9 +85,12 @@ class FilterPage extends StatelessWidget {
                                   'filter',
                                   text['title'],
                                 ),
-                                style: TextStyleClass.normalStyle(
+                                style: TextStyleClass.smallStyle(
                                   color: AppColor.deepColor,
-                                ).copyWith(fontWeight: FontWeight.w700),
+                                ).copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13.5,
+                                ),
                               ),
                             ),
                             if (hasValue)
@@ -93,9 +117,14 @@ class FilterPage extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.pageGutter,
+                12,
+                AppSpacing.pageGutter,
+                16,
+              ),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.backgroundColor,
                 border: Border(top: BorderSide(color: AppColor.borderColor)),
               ),
               child: Row(
@@ -105,7 +134,7 @@ class FilterPage extends StatelessWidget {
                       onPressed: provider.resetFilters,
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColor.deepColor,
-                        side: BorderSide(color: AppColor.primaryColor),
+                        side: BorderSide(color: AppColor.borderColor),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -113,8 +142,9 @@ class FilterPage extends StatelessWidget {
                       ),
                       child: Text(
                         LanguageProvider.translate('buttons', 'reset'),
-                        style: TextStyleClass.smallStyle(color: AppColor.deepColor)
-                            .copyWith(fontWeight: FontWeight.w700),
+                        style: TextStyleClass.smallStyle(
+                          color: AppColor.deepColor,
+                        ).copyWith(fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),

@@ -1,10 +1,11 @@
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/widgets/button_widget.dart';
+import 'package:flouka/core/widgets/flouka_screen_header.dart';
+import 'package:flouka/core/widgets/list_text_field_widget.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/widgets/button_widget.dart';
-import '../../../../core/widgets/list_text_field_widget.dart';
-import '../../../language/presentation/provider/language_provider.dart';
 import '../provider/add_ticket_provider.dart';
 
 class AddTicketPage extends StatelessWidget {
@@ -13,40 +14,52 @@ class AddTicketPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AddTicketProvider addTicketCubit =Provider.of(context);
-    return 
-       SafeArea(
-         top: false,
-        child: Scaffold(
+    final addTicketCubit = Provider.of<AddTicketProvider>(context);
+
+    return Scaffold(
       backgroundColor: AppColor.canvasColor,
-          extendBody: true,
-          appBar: AppBar(title: Text(LanguageProvider.translate("ticket","add_ticket"))),
-          body: SizedBox(width: double.infinity, height: double.infinity,
-            child: Form(
-              key:formKey,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 6.w,vertical: 2.h),
-                        child: ListTextFieldWidget(inputs: addTicketCubit.ticketInputs,color: const Color(0xffEEEEEE),borderColor: Colors.transparent,),
-                      ),
-                    ),
-                  ),
-                  Center(child: Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 6.w,vertical: 2.h),
-                    child: ButtonWidget(onTap: (){
-                      if(formKey.currentState!.validate()){
-                       addTicketCubit.createTicket();
-                      }
-                    }, text: "start_chat"),
-                  ))
-                ],
+      body: SafeArea(
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              FloukaScreenHeader(
+                title: LanguageProvider.translate('ticket', 'add_ticket'),
               ),
-            ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.pageGutter,
+                    vertical: 8,
+                  ),
+                  child: ListTextFieldWidget(
+                    inputs: addTicketCubit.ticketInputs,
+                    color: AppColor.softColor,
+                    borderColor: Colors.transparent,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.pageGutter,
+                  8,
+                  AppSpacing.pageGutter,
+                  16,
+                ),
+                child: ButtonWidget(
+                  onTap: () {
+                    if (formKey.currentState!.validate()) {
+                      addTicketCubit.createTicket();
+                    }
+                  },
+                  text: 'start_chat',
+                ),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }

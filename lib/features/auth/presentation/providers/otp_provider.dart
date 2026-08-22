@@ -6,6 +6,8 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/helper_function/loading.dart';
 import '../../../../core/helper_function/navigation.dart';
+import '../../../../core/pending_address_store.dart';
+import '../../../address/presentation/providers/address_details_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 import '../../domain/usecases/auth_use_case.dart';
 import '../views/otp_view.dart';
@@ -18,6 +20,28 @@ class OtpProvider extends ChangeNotifier {
   int counter = 60;
   late bool isEdit;
   String? otpPhoneCode = '';
+  late PinInputController otpController;
+
+  OtpProvider(this.authUsceCase) {
+    otpController = PinInputController();
+  }
+
+  String _otpValue = '';
+
+  bool get isOtpComplete => _otpValue.length == 4;
+
+  void onOtpChanged(String value) {
+    _otpValue = value;
+    notifyListeners();
+  }
+
+  /// Fresh controller when entering OTP step (unified login screen).
+  void prepareOtpStep() {
+    otpController = PinInputController();
+    _otpValue = '';
+    startTimer();
+  }
+
   void startTimer() {
     otpController.clear();
     counter = 60;
@@ -42,14 +66,10 @@ class OtpProvider extends ChangeNotifier {
     timer?.cancel();
   }
 
-  OtpProvider(this.authUsceCase);
-
   void goToOTPView() {
-    otpController = PinInputController();
+    prepareOtpStep();
     navP(const OTPView());
   }
-
-  late PinInputController otpController;
 
   Future<void> checkCode({bool isRegister = true}) async {
     AuthProvider authProvider = Provider.of<AuthProvider>(
@@ -64,8 +84,19 @@ class OtpProvider extends ChangeNotifier {
     loading();
     final result = await authUsceCase.checkCode(data);
     navPop();
-    result.fold((l) => showToast(l.message!), (r) {
-      authProvider.loginSuccess(r);
+    result.fold((l) => showToast(l.message!), (r) async {
+      final pendingAddress = PendingAddressStore.hasData;
+      authProvider.loginSuccess(r, skipHome: pendingAddress);
+      if (pendingAddress) {
+        // Close OTP sheet/page before creating address.
+        if (Navigator.of(Constants.globalContext()).canPop()) {
+          navPop();
+        }
+        await Provider.of<AddressDetailsProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).flushPendingAddress();
+      }
     });
   }
 

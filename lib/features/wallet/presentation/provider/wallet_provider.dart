@@ -49,7 +49,7 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
   void goToWalletPage() {
     if (AuthProvider.isLogin()) {
     refresh();
-    navP(UserWalletHome());
+    navP(const UserWalletHome());
     } else {
     showGuestDialog();
     }
@@ -124,7 +124,7 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
         () {
           navPop();
           refresh();
-          navP(UserWalletHome(fromHome: false));
+          navP(const UserWalletHome(fromHome: false));
         },
       );
       return false;

@@ -61,6 +61,7 @@ import 'features/tickets/presentation/provider/important_ticket_values_provider.
 import 'features/tickets/presentation/provider/ticket_message_provider.dart';
 import 'features/tickets/presentation/provider/tickets_category_provider.dart';
 import 'features/wallet/presentation/provider/wallet_provider.dart';
+import 'core/network/connectivity_status_provider.dart';
 
 class AppProviders extends StatelessWidget {
   const AppProviders({super.key, required this.child, required this.language});
@@ -130,6 +131,7 @@ class AppProviders extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NotificationProvider(sl.get())),
         ChangeNotifierProvider(create: (_) => BestProductsProvider(sl.get())),
         ChangeNotifierProvider(create: (_) => ChatBotProvider(sl.get())),
+        ChangeNotifierProvider(create: (_) => ConnectivityStatusProvider()),
       ],
       child: child,
     );

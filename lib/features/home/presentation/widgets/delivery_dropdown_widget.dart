@@ -1,11 +1,8 @@
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_styles.dart';
-import 'package:flouka/core/constants/app_images.dart';
 import 'package:flouka/core/dialog/guest_dialog.dart';
-import 'package:flouka/core/widgets/svg_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import '../../../address/presentation/providers/address_provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
@@ -31,8 +28,6 @@ class DeliveryDropdownWidget extends StatelessWidget {
       },
       child: Row(
         children: [
-          SvgWidget(svg: AppImages.location, width: 5.w, color: Colors.white),
-          SizedBox(width: 2.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,24 +35,58 @@ class DeliveryDropdownWidget extends StatelessWidget {
               children: [
                 Text(
                   LanguageProvider.translate('home', 'deliver_to'),
-                  style: TextStyleClass.smallStyle(color: AppColor.limeColor)
-                      .copyWith(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                  style: TextStyleClass.captionStyle(
+                    color: AppColor.backgroundColor.withValues(alpha: 0.5),
+                  ).copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 11,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Text(
-                  label,
-                  style: TextStyleClass.normalStyle(color: Colors.white)
-                      .copyWith(fontWeight: FontWeight.w700, fontSize: 13.sp),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        label,
+                        style: TextStyleClass.smallStyle(
+                          color: AppColor.backgroundColor,
+                        ).copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    CustomPaint(
+                      size: const Size(8, 5),
+                      painter: _LimeChevronPainter(),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          const Icon(Icons.arrow_drop_down, color: Colors.white),
         ],
       ),
     );
   }
+}
+
+class _LimeChevronPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width / 2, size.height)
+      ..close();
+    canvas.drawPath(path, Paint()..color = AppColor.limeColor);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

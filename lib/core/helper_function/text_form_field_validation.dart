@@ -120,8 +120,15 @@ String? validateBuilding(String? value) {
 }
 
 String? validateAddressName(String? value) {
-  if (value!.isEmpty) {
+  if (value == null || value.trim().isEmpty) {
     return LanguageProvider.translate("validation", "address_name");
+  }
+  return null;
+}
+
+String? validateAddressDetails(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return LanguageProvider.translate("validation", "address");
   }
   return null;
 }

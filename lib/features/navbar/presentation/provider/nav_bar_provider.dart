@@ -2,9 +2,10 @@ import 'package:flouka/core/constants/app_images.dart';
 import 'package:flouka/core/helper_function/loading.dart';
 import 'package:flouka/features/cart/presentation/providers/cart_provider.dart';
 import 'package:flouka/features/categories/presentation/providers/subcategory_provider.dart';
-import 'package:flouka/features/categories/presentation/view/categories_view.dart';
 import 'package:flouka/features/chatbot/presentation/providers/chat_provider.dart';
 import 'package:flouka/features/home/presentation/pages/home_page.dart';
+import 'package:flouka/features/navbar/presentation/views/explore_view.dart';
+import 'package:flouka/features/orders/presentation/views/orders_view.dart';
 import 'package:flouka/features/products/presentation/providers/best_products_provider.dart';
 import 'package:flouka/features/settings/presentation/provider/settings_provider.dart';
 import 'package:flutter/material.dart';
@@ -14,29 +15,31 @@ import '../../../../../core/helper_function/navigation.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/helper_function/location.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
-import '../../../banners/presentation/provider/banners_provider.dart';
-import '../../../cart/presentation/views/cart_view.dart';
 import '../../../categories/presentation/providers/categories_provider.dart';
 import '../../../categories/presentation/providers/popular_categories_provider.dart';
 import '../../../filters/presentation/providers/filter_product_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 import '../../../offers_section/presentation/providers/offer_section_provider.dart';
+import '../../../orders/presentation/provider/order_provider.dart';
 import '../../../products/presentation/providers/recommend_products_provider.dart';
 import '../../../products/presentation/providers/home_products_provider.dart';
 import '../../../reels/presentation/providers/video_provider.dart';
 import '../../../settings/presentation/views/settings_view.dart';
 import '../../../stores/presentation/providers/stores_provider.dart';
-import '../../../stories/presentation/provider/story_provider.dart';import '../../domain/entities/bottom_nav_bar_entity.dart';
+import '../../../stories/presentation/provider/story_provider.dart';
+import '../../domain/entities/bottom_nav_bar_entity.dart';
 import '../views/nav_bar_view.dart';
 
 class NavBarProvider extends ChangeNotifier {
   int currentIndex = 0;
+  int exploreTabIndex = 0;
+
+  bool get useFrostedDock => currentIndex == 1 && exploreTabIndex == 1;
 
   final List<Widget> body = [
     const HomePage(),
-    const CategoriesView(),
-    const SizedBox.shrink(),
-    const CartView(),
+    const ExploreView(),
+    const OrdersView(),
     const SettingsView(),
   ];
 
@@ -56,19 +59,18 @@ class NavBarProvider extends ChangeNotifier {
       ),
       BottomNaBarEntity(
         index: 1,
-        svgImage: AppImages.navbarCategories,
-        label: LanguageProvider.translate('navbar', 'categories'),
+        svgImage: AppImages.navbarExplore,
+        label: LanguageProvider.translate('navbar', 'explore'),
       ),
-      BottomNaBarEntity(index: 2, svgImage: "", label: ""),
+      BottomNaBarEntity(
+        index: 2,
+        svgImage: AppImages.navbarOrders,
+        label: LanguageProvider.translate('navbar', 'orders'),
+      ),
       BottomNaBarEntity(
         index: 3,
-        svgImage: AppImages.navbarCart,
-        label: LanguageProvider.translate('navbar', 'cart'),
-      ),
-      BottomNaBarEntity(
-        index: 4,
         svgImage: AppImages.navbarProfile,
-        label: LanguageProvider.translate('navbar', 'settings'),
+        label: LanguageProvider.translate('navbar', 'profile'),
       ),
     ];
     Constants.globalContext().read<ChatBotProvider>().setInsideApp();
@@ -103,20 +105,22 @@ class NavBarProvider extends ChangeNotifier {
   }
 
 
+  void setExploreTabIndex(int index) {
+    if (exploreTabIndex != index) {
+      exploreTabIndex = index;
+      notifyListeners();
+    }
+  }
+
   void changeIndex(int index) {
    if(index!=currentIndex){
-     if (index == 3) {
-       final cart = Provider.of<CartProvider>(Constants.globalContext(), listen: false);
-       if (AuthProvider.isLogin()) {
-         cart.refresh();
-       } else {
-         cart.loadGuestCart();
-       }
-     }
      if(index==1){
        Provider.of<SubcategoryProvider>(Constants.globalContext(),listen: false).clear();
      }
-     if(index==4){
+     if(index==2){
+       Provider.of<OrderProvider>(Constants.globalContext(),listen: false).refresh();
+     }
+     if(index==3){
        Provider.of<SettingsProvider>(Constants.globalContext(),listen: false).getData();
      }
      currentIndex = index;

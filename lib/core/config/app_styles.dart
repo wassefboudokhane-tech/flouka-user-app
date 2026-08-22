@@ -85,20 +85,63 @@ abstract class TextStyleClass {
     );
   }
 
-  /// Product price — web 17px bold deep.
+  /// Product price — web 19px w800 deep.
   static TextStyle priceStyle({Color? color}) {
+    final fontSize = _fs(19, min: 17, max: 21);
     return GoogleFonts.rubik(
       color: color ?? AppColor.deepColor,
-      fontSize: _fs(16, min: 14, max: 18),
-      fontWeight: FontWeight.w700,
+      fontSize: fontSize,
+      fontWeight: FontWeight.w800,
+      letterSpacing: fontSize * -0.02,
     );
   }
 
-  /// Rail section title — web 17px.
+  /// Rail section title — hi-fi 18px.
   static TextStyle railTitleStyle({Color? color}) {
     return GoogleFonts.rubik(
       color: color ?? AppColor.deepColor,
-      fontSize: _fs(16, min: 15, max: 18),
+      fontSize: _fs(18, min: 16, max: 20),
+      fontWeight: FontWeight.w800,
+      letterSpacing: -0.01,
+    );
+  }
+
+  /// Screen title — hi-fi 28px (Panier, Explorer, …).
+  static TextStyle screenTitleStyle({Color? color}) {
+    return GoogleFonts.rubik(
+      color: color ?? AppColor.deepColor,
+      fontSize: _fs(28, min: 24, max: 30),
+      fontWeight: FontWeight.w800,
+      letterSpacing: -0.02,
+      height: 1,
+    );
+  }
+
+  /// Cart line item price — hi-fi 17px w800.
+  static TextStyle cartLinePriceStyle({Color? color}) {
+    return GoogleFonts.rubik(
+      color: color ?? AppColor.deepColor,
+      fontSize: _fs(17, min: 15, max: 19),
+      fontWeight: FontWeight.w800,
+    );
+  }
+
+  /// PDP hero price — hi-fi 34px w800.
+  static TextStyle pdpPriceStyle({Color? color}) {
+    return GoogleFonts.rubik(
+      color: color ?? AppColor.deepColor,
+      fontSize: _fs(34, min: 28, max: 36),
+      fontWeight: FontWeight.w800,
+      letterSpacing: -0.03,
+      height: 1,
+    );
+  }
+
+  /// Cart summary total — refonte 26px w800.
+  static TextStyle cartTotalStyle({Color? color}) {
+    return GoogleFonts.rubik(
+      color: color ?? AppColor.deepColor,
+      fontSize: _fs(26, min: 22, max: 28),
       fontWeight: FontWeight.w800,
     );
   }

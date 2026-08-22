@@ -74,6 +74,27 @@ class StoreDetailsProvider extends ChangeNotifier {
     );
   }
 
+  /// Follow/unfollow from reels (no store details page loaded).
+  Future<bool> toggleFollowVendor(int vendorId) async {
+    if (!AuthProvider.isLogin()) {
+      showGuestDialog();
+      return false;
+    }
+    loading();
+    final response = await storeUseCase.updateFollow({
+      'type': 'vendor',
+      'id': vendorId,
+    });
+    navPop();
+    return response.fold(
+      (l) {
+        showToast(l.message ?? l.toString());
+        return false;
+      },
+      (_) => true,
+    );
+  }
+
   void confirmBlock({required int vendorId})async{
     if (!AuthProvider.isLogin())
     {

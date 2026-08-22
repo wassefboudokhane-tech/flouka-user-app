@@ -4,19 +4,19 @@ import 'package:flouka/core/helper_function/convert.dart';
 import 'package:flouka/features/cart/presentation/providers/coupon_provider.dart';
 import 'package:flouka/features/settings/domain/entities/settings_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_images.dart';
-import '../../../../core/constants/app_lotties.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/dialog/new_success_dialog.dart';
+import '../views/order_confirmed_view.dart';
 import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/helper_function/loading.dart';
 import '../../../../core/helper_function/navigation.dart';
+import '../../../../core/network/recovery_error_handler.dart';
 import '../../../../core/widgets/payment_online_page.dart';
 import '../../../address/presentation/providers/address_provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
-import '../../../navbar/presentation/provider/nav_bar_provider.dart';
 import '../../../orders/domain/use_case/order_use_case.dart';
 import '../../../orders/presentation/provider/order_provider.dart';
 import '../../../settings/presentation/provider/settings_provider.dart';
@@ -24,11 +24,19 @@ import '../../../wallet/presentation/provider/wallet_provider.dart';
 import '../../domain/entity/coupon_entity.dart';
 import '../../domain/entity/payment_method_entity.dart';
 import '../views/checkout_view.dart';
+import '../widgets/checkout_stock_bottom_sheet.dart';
 import 'cart_provider.dart';
 
 class CheckoutProvider extends ChangeNotifier {
   final OrderUseCase orderUseCase;
   CheckoutProvider(this.orderUseCase);
+
+  RecoveryErrorInfo? activeRecovery;
+
+  void clearRecovery() {
+    activeRecovery = null;
+    notifyListeners();
+  }
 
   num subtotal() {
     num sub = 0;
@@ -72,6 +80,16 @@ class CheckoutProvider extends ChangeNotifier {
     SettingsEntity settingsEntity = Constants.globalContext().read<SettingsProvider>().settingsEntity!;
     return max(settingsEntity.minFreeDelivery-subtotal(), 0);
   }
+
+  double freeDeliveryProgress() {
+    final settings =
+        Constants.globalContext().read<SettingsProvider>().settingsEntity;
+    if (settings == null || settings.minFreeDelivery <= 0) {
+      return 1;
+    }
+    return (subtotal() / settings.minFreeDelivery).clamp(0.0, 1.0);
+  }
+
   String? freeDelvieryText(){
 
     if(diffDeliveryNeed()>0){
@@ -81,8 +99,7 @@ class CheckoutProvider extends ChangeNotifier {
     if((cart.data?.length??0)==1){
       return LanguageProvider.translate('global', 'buy_one_more');
     }
-    return  LanguageProvider.translate('global', 'free_delivery');;
-
+    return LanguageProvider.translate('global', 'free_delivery');
   }
 
   bool getFreeDelivery(){
@@ -104,50 +121,89 @@ class CheckoutProvider extends ChangeNotifier {
     listen: false,
   );
   Future<int?> createOrder() async {
-    int? orderId;
-    Map<String, dynamic> dataToUse = {};
-    AuthProvider authProvider = Provider.of<AuthProvider>(Constants.globalContext(), listen: false,);
-    dataToUse['address_id'] = authProvider.userEntity?.addressEntity?.id;
-    dataToUse['total'] = total();
-    dataToUse['delivery_price'] = deliveryPrice();
-    dataToUse['is_free_delivery'] = getFreeDelivery()?1:0;
-    dataToUse['sub_total'] = subtotal();
-    dataToUse['tax'] = tax();
-    dataToUse["payment_method"] = selectedPaymentMethod.toAPI;
-    dataToUse['can_ship_auto'] = termsAccepted?1:0;
-    dataToUse['discount'] = (couponProvider.calcDiscount() ?? 0);
-    for (int i=0;i<(couponProvider.couponEntity?.length ??0);i++) {
-      dataToUse['coupons[$i][coupon]'] = couponProvider.couponEntity?[i].coupon;
-      dataToUse['coupons[$i][discount]'] = couponProvider.couponEntity?[i].discount;
-
+    final authProvider = Provider.of<AuthProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    final addressId = authProvider.userEntity?.addressEntity?.id;
+    if (addressId == null) {
+      showToast(
+        LanguageProvider.translate('error', 'add_address'),
+        isSnack: true,
+      );
+      addressProvider.goToAddressPage();
+      return null;
     }
+
+    int? orderId;
+    final dataToUse = <String, dynamic>{
+      'address_id': addressId,
+      'total': total(),
+      'delivery_price': deliveryPrice(),
+      'is_free_delivery': getFreeDelivery() ? 1 : 0,
+      'sub_total': subtotal(),
+      'tax': tax(),
+      'payment_method': selectedPaymentMethod.toAPI,
+      'can_ship_auto': termsAccepted ? 1 : 0,
+      'discount': couponProvider.calcDiscount() ?? 0,
+    };
+    for (int i = 0; i < (couponProvider.couponEntity?.length ?? 0); i++) {
+      dataToUse['coupons[$i][coupon]'] =
+          couponProvider.couponEntity?[i].coupon;
+      dataToUse['coupons[$i][discount]'] =
+          couponProvider.couponEntity?[i].discount;
+    }
+
     loading();
     final result = await orderUseCase.createOrder(dataToUse);
-    navPop();
+    dismissLoading();
+
     result.fold(
       (l) {
-        showToast(l.message!);
-        return null;
+        final message = l.message ?? '';
+        activeRecovery = RecoveryErrorHandler.parse(l, message: message);
+        if (activeRecovery!.type == RecoveryErrorType.stock) {
+          CheckoutStockBottomSheet.show(message: message);
+        } else if (activeRecovery!.type == RecoveryErrorType.offline ||
+            activeRecovery!.type == RecoveryErrorType.sessionExpired ||
+            activeRecovery!.type == RecoveryErrorType.deliveryZone ||
+            activeRecovery!.type == RecoveryErrorType.server) {
+          // Banner on checkout; still surface a toast so CTA isn't a silent no-op.
+          if (message.isNotEmpty) showToast(message, isSnack: true);
+        } else if (message.isNotEmpty) {
+          showToast(message, isSnack: true);
+        }
+        notifyListeners();
       },
       (r) {
+        orderId = r;
         if (selectedPaymentMethod.toAPI == 'wallet') {
-          WalletProvider walletProvider = Provider.of(Constants.globalContext(), listen: false,);
+          final walletProvider = Provider.of<WalletProvider>(
+            Constants.globalContext(),
+            listen: false,
+          );
           walletProvider.decreaseWallet(total());
         }
         if (selectedPaymentMethod.toAPI != 'online') {
-          newSuccessDialog(lottie: Lotties.loading,then: (){
-            navPU();
-            Constants.globalContext().read<NavBarProvider>().changeIndex(0);
+          final vendorNames = cart.vendorGroups
+              .map((group) => group.store?.name)
+              .whereType<String>()
+              .where((name) => name.isNotEmpty)
+              .toList();
+          final confirmed = OrderConfirmedView(
+            orderId: r,
+            total: total(),
+            paymentMethod: selectedPaymentMethod,
+            vendorNames: vendorNames,
+          );
+          // Avoid Navigator "_debugLocked" right after closing the loader.
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            if (!Constants.globalContext().mounted) return;
+            navPR(confirmed);
             cart.refresh();
+            notifyListeners();
           });
-          notifyListeners();
-
         }
-        if(selectedPaymentMethod.toAPI == "cash"){
-
-        }
-        orderId = r;
-        return r;
       },
     );
     notifyListeners();
@@ -156,36 +212,80 @@ class CheckoutProvider extends ChangeNotifier {
 
   void goToPage([Map<String, dynamic>? inputs]) async {
     termsAccepted = false;
+    activeRecovery = null;
+    selectedPaymentMethod = paymentMethods.first;
     navP(const CheckoutView());
   }
 
   List<PaymentMethodEntity> paymentMethods = [
     PaymentMethodEntity(
-      image: AppImages.visa,
-      paymentMethod: "Debit/CreditCards",
-      toAPI: "online",
-    ),
-    PaymentMethodEntity(
       image: AppImages.cash,
-      paymentMethod: "Cach On Delivery",
-      toAPI: "cash",
+      paymentMethod: 'Cach On Delivery',
+      toAPI: 'cash',
+      isRecommended: true,
+      subtitleKey: 'payment_cod_detail',
     ),
     PaymentMethodEntity(
       image: AppImages.wallet,
-      paymentMethod: "Wallet App",
-      toAPI: "wallet",
+      paymentMethod: 'Wallet App',
+      toAPI: 'wallet',
+    ),
+    PaymentMethodEntity(
+      image: AppImages.visa,
+      paymentMethod: 'Debit/CreditCards',
+      toAPI: 'online',
+      subtitleKey: 'payment_card_detail',
     ),
   ];
 
-  late PaymentMethodEntity selectedPaymentMethod = paymentMethods.first;
+  PaymentMethodEntity selectedPaymentMethod = PaymentMethodEntity(
+    image: AppImages.cash,
+    paymentMethod: 'Cach On Delivery',
+    toAPI: 'cash',
+    isRecommended: true,
+    subtitleKey: 'payment_cod_detail',
+  );
+
+  num walletBalance() {
+    final auth = Provider.of<AuthProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    return convertDataToNum(auth.userEntity?.wallet) ?? 0;
+  }
+
+  bool isWalletInsufficient() => total() > walletBalance();
+
+  num walletShortfall() =>
+      isWalletInsufficient() ? total() - walletBalance() : 0;
+
+  String selectedPaymentSubline() {
+    switch (selectedPaymentMethod.toAPI) {
+      case 'cash':
+        return LanguageProvider.translate('checkout', 'payment_subline_cod');
+      case 'wallet':
+        return LanguageProvider.translate('checkout', 'payment_subline_wallet');
+      case 'online':
+        return LanguageProvider.translate('checkout', 'payment_subline_online');
+      default:
+        return LanguageProvider.translate('global', 'cod_badge');
+    }
+  }
 
   void selectPaymentMethod(PaymentMethodEntity paymentMethodEntity) {
+    if (paymentMethodEntity.toAPI == 'wallet' && isWalletInsufficient()) {
+      return;
+    }
     selectedPaymentMethod = paymentMethodEntity;
     notifyListeners();
   }
 
+  bool isPaymentMethodDisabled(PaymentMethodEntity entity) {
+    return entity.toAPI == 'wallet' && isWalletInsufficient();
+  }
+
   bool isPaymentMethodSelected(PaymentMethodEntity paymentMethodEntity) {
-    return selectedPaymentMethod.paymentMethod == paymentMethodEntity.paymentMethod;
+    return selectedPaymentMethod.toAPI == paymentMethodEntity.toAPI;
   }
 
   final settings = Provider.of<SettingsProvider>(
@@ -203,11 +303,13 @@ class CheckoutProvider extends ChangeNotifier {
 
 
   void makeOrder() async {
-    if (['online'].contains(selectedPaymentMethod.toAPI)) {
-      createOrder().then((value) {
-
+    if (selectedPaymentMethod.toAPI == 'online') {
+      final orderId = await createOrder();
+      if (orderId == null) return;
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (!Constants.globalContext().mounted) return;
         navP(
-          PaymentOnlinePage(total: total(), type: "order_$value"),
+          PaymentOnlinePage(total: total(), type: 'order_$orderId'),
           then: (val) {
             if (val == 'paid') {
               navPU();
@@ -221,16 +323,11 @@ class CheckoutProvider extends ChangeNotifier {
           },
         );
       });
-    } else if (selectedPaymentMethod.toAPI == 'wallet') {
-      AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false,);
-      bool check = await Provider.of<WalletProvider>(Constants.globalContext(), listen: false,)
-          .checkWallet(moneyAmount: total());
-      if (!check) {
-        return;
-      }
-      createOrder();
-    } else {
-      createOrder();
+      return;
     }
+    if (selectedPaymentMethod.toAPI == 'wallet' && isWalletInsufficient()) {
+      return;
+    }
+    await createOrder();
   }
 }

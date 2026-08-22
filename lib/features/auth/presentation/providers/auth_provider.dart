@@ -3,11 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flouka/core/helper_function/location.dart';
-import 'package:flouka/features/address/presentation/providers/address_details_provider.dart';
-import 'package:flouka/features/auth/presentation/providers/complete_info_provider.dart';
 import 'package:flouka/features/auth/presentation/providers/otp_provider.dart';
 import 'package:flouka/features/auth/presentation/views/login_view.dart';
-import 'package:flouka/features/auth/presentation/views/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/network/connectivity_status_provider.dart';
 import '../../../../core/dialog/confirm_dialog.dart';
 import '../../../../core/dialog/confirm_pop_up_dialog.dart';
 import '../../../../core/dialog/snack_bar.dart';
@@ -31,27 +29,65 @@ import '../../../navbar/presentation/provider/nav_bar_provider.dart';
 import '../../domain/entities/social_auth_entity.dart';
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/auth_use_case.dart';
-import '../views/complete_info_view.dart';
 import '../widgets/country_widget.dart';
+
+enum AuthStep { phone, otp }
 
 class AuthProvider extends ChangeNotifier {
   UserEntity? userEntity;
   final AuthUseCase authUseCase;
 
   bool termsAccepted = false;
+  AuthStep authStep = AuthStep.phone;
 
   AuthProvider(this.authUseCase);
 
   static bool isLogin() {
-    return sharedPreferences.getString('token') !=null;
+    final token = sharedPreferences.getString('token');
+    return token != null && token.isNotEmpty;
+  }
+
+  /// Drop invalid/stale session (e.g. prod token on staging).
+  void clearSessionLocal() {
+    sharedPreferences.remove('token');
+    ApiHandel.getInstance.updateHeader('');
+    userEntity = null;
+    notifyListeners();
+  }
+
+  /// Send OTP for a phone without login-form / terms gates (address save flow).
+  Future<bool> sendOtpForPhone(String phone) async {
+    final data = <String, dynamic>{
+      'phone': phone.trim(),
+      'phone_code': defaultCountry.toString().replaceFirst('+', ''),
+    };
+    if (loginTextFieldList.isNotEmpty) {
+      loginTextFieldList.first.controller.text = phone.trim();
+    }
+    loading();
+    final result = await authUseCase.sendOtp(data);
+    dismissLoading();
+    return result.fold(
+      (l) {
+        showToast(l.message ?? LanguageProvider.translate('error', 'error'));
+        return false;
+      },
+      (_) {
+        Provider.of<OtpProvider>(Constants.globalContext(), listen: false)
+            .goToOTPView();
+        return true;
+      },
+    );
   }
 
   void goToLoginView() {
     defaultCountry = '+216';
     CountryWidget.getLength;
+    authStep = AuthStep.phone;
+    termsAccepted = false;
     loginTextFieldList = [
       TextFieldModel(
-        label: LanguageProvider.translate("inputs", "Number"),
+        label: 'Number',
         controller: TextEditingController(),
         textInputType: const TextInputType.numberWithOptions(),
         validator: (value) => validatePhone(value),
@@ -60,6 +96,12 @@ class AuthProvider extends ChangeNotifier {
       ),
     ];
     navPR(const LoginView());
+  }
+
+  void backToPhoneStep() {
+    authStep = AuthStep.phone;
+    Constants.globalContext().read<OtpProvider>().stopTimer();
+    notifyListeners();
   }
 
   // void goToRegisterView() {
@@ -126,7 +168,8 @@ class AuthProvider extends ChangeNotifier {
 
 
   void loginSuccess(UserEntity userEntity, {bool isSocial = false,bool fromSplash = false,
-    bool fromAddress = false, bool firstAddress = false,bool isEdit = false}) async{
+    bool fromAddress = false, bool firstAddress = false,bool isEdit = false,
+    bool skipHome = false}) async{
     this.userEntity = userEntity;
     if(isEdit){
       navPop();
@@ -134,33 +177,21 @@ class AuthProvider extends ChangeNotifier {
     }
     if (userEntity.token != null) {
       ApiHandel.getInstance.updateHeader(userEntity.token!);
+      sharedPreferences.setString('token', userEntity.token!);
     }
-    if (userEntity.name == null || userEntity.name!.isEmpty) {
-      Provider.of<CompleteInfoProvider>(Constants.globalContext(), listen: false,).goToCompleteInfoView(isEdit: false);
-    } else {
-      String apiToken = ApiHandel.getInstance.dio.options.headers['Authorization'];
-      String token = userEntity.token??apiToken.split(' ')[1];
-      sharedPreferences.setString('token', token);
-      // Merge guest cart into server before entering the app.
-      await Provider.of<CartProvider>(Constants.globalContext(), listen: false)
-          .syncGuestCartAfterLogin();
-      if(!fromAddress || firstAddress){
-        if(userEntity.addressEntity != null){
-          setLatLng(LatLng(userEntity.addressEntity!.lat!, userEntity.addressEntity!.lng!));
-          Provider.of<NavBarProvider>(Constants.globalContext(), listen: false,).goToNavView(fromSplash: fromSplash,);
-        } else {
-          // Straight to compact address form (skip map + intermediate prompt)
-          Provider.of<AddressDetailsProvider>(
-            Constants.globalContext(),
-            listen: false,
-          ).goToAddressDetailsPage(firstAddress: true);
-        }
-        if (userEntity.token != null) {
-          ApiHandel.getInstance.updateHeader(userEntity.token!);
-          sharedPreferences.setString('token', userEntity.token!);
-        }
-      }
+    await Provider.of<CartProvider>(Constants.globalContext(), listen: false)
+        .syncGuestCartAfterLogin();
+    if (userEntity.addressEntity != null) {
+      setLatLng(LatLng(
+        userEntity.addressEntity!.lat!,
+        userEntity.addressEntity!.lng!,
+      ));
     }
+    authStep = AuthStep.phone;
+    notifyListeners();
+    if (skipHome) return;
+    Provider.of<NavBarProvider>(Constants.globalContext(), listen: false)
+        .goToNavView(fromSplash: fromSplash);
   }
 
   LatLng? currentLocation;
@@ -248,8 +279,12 @@ class AuthProvider extends ChangeNotifier {
       }
 
       log("Apple user authenticated: $email");
-      // Call socialLogin with the extracted Apple credentials
-      await socialLogin(loginFrom: 'apple');
+      await socialLogin(
+        loginFrom: 'apple',
+        id: appleIdentifier,
+        name: name,
+        email: email,
+      );
     } catch (error, stackTrace) {
       log("Apple login error: $error");
       log("Stack trace: $stackTrace");
@@ -281,6 +316,11 @@ class AuthProvider extends ChangeNotifier {
     final result = await authUseCase.refreshToken(data);
     result.fold((l){
       sharedPreferences.remove('token');
+      try {
+        Constants.globalContext()
+            .read<ConnectivityStatusProvider>()
+            .markSessionExpired();
+      } catch (_) {}
     }, (r) {
       sharedPreferences.setString('token', r);
       ApiHandel.getInstance.updateHeader(r);
@@ -352,18 +392,16 @@ class AuthProvider extends ChangeNotifier {
         if (isResend) {
           otpProvider.startTimer();
         } else {
-          otpProvider.goToOTPView();
-          otpProvider.startTimer();
+          authStep = AuthStep.otp;
+          otpProvider.prepareOtpStep();
+          notifyListeners();
         }
       },
     );
   }
 
   void continueAsGuest() {
-    if (!termsAccepted) {
-      showToast(LanguageProvider.translate('validation', 'terms'));
-      return;
-    }
+    authStep = AuthStep.phone;
     Constants.globalContext().read<NavBarProvider>().goToNavView();
   }
 
@@ -393,16 +431,10 @@ class AuthProvider extends ChangeNotifier {
       onTap: () => appleLogin(),
       text: "Apple",
     ),
-    // SocialAuthEntity(image: AppImages.facebook, onTap: () => {}, text: "Facebook"),
     SocialAuthEntity(
       image: AppImages.google,
       onTap: () => googleLogin(),
       text: "Google",
-    ),
-    SocialAuthEntity(
-      image: AppImages.guest,
-      onTap: () => continueAsGuest(),
-      text: LanguageProvider.translate('auth', 'guest_description'),
     ),
   ];
   bool isGuest() {

@@ -1,3 +1,5 @@
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/features/cart/presentation/widgets/cart_bubble_widget.dart';
 import 'package:flouka/features/navbar/presentation/provider/nav_bar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,18 +16,38 @@ class NavBarView extends StatefulWidget {
 class _NavBarViewState extends State<NavBarView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       DeepLinkService().init();
     });
   }
+
   @override
   Widget build(BuildContext context) {
+    final bottomSafe = MediaQuery.paddingOf(context).bottom;
+    final contentBottomInset =
+        bottomSafe + AppSpacing.navShellBottomInset;
+    final bubbleBottom =
+        bottomSafe + AppSpacing.cartBubbleBottomOffset;
+
     return Consumer<NavBarProvider>(
       builder: (context, nav, _) {
         return Scaffold(
-          body: nav.body[nav.currentIndex],
+          extendBody: true,
+          body: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: contentBottomInset),
+                child: nav.body[nav.currentIndex],
+              ),
+              PositionedDirectional(
+                end: AppSpacing.dockMarginH,
+                bottom: bubbleBottom,
+                child: const CartBubbleWidget(),
+              ),
+            ],
+          ),
           bottomNavigationBar: const CustomBottomNavBarWidget(),
         );
       },

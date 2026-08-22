@@ -58,12 +58,12 @@ class CompleteInfoProvider extends ChangeNotifier {
     otpPhoneCode = defaultCountry;
     completeInfoTextFieldList = [
       TextFieldModel(
-        label: LanguageProvider.translate('inputs', 'Name'),
+        label: 'Name',
         controller: TextEditingController(text: authProvider.userEntity?.name),
         textInputType: TextInputType.name,
         validator: (value) {
           if (value == null || value.trim().isEmpty) {
-            return LanguageProvider.translate('validation', 'password_required');
+            return LanguageProvider.translate('validation', 'name_required');
           }
           return null;
         },
@@ -71,7 +71,7 @@ class CompleteInfoProvider extends ChangeNotifier {
         next: true,
       ),
       TextFieldModel(
-        label: LanguageProvider.translate('inputs', 'Email'),
+        label: 'Email',
         key: 'email',
         controller: TextEditingController(text: authProvider.userEntity?.email),
         textInputType: TextInputType.emailAddress,
@@ -84,9 +84,9 @@ class CompleteInfoProvider extends ChangeNotifier {
       ),
       if (isEdit)
         TextFieldModel(
-          label: LanguageProvider.translate('inputs', 'phone'),
+          label: 'phone',
           controller: TextEditingController(text: authProvider.userEntity?.phone),
-          textInputType: TextInputType.number,
+          textInputType: TextInputType.phone,
           readOnly: true,
           validator: (value) {
             if (userEntity?.loginFrom == 'user') {

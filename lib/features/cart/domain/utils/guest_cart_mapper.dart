@@ -6,6 +6,7 @@ CartEntity cartEntityFromGuest(GuestCartItem item) {
   final product = ProductEntity(
     id: item.productId,
     title: item.title,
+    haveVariant: item.variantLabel != null && item.variantLabel!.isNotEmpty,
     description: '',
     recommended: const [],
     image: item.image,

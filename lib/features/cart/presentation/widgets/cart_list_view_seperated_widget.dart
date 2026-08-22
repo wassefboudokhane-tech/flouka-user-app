@@ -1,12 +1,13 @@
-import 'package:flouka/core/constants/app_lotties.dart';
-import 'package:flouka/features/language/presentation/provider/language_provider.dart';
+import 'package:flouka/features/cart/presentation/widgets/cart_free_delivery_gauge_widget.dart';
+import 'package:flouka/features/cart/presentation/widgets/cart_promo_link_widget.dart';
+import 'package:flouka/features/cart/presentation/widgets/cart_vendor_group_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/widgets/empty_animation.dart';
+
+import '../../../../core/constants/app_lotties.dart';
 import '../../../../core/widgets/loading_animation_widget.dart';
 import '../providers/cart_provider.dart';
-import 'cart_item_widget.dart';
+import 'cart_empty_recovery_widget.dart';
 
 class CartListViewSeperatedWidget extends StatelessWidget {
   const CartListViewSeperatedWidget({super.key});
@@ -14,40 +15,25 @@ class CartListViewSeperatedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
-    return Padding(
-      padding:  EdgeInsets.symmetric(vertical: 2.h),
-      child: Builder(
-        builder: (context) {
-          if (cartProvider.data == null) {
-            return const Center(
-              child: Center(child: LoadingAnimationWidget(gif: Lotties.loading)),
-            );
-          }
-          if (cartProvider.data!.isEmpty) {
-            return Center(
-              child: EmptyAnimation(
-                title: LanguageProvider.translate("global", "cart_is_empty"),
 
-                gif: Lotties.cartAnimation,
-              ),
-            );
-          }
-          return ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: cartProvider.data!.length,
-            itemBuilder: (context, index) {
-              return CartItemWidget(cartEntity: cartProvider.data![index]);
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                height: 2.h,
-                // child: const Divider(color: Color(0xffe3e3e3)),
-              );
-            },
-          );
-        },
-      ),
+    if (cartProvider.data == null) {
+      return const Center(
+        child: LoadingAnimationWidget(gif: Lotties.loading),
+      );
+    }
+    if (cartProvider.data!.isEmpty) {
+      return const CartEmptyRecoveryWidget();
+    }
+
+    final groups = cartProvider.vendorGroups;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const CartFreeDeliveryGaugeWidget(),
+        for (final group in groups) CartVendorGroupWidget(group: group),
+        const CartPromoLinkWidget(),
+      ],
     );
   }
 }

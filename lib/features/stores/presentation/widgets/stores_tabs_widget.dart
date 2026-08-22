@@ -1,146 +1,99 @@
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_styles.dart';
-import 'package:flouka/core/widgets/animation/slide_transition_widget.dart';
+import 'package:flouka/core/helper_function/navigation.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/stores/presentation/pages/store_reviews_page.dart';
 import 'package:flouka/features/stores/presentation/providers/store_details_provider.dart';
-import 'package:flouka/features/stores/presentation/widgets/all_reviews_container.dart';
-import 'package:flutter/material.dart';
-import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/stores/presentation/providers/stores_provider.dart';
+import 'package:flouka/features/stores/presentation/widgets/all_reviews_container.dart';
+import 'package:flouka/features/stores/presentation/widgets/store_products_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_color.dart';
-import '../../../../core/helper_function/navigation.dart';
-import 'store_products_widget.dart';
 
-class StoresTabsWidget extends StatefulWidget {
+class StoresTabsWidget extends StatelessWidget {
   const StoresTabsWidget({super.key});
 
-  static const List<String> titles = ["products", "reviews"];
-
-  @override
-  State<StoresTabsWidget> createState() => _StoresTabsWidgetState();
-}
-
-class _StoresTabsWidgetState extends State<StoresTabsWidget> {
-  late final PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    final provider = context.read<StoresProvider>();
-    _pageController = PageController(initialPage: provider.current);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
+  static const List<String> titles = ['products', 'reviews'];
 
   @override
   Widget build(BuildContext context) {
     final storesProvider = context.watch<StoresProvider>();
 
-    // Sync PageController when provider.current changes via tab tap
-    if (_pageController.hasClients &&
-        _pageController.page?.round() != storesProvider.current) {
-      _pageController.animateToPage(
-        storesProvider.current,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.w),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    storesProvider.changeCurrent(0);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: List.generate(
-                      StoresTabsWidget.titles.length,
-                      (index) => GestureDetector(
-                        onTap: () {
-                          storesProvider.changeCurrent(index);
-                        },
-                        child: Container(width: 40.w,
-                          padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: 0.5.h),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(99999),
-                            color: storesProvider.current == index
-                                ? AppColor.secondaryColor
-                                : Colors.transparent,
-                          ),
-
-                          child: Center(
-                            child: Text(
-                              LanguageProvider.translate("global", StoresTabsWidget.titles[index],),
-                              style: TextStyleClass.normalStyle().copyWith(
-                                color: storesProvider.current == index
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: List.generate(titles.length, (index) {
+            final selected = storesProvider.current == index;
+            return Expanded(
+              child: InkWell(
+                onTap: () => storesProvider.changeCurrent(index),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 11),
+                  child: Column(
+                    children: [
+                      Text(
+                        LanguageProvider.translate('global', titles[index]),
+                        style: TextStyleClass.smallStyle(
+                          color: selected
+                              ? AppColor.deepColor
+                              : AppColor.mutedColor,
+                        ).copyWith(
+                          fontWeight:
+                              selected ? FontWeight.w800 : FontWeight.w600,
+                          fontSize: 14,
                         ),
                       ),
-                    ),
+                      const SizedBox(height: 9),
+                      Container(
+                        height: 2.5,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: selected
+                              ? AppColor.deepColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
-              ],
-            ),
+              ),
+            );
+          }),
+        ),
+        Divider(height: 1, color: AppColor.borderColor),
+        const SizedBox(height: 12),
+        if (storesProvider.current == 0)
+          const StoreProductsWidget()
+        else
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {
+                  final storeId = context
+                      .read<StoreDetailsProvider>()
+                      .storeDetailsEntity
+                      ?.id;
+                  if (storeId != null) {
+                    navP(StoreReviewsPage(storeId: storeId));
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    LanguageProvider.translate('global', 'see_all'),
+                    style: TextStyleClass.captionStyle(
+                      color: AppColor.primaryColor,
+                    ).copyWith(fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+              const AllReviewsContainer(),
+            ],
           ),
-          // PageView for tab content
-          SlideTransitionWidget(
-            child: AnimatedContainer(
-              key: ValueKey(storesProvider.current),
-              duration: const Duration(milliseconds: 300),
-              child: storesProvider.current == 0
-                  ? const StoreProductsWidget()
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-                          child: InkWell(
-                            onTap: () {
-                              final storeDetailsProvider = Provider.of<StoreDetailsProvider>(
-                                context,
-                                listen: false,
-                              );
-                              final storeId = storeDetailsProvider.storeDetailsEntity?.id;
-                              if (storeId != null) {
-                                navP(StoreReviewsPage(storeId: storeId));
-                              }
-                            },
-                            child: Text(
-                              LanguageProvider.translate('global', 'see_all'),
-                              style: TextStyleClass.smallStyle(color: AppColor.primaryColor)
-                                  .copyWith(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                        const AllReviewsContainer(),
-                      ],
-                    ),
-            ),
-          ),
-          SizedBox(height: 3.h),
-        ],
-      ),
+      ],
     );
   }
 }

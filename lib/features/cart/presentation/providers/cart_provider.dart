@@ -39,6 +39,13 @@ class CartProvider extends ChangeNotifier
 
   bool get isGuestMode => !AuthProvider.isLogin();
 
+  bool get hasItems => data != null && data!.isNotEmpty;
+
+  int get totalItemCount {
+    if (data == null) return 0;
+    return data!.fold<int>(0, (sum, line) => sum + (line.quantity ?? 0));
+  }
+
   void loadGuestCart() {
     data = cartEntitiesFromGuest(guestCartLocal.load());
     notifyListeners();
@@ -183,6 +190,27 @@ class CartProvider extends ChangeNotifier
       allSubTotal += element.subTotal;
     }
     return allSubTotal;
+  }
+
+  int get vendorCount {
+    if (data == null || data!.isEmpty) return 0;
+    return data!.map((e) => e.storeId).toSet().length;
+  }
+
+  List<CartVendorGroup> get vendorGroups {
+    if (data == null || data!.isEmpty) return const [];
+    final grouped = <int, List<CartEntity>>{};
+    for (final line in data!) {
+      grouped.putIfAbsent(line.storeId, () => []).add(line);
+    }
+    return grouped.entries
+        .map(
+          (entry) => CartVendorGroup(
+            storeId: entry.key,
+            items: entry.value,
+          ),
+        )
+        .toList();
   }
 
   ScrollController controller = ScrollController();

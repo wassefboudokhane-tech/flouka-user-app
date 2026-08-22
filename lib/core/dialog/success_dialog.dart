@@ -1,83 +1,171 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_radius.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/constants/app_lotties.dart';
+import 'package:flouka/core/constants/constants.dart';
+import 'package:flouka/core/helper_function/helper_function.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sizer/sizer.dart';
-import '../../features/language/presentation/provider/language_provider.dart';
-import '../constants/app_lotties.dart';
-import '../constants/constants.dart';
-import '../helper_function/helper_function.dart';
-import '../helper_function/navigation.dart';
 
-void successDialog({var then, String? msg, String? lottie, int? sec}) async {
-  bool close = false;
-  showModalBottomSheet(
+/// Success bottom sheet — deferred so it never opens while Navigator is locked.
+///
+/// Optional [onCheckout] shows a lime CTA to go to checkout / cart validate.
+void successDialog({
+  VoidCallback? then,
+  String? msg,
+  String? lottie,
+  int? sec,
+  VoidCallback? onCheckout,
+}) {
+  SchedulerBinding.instance.addPostFrameCallback((_) {
+    if (!Constants.globalContext().mounted) return;
+    _showSuccessSheet(
+      then: then,
+      msg: msg,
+      lottie: lottie,
+      autoCloseMs: sec ?? (onCheckout != null ? 5000 : 2500),
+      onCheckout: onCheckout,
+    );
+  });
+}
+
+void _showSuccessSheet({
+  VoidCallback? then,
+  String? msg,
+  String? lottie,
+  required int autoCloseMs,
+  VoidCallback? onCheckout,
+}) {
+  var sheetClosed = false;
+  var goCheckout = false;
+
+  void afterClose() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (goCheckout && onCheckout != null) {
+        onCheckout();
+        return;
+      }
+      then?.call();
+    });
+  }
+
+  showModalBottomSheet<void>(
     context: Constants.globalContext(),
-    backgroundColor: Colors.white,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    backgroundColor: AppColor.backgroundColor,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(36),
-        topRight: Radius.circular(36),
-      ),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
     ),
     builder: (context) {
+      final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
       return Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: InkWell(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Container(
-            width: 100.w,
-            constraints: BoxConstraints(
-              maxHeight: Constants.isTablet ? 50.h : 35.h,
-              minHeight: Constants.isTablet ? 50.h : 35.h,
+        padding: EdgeInsets.fromLTRB(
+          AppSpacing.pageGutter,
+          20,
+          AppSpacing.pageGutter,
+          16 + bottomInset,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Lottie.asset(
+              lottie ?? Lotties.success,
+              fit: BoxFit.contain,
+              width: 120,
+              height: 120,
             ),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(36),
-                topRight: Radius.circular(36),
-              ),
+            const SizedBox(height: 8),
+            Text(
+              LanguageProvider.translate('success', msg ?? 'success'),
+              style: TextStyleClass.normalStyle(color: AppColor.inkColor)
+                  .copyWith(fontWeight: FontWeight.w700, fontSize: 16),
+              textAlign: TextAlign.center,
             ),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 3.h),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: (30.w) / 2),
-                      child: Lottie.asset(lottie ?? Lotties.success, fit: BoxFit.contain, width: 40.w),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      LanguageProvider.translate('success', msg ?? 'success'),
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w700,
+            const SizedBox(height: 16),
+            if (onCheckout != null) ...[
+              SizedBox(
+                width: double.infinity,
+                height: AppSpacing.ctaHeight,
+                child: Material(
+                  color: AppColor.limeColor,
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  child: InkWell(
+                    onTap: () {
+                      if (sheetClosed) return;
+                      goCheckout = true;
+                      sheetClosed = true;
+                      Navigator.of(context).pop();
+                    },
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    child: Center(
+                      child: Text(
+                        LanguageProvider.translate('cart', 'validate_order'),
+                        style: TextStyleClass.buttonStyle(
+                          color: AppColor.deepColor,
+                        ).copyWith(fontWeight: FontWeight.w800),
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+              const SizedBox(height: 4),
+              TextButton(
+                onPressed: () {
+                  if (sheetClosed) return;
+                  sheetClosed = true;
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  LanguageProvider.translate('cart', 'continue_shopping'),
+                  style: TextStyleClass.smallStyle(color: AppColor.mutedColor)
+                      .copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
+            ] else
+              SizedBox(
+                width: double.infinity,
+                height: AppSpacing.ctaHeight,
+                child: Material(
+                  color: AppColor.limeColor,
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  child: InkWell(
+                    onTap: () {
+                      if (sheetClosed) return;
+                      sheetClosed = true;
+                      Navigator.of(context).pop();
+                    },
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    child: Center(
+                      child: Text(
+                        LanguageProvider.translate('buttons', 'confirm'),
+                        style: TextStyleClass.buttonStyle(
+                          color: AppColor.deepColor,
+                        ).copyWith(fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
       );
     },
-    isScrollControlled: true,
-  ).then((value) {
-    close = true;
-    if (then != null) {
-      then();
-    }
+  ).whenComplete(() {
+    sheetClosed = true;
+    afterClose();
   });
-  delay(sec ?? 2000).then((value) {
-    if (!close) {
-      navPop();
-    }
+
+  delay(autoCloseMs).then((_) {
+    if (sheetClosed) return;
+    final ctx = Constants.globalContext();
+    if (!ctx.mounted) return;
+    final nav = Navigator.of(ctx, rootNavigator: true);
+    if (!nav.canPop()) return;
+    sheetClosed = true;
+    nav.pop();
   });
 }

@@ -1,56 +1,74 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
-import '../../../../core/config/app_styles.dart';
+enum StoreStatVariant { light, glass }
 
 class StoreStatItem extends StatelessWidget {
-  final String title;
-  final String value;
-  final Widget? icon;
-
   const StoreStatItem({
     super.key,
     required this.title,
     required this.value,
     this.icon,
+    this.variant = StoreStatVariant.light,
+    this.accentValue = false,
   });
+
+  final String title;
+  final String value;
+  final Widget? icon;
+  final StoreStatVariant variant;
+  final bool accentValue;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.7.h),
-      width: 25.w,
+    final isGlass = variant == StoreStatVariant.glass;
+    final valueColor = isGlass
+        ? (accentValue ? AppColor.limeColor : Colors.white)
+        : AppColor.deepColor;
+    final labelColor =
+        isGlass ? Colors.white.withValues(alpha: 0.55) : AppColor.mutedColor;
 
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(14)),
-        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(14),
+        color: isGlass
+            ? Colors.white.withValues(alpha: 0.08)
+            : AppColor.softColor,
+        border: Border.all(
+          color: isGlass
+              ? Colors.white.withValues(alpha: 0.12)
+              : AppColor.borderColor,
+        ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 value,
-                style: TextStyleClass.headStyle().copyWith(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
+                style: TextStyleClass.headStyle(color: valueColor).copyWith(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
-              if (icon != null) ...[SizedBox(width: 1.w), icon!],
+              if (icon != null) ...[
+                const SizedBox(width: 4),
+                icon!,
+              ],
             ],
           ),
+          const SizedBox(height: 3),
           Text(
             LanguageProvider.translate('global', title),
-            style: TextStyleClass.smallStyle().copyWith(
-              color: Colors.black,
-              fontSize: 15.sp,height: 1
+            style: TextStyleClass.captionStyle(color: labelColor).copyWith(
+              fontSize: 10,
+              height: 1.3,
             ),
           ),
-
         ],
       ),
     );

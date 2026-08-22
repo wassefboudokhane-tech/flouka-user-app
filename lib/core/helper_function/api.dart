@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/language/presentation/provider/language_provider.dart';
 import '../constants/constants.dart';
+import '../network/connectivity_status_provider.dart';
 import 'convert.dart';
 import 'helper_function.dart';
 import 'prefs.dart';
@@ -16,6 +17,22 @@ import 'prefs.dart';
 class ApiHandel {
   static ApiHandel? _instance;
   late Dio dio;
+
+  void _markOnline() {
+    try {
+      Constants.globalContext()
+          .read<ConnectivityStatusProvider>()
+          .markOnline();
+    } catch (_) {}
+  }
+
+  void _markOffline() {
+    try {
+      Constants.globalContext()
+          .read<ConnectivityStatusProvider>()
+          .markOffline();
+    } catch (_) {}
+  }
 
   ApiHandel._();
 
@@ -96,6 +113,7 @@ class ApiHandel {
       print("AaAAAAAAAAAAAAa${data}");
 
       if (response.statusCode == 200) {
+        _markOnline();
         return Right(response);
       }
       log('error1');
@@ -104,6 +122,7 @@ class ApiHandel {
       return Left(dioException(response));
     } on DioException catch (e) {
       log(e.response?.data.toString() ?? "");
+      if (e.response == null) _markOffline();
 
       return Left(e.response == null ? e : dioException(e.response!));
     } catch (e) {
@@ -134,6 +153,7 @@ class ApiHandel {
       log(path.toString());
 
       if (response.statusCode == 200) {
+        _markOnline();
         return Right(response);
       }
       log('error1');
@@ -142,6 +162,7 @@ class ApiHandel {
       return Left(dioException(response));
     } on DioException catch (e) {
       log(e.response?.data.toString() ?? "");
+      if (e.response == null) _markOffline();
       print("AaAAAAAAAAAAAAa${path}");
       return Left(e.response == null ? e : dioException(e.response!));
     } catch (e) {
@@ -176,14 +197,18 @@ class ApiHandel {
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           ((!response.data.containsKey('code')) || response.data['code'] == 200)) {
+        _markOnline();
         return Right(response);
       }
       log('error1');
       log(response.data.toString());
       print("ssssssssssssssss${path}");
+      print("ssssssssssssssss${response.statusCode}");
+      print("ssssssssssssssss${response.data}");
       return Left(dioException(response));
     } on DioException catch (e) {
       log(e.response?.data.toString() ?? "");
+      if (e.response == null) _markOffline();
       // print(" ON $e");
       log('error2');
       print("AAAAAAAAAAAA${data}");

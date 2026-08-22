@@ -1,7 +1,9 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/widgets/flouka_screen_header.dart';
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_styles.dart';
-import '../../../language/presentation/provider/language_provider.dart';
 
 class NotificationDetailsPage extends StatelessWidget {
   const NotificationDetailsPage({
@@ -9,37 +11,66 @@ class NotificationDetailsPage extends StatelessWidget {
     required this.title,
     required this.data,
   });
-  final String title, data;
+
+  final String title;
+  final String data;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(LanguageProvider.translate('global', 'notifications')),
-        elevation: 0,
-      ),
-      body: Container(
-        width: 100.w,
-        height: 100.h,
-        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyleClass.normalStyle(
-                  color: Colors.black,
-                ).copyWith(fontSize: 16.sp),
+      backgroundColor: AppColor.canvasColor,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            FloukaScreenHeader(
+              title: LanguageProvider.translate('global', 'notifications'),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.pageGutter,
+                  0,
+                  AppSpacing.pageGutter,
+                  24,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColor.backgroundColor,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppColor.borderColor),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyleClass.smallStyle(
+                          color: AppColor.deepColor,
+                        ).copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        data,
+                        style: TextStyleClass.captionStyle(
+                          color: AppColor.mutedColor,
+                        ).copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          height: 1.45,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              SizedBox(height: 1.h),
-              Text(
-                data,
-                style: TextStyleClass.normalStyle(
-                  color: Colors.grey,
-                ).copyWith(fontSize: 17.sp),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

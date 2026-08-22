@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/dialog/bottom_sheet_dialog.dart';
 import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/dialog/success_dialog.dart';
 import '../../../../core/helper_function/loading.dart';
@@ -94,8 +93,12 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
       productDetails,
     ) {
       data = productDetails;
-      mergeLiveOrSynthesize(data!);
-      selectDefaultAttributes();
+      try {
+        mergeLiveOrSynthesize(data!);
+        selectDefaultAttributes();
+      } catch (e, st) {
+        log('variant enrich failed: $e\n$st');
+      }
       notifyListeners();
     });
 
@@ -123,7 +126,7 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
 
   @override
   void goToPage([Map<String, dynamic>? inputs]) {
-    init();
+    init(inputs);
     if (productsIDs.length == 1) {
       navP(const ProductsDetailsView(showAppBar: true,));
     }
@@ -183,21 +186,25 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
   }
 
   void addToCart(ProductEntity product){
-    print(product.haveVariant);
-    print(product.stock);
-    print(product.store);
-    if(product.haveVariant||product.stock==null||product.store==null){
-      init({
+    // Variant / incomplete listing → open PDP to choose options.
+    if(product.haveVariant || product.stock == null || product.store == null){
+      goToPage({
         'product_id': product.id,
         'is_similar': false,
       });
-      bottomSheetDialog(ProductsDetailsView(showAppBar: false,));
-    }else{
-      final cartProvider = Provider.of<CartProvider>(Constants.globalContext(),listen: false);
-      int stockId = product.stock!.id;
-      cartProvider.addToCart(storeId: product.store!.id, quantity: 1,
-          storeProductStockId: stockId);
+      return;
     }
+    final cartProvider = Provider.of<CartProvider>(Constants.globalContext(),listen: false);
+    cartProvider.addToCart(
+      storeId: product.store!.id,
+      quantity: 1,
+      storeProductStockId: product.stock!.id,
+      productId: product.id,
+      title: product.title,
+      vendorName: product.store?.name,
+      price: product.offerPrice ?? product.price,
+      image: product.image,
+    );
   }
 
 }

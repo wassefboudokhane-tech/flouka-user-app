@@ -33,7 +33,7 @@ class ListOfTransactionWidgets extends StatelessWidget {
                 width: 100.w,
                 padding: EdgeInsets.symmetric(horizontal: 3.w),
                 child: Text(
-                  LanguageProvider.translate("global", "operations"),
+                  LanguageProvider.translate("wallet", "operations"),
                   style: TextStyleClass.normalStyle().copyWith(
                     fontWeight: FontWeight.bold,
                   ),

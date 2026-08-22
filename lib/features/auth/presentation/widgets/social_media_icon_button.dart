@@ -1,7 +1,10 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_radius.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_styles.dart';
+
 import '../../domain/entities/social_auth_entity.dart';
 
 class SocialMediaIconButton extends StatelessWidget {
@@ -11,29 +14,34 @@ class SocialMediaIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: socialAuthEntity.onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.2.h),
-        margin: EdgeInsets.only(bottom: 2.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(32),
-          border: Border.all(color:const  Color(0xffE5E7EB)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width: 10.w),
-
-            Image.asset(socialAuthEntity.image, width: 4.w),
-            SizedBox(width: 10.w),
-            Text(
-              LanguageProvider.translate("auth", socialAuthEntity.text),
-              style: TextStyleClass.normalStyle().copyWith(
-                fontWeight: FontWeight.w500,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: InkWell(
+        onTap: socialAuthEntity.onTap,
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.pageGutter,
+            vertical: 14,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(AppRadius.pill),
+            border: Border.all(color: AppColor.borderColor),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(socialAuthEntity.image, width: 22, height: 22),
+              const SizedBox(width: 12),
+              Text(
+                LanguageProvider.translate("auth", socialAuthEntity.text),
+                style: TextStyleClass.normalStyle(color: AppColor.inkColor)
+                    .copyWith(fontWeight: FontWeight.w600),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

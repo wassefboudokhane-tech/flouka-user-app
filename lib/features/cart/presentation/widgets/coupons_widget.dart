@@ -27,8 +27,9 @@ class CouponsWidget extends StatelessWidget {
         SizedBox(height: 1.3.h),
         Consumer<CouponProvider>(
           builder: (context, value, child) => Column(
-            spacing: 0.h,
-            children: List.generate(value.couponsFields.length, (index) {
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...List.generate(value.couponsFields.length, (index) {
               return Row(
                 spacing: 8,
                 children: [
@@ -43,7 +44,7 @@ class CouponsWidget extends StatelessWidget {
                           },
                           text: !value.couponsFields[index].isApplied ? "activate" : "cancel",
                           width: 20.w,
-                          color: !value.couponsFields[index].isApplied ? AppColor.primaryColor : Colors.redAccent,
+                          color: !value.couponsFields[index].isApplied ? AppColor.primaryColor : AppColor.redSoft,
                         ),
                       ),
                       hintText:  "    X X X X X X X X X X   ",),
@@ -52,6 +53,14 @@ class CouponsWidget extends StatelessWidget {
                 ],
               );
             },),
+              if (value.lastCouponError != null) ...[
+                SizedBox(height: 1.h),
+                Text(
+                  value.lastCouponError!,
+                  style: TextStyleClass.captionStyle(color: AppColor.DealColor),
+                ),
+              ],
+            ],
           ),
         ),
       ],

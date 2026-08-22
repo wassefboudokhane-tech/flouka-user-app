@@ -1,12 +1,14 @@
-import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_spacing.dart';
-import 'package:flouka/core/widgets/button_widget.dart';
-import 'package:flouka/core/widgets/list_text_field_widget.dart';
+import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/widgets/flouka_primary_button.dart';
+import 'package:flouka/core/widgets/flouka_screen_header.dart';
+import 'package:flouka/features/auth/presentation/widgets/auth_phone_field.dart';
+import 'package:flouka/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/constants/app_images.dart';
+
 import '../providers/complete_info_provider.dart';
 
 class CompleteInfoView extends StatelessWidget {
@@ -17,70 +19,75 @@ class CompleteInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final completeInfoProvider = Provider.of<CompleteInfoProvider>(context);
-
     completeInfoProvider.isEdit = isEdit;
+
+    final fields = completeInfoProvider.completeInfoTextFieldList;
+    final nameField = fields.firstWhere((e) => e.key == 'name');
+    final emailField = fields.firstWhere((e) => e.key == 'email');
+    final phoneField =
+        fields.where((e) => e.key == 'phone').toList();
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
-          LanguageProvider.translate(
-            'auth',
-            completeInfoProvider.isEdit ? 'edit_profile' : 'complete_profile',
-          ),
-          style: TextStyleClass.headStyle().copyWith(fontSize: 17),
-        ),
-        leading: const BackButton(color: Colors.black),
-      ),
-      extendBodyBehindAppBar: true,
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            Form(
-              key: completeInfoProvider.formKey,
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.pageGutter,
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 3.h),
-                            ListTextFieldWidget(
-                              inputs:
-                                  completeInfoProvider.completeInfoTextFieldList,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 2.h),
-                      child: ButtonWidget(
-                        onTap: () {
-                          completeInfoProvider.updateProfileButton();
-                        },
-                        text: isEdit ? 'save' : 'sign_up',
-                      ),
-                    ),
-                  ],
+      backgroundColor: AppColor.canvasColor,
+      body: SafeArea(
+        child: Form(
+          key: completeInfoProvider.formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              FloukaScreenHeader(
+                title: LanguageProvider.translate(
+                  'auth',
+                  isEdit ? 'edit_profile' : 'complete_profile',
                 ),
               ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: IgnorePointer(
-                child: Image.asset(AppImages.topAuth),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.pageGutter,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        LanguageProvider.translate('auth', 'profile_hint'),
+                        style: TextStyleClass.normalStyle(
+                          color: AppColor.mutedColor,
+                        ).copyWith(fontSize: 15, height: 1.45),
+                      ),
+                      const SizedBox(height: 20),
+                      AuthTextField(
+                        field: nameField,
+                        labelKey: 'Name',
+                      ),
+                      const SizedBox(height: 14),
+                      AuthTextField(
+                        field: emailField,
+                        labelKey: 'Email',
+                      ),
+                      if (phoneField.isNotEmpty) ...[
+                        const SizedBox(height: 14),
+                        AuthPhoneField(field: phoneField.first),
+                      ],
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.pageGutter,
+                  8,
+                  AppSpacing.pageGutter,
+                  16,
+                ),
+                child: FloukaPrimaryButton(
+                  onTap: completeInfoProvider.updateProfileButton,
+                  text: isEdit ? 'save' : 'sign_up',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

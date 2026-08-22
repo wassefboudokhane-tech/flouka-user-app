@@ -4,9 +4,9 @@ import 'package:flouka/features/cart/presentation/providers/checkout_provider.da
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/helper_function/loading.dart';
 import '../../../../core/helper_function/navigation.dart';
+import '../../../language/presentation/provider/language_provider.dart';
 import '../../domain/entity/coupon_entity.dart';
 import '../../domain/use_case/cart_use_case.dart';
 import 'cart_provider.dart';
@@ -16,6 +16,8 @@ class CouponProvider extends ChangeNotifier {
   List<CouponField> couponsFields = [CouponField(controller: TextEditingController(), isApplied: false)];
   final CartUseCase cartUseCase;
   CouponProvider(this.cartUseCase);
+
+  String? lastCouponError;
 
   Future<void> getCoupon({required CouponField couponField}) async {
     Map<String, dynamic> data = {};
@@ -38,9 +40,12 @@ class CouponProvider extends ChangeNotifier {
     navPop();
     response.fold(
       (l) {
-        showToast(l.message ?? "");
+        lastCouponError = l.message ??
+            LanguageProvider.translate('recovery', 'coupon_invalid');
+        notifyListeners();
       },
       (r) {
+        lastCouponError = null;
         couponEntity ??= [];
         couponEntity?.add(r);
         couponField.isApplied = true;
@@ -56,8 +61,11 @@ class CouponProvider extends ChangeNotifier {
 
   void handleTap({required CouponField coupon}) {
     if (!coupon.isApplied) {
+      lastCouponError = null;
+      notifyListeners();
       getCoupon(couponField: coupon);
     } else {
+      lastCouponError = null;
       coupon.isApplied = false;
       couponEntity?.removeWhere((element) => element.coupon == coupon.controller.text);
       couponsFields.remove(coupon);

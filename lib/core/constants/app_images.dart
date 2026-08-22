@@ -6,8 +6,8 @@ abstract class AppImages {
 
   //onboarding
   static const String onboardingImage1 = 'assets/images/onboarding/onboarding1_*lang*.png';
-  static const String onboardingImage2 = 'assets/images/onboarding/onboarding1_*lang*.png';
-  static const String onboardingImage3 = 'assets/images/onboarding/onboarding1_*lang*.png';
+  static const String onboardingImage2 = 'assets/images/onboarding/onboarding2_*lang*.png';
+  static const String onboardingImage3 = 'assets/images/onboarding/onboarding3_*lang*.png';
   // static const String onboardingImage4 = 'assets/images/onboarding/onboarding4.png';
   // static const String yellowCircle = 'assets/images/onboarding/yellow_circle.png';
   // static const String greenCircle = 'assets/images/onboarding/green_circle.png';
@@ -62,6 +62,7 @@ abstract class AppImages {
   static const String navbarCategories = 'assets/images/navbar/categories.svg';
   static const String navbarExplore = 'assets/images/navbar/explore.svg';
   static const String navbarProfile = 'assets/images/navbar/profile.svg';
+  static const String navbarOrders = 'assets/images/settings/orders.svg';
   static const String vedio = 'assets/images/navbar/vedio.png';
 
   //Categories

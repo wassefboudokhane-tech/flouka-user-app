@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flouka/core/dialog/guest_dialog.dart';
+import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../../core/dialog/custom_alert_dialog.dart';
@@ -119,6 +121,10 @@ class AddressProvider extends ChangeNotifier {
   }
 
   void goToAddressPage() async {
+    if (!AuthProvider.isLogin()) {
+      showGuestDialog();
+      return;
+    }
     refresh();
     navP(const SavedAddressesPage());
   }
@@ -135,6 +141,35 @@ class AddressProvider extends ChangeNotifier {
   }
 
     notifyListeners();
+  }
+
+  /// Persist default address via edit_address (mockup « Définir par défaut »).
+  Future<void> setAsDefault(AddressEntity target) async {
+    if (target.id == null) return;
+    final data = <String, dynamic>{
+      'address_id': target.id,
+      'id': target.id,
+      'name': target.addressName ?? '',
+      'address': target.address ?? '',
+      'phone': target.phone ?? '',
+      'phone_code': (target.phoneCode ?? '216').toString().replaceFirst('+', ''),
+      'area_id': target.areaId ?? target.areaEntity?.id,
+      'neighborhood_id': target.neighborhoodEntity?.id,
+      'lat': target.lat,
+      'lng': target.lng,
+      'default': true,
+    };
+    loading();
+    final value = await addressUseCases.updateAddress(data);
+    navPop();
+    value.fold(
+      (l) => showToast(l.message ?? ''),
+      (r) {
+        changeDefault(id: r.id!);
+        updateAddress(r);
+        successDialog();
+      },
+    );
   }
 
   void setAddress(AddressEntity addressEntity) async {

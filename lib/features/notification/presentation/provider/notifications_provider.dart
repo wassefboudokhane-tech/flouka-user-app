@@ -84,7 +84,7 @@ class NotificationProvider extends ChangeNotifier implements PaginationClass {
     String? token = sharedPreferences.getString("token");
     if (token != null) {
       refresh();
-      navP(NotificationPage());
+      navP(const NotificationPage());
     } else {
       showGuestDialog();
     }
