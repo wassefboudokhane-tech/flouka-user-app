@@ -64,100 +64,106 @@ class _CategoriesTabContentState extends State<CategoriesTabContent> {
             await provider.refresh();
             _syncSubcategories();
           },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: AppSpacing.exploreCategoryRailWidth,
-                child: ListView.separated(
-                  padding: const EdgeInsetsDirectional.only(
-                    start: AppSpacing.pageGutter,
-                    bottom: 16,
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: AppSpacing.pageGutter,
+              end: AppSpacing.pageGutter,
+              top: 4,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: AppSpacing.exploreCategoryRailWidth,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    itemCount: categories.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 8),
+                    itemBuilder: (context, index) {
+                      final cat = categories[index];
+                      final active = index == selectedIndex;
+                      return _CategoryRailTile(
+                        name: cat.name,
+                        count: cat.children?.length,
+                        selected: active,
+                        onTap: () => _selectCategory(index, categories),
+                      );
+                    },
                   ),
-                  itemCount: categories.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 7),
-                  itemBuilder: (context, index) {
-                    final cat = categories[index];
-                    final active = index == selectedIndex;
-                    return _CategoryRailTile(
-                      name: cat.name,
-                      count: cat.children?.length,
-                      selected: active,
-                      onTap: () => _selectCategory(index, categories),
-                    );
-                  },
                 ),
-              ),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsetsDirectional.only(
-                    end: AppSpacing.pageGutter,
-                    bottom: 16,
-                  ),
-                  children: [
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        _FilterChip(
-                          label: LanguageProvider.translate('navbar', 'filter_all'),
-                          selected: true,
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    if (subcategories.isEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 24),
-                        child: InkWell(
-                          onTap: () {
-                            Provider.of<CategoriesProductSearchProvider>(
-                              context,
-                              listen: false,
-                            ).goToPage({
-                              'category_id': selectedCategory.id,
-                              'category': selectedCategory.name,
-                            });
-                          },
-                          borderRadius:
-                              BorderRadius.circular(AppRadius.exploreSubcategory),
-                          child: Container(
-                            height: AppSpacing.exploreSubcategoryTileHeight,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  AppColor.softColor,
-                                  AppColor.backgroundColor,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                AppRadius.exploreSubcategory,
-                              ),
-                              border: Border.all(color: AppColor.borderColor),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    children: [
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: [
+                          _FilterChip(
+                            label: LanguageProvider.translate(
+                              'navbar',
+                              'filter_all',
                             ),
-                            alignment: AlignmentDirectional.bottomStart,
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              selectedCategory.name,
-                              style: TextStyleClass.captionStyle(
-                                color: AppColor.deepColor,
-                              ).copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 11.5,
+                            selected: true,
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      if (subcategories.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 24),
+                          child: InkWell(
+                            onTap: () {
+                              Provider.of<CategoriesProductSearchProvider>(
+                                context,
+                                listen: false,
+                              ).goToPage({
+                                'category_id': selectedCategory.id,
+                                'category': selectedCategory.name,
+                              });
+                            },
+                            borderRadius: BorderRadius.circular(
+                              AppRadius.exploreSubcategory,
+                            ),
+                            child: Container(
+                              height: AppSpacing.exploreSubcategoryTileHeight,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    AppColor.softColor,
+                                    AppColor.backgroundColor,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.exploreSubcategory,
+                                ),
+                                border: Border.all(color: AppColor.borderColor),
+                              ),
+                              alignment: AlignmentDirectional.bottomStart,
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                selectedCategory.name,
+                                style: TextStyleClass.captionStyle(
+                                  color: AppColor.deepColor,
+                                ).copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11.5,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      )
-                    else
-                      ..._subcategoryRows(subcategories),
-                  ],
+                        )
+                      else
+                        ..._subcategoryRows(subcategories),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -173,7 +179,7 @@ class _CategoriesTabContentState extends State<CategoriesTabContent> {
             Expanded(
               child: _SubcategoryTile(subcategory: subcategories[i]),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Expanded(
               child: i + 1 < subcategories.length
                   ? _SubcategoryTile(subcategory: subcategories[i + 1])
@@ -183,7 +189,7 @@ class _CategoriesTabContentState extends State<CategoriesTabContent> {
         ),
       );
       if (i + 2 < subcategories.length) {
-        rows.add(const SizedBox(height: 8));
+        rows.add(const SizedBox(height: 10));
       }
     }
     return rows;
@@ -340,7 +346,7 @@ class _SubcategoryTile extends StatelessWidget {
               : null,
         ),
         alignment: AlignmentDirectional.bottomStart,
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(10),
         child: Text(
           subcategory.name,
           style: TextStyleClass.captionStyle(color: AppColor.deepColor)

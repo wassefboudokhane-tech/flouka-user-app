@@ -32,6 +32,9 @@ class _NavBarViewState extends State<NavBarView> {
 
     return Consumer<NavBarProvider>(
       builder: (context, nav, _) {
+        // Hide floating cart on Reels — it overlaps the full-bleed video + dock.
+        final hideCartBubble = nav.useFrostedDock;
+
         return Scaffold(
           extendBody: true,
           body: Stack(
@@ -41,11 +44,12 @@ class _NavBarViewState extends State<NavBarView> {
                 padding: EdgeInsets.only(bottom: contentBottomInset),
                 child: nav.body[nav.currentIndex],
               ),
-              PositionedDirectional(
-                end: AppSpacing.dockMarginH,
-                bottom: bubbleBottom,
-                child: const CartBubbleWidget(),
-              ),
+              if (!hideCartBubble)
+                PositionedDirectional(
+                  end: AppSpacing.dockMarginH,
+                  bottom: bubbleBottom,
+                  child: const CartBubbleWidget(),
+                ),
             ],
           ),
           bottomNavigationBar: const CustomBottomNavBarWidget(),
