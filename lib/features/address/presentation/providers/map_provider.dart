@@ -28,7 +28,8 @@ class MapProvider with ChangeNotifier implements PaginationClass {
   }
 
   Future<void> initLocation() async {
-    LatLng latLng = await determinePosition();
+    final latLng = await determinePosition();
+    if (latLng == null) return;
     _center = latLng;
     notifyListeners();
   }
@@ -47,7 +48,10 @@ class MapProvider with ChangeNotifier implements PaginationClass {
   }
 
   void goToMapPage() {
-    Provider.of<AddressDetailsProvider>(Constants.globalContext(),listen: false).goToAddressDetailsPage();
+    Provider.of<AddressDetailsProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).goToAddressDetailsPage();
     // final authProvider = Provider.of<AuthProvider>(Constants.globalContext(), listen: false,);
     // defaultCountry = (authProvider.userEntity?.phoneCode==null?'+216':'+'+authProvider.userEntity!.phoneCode!);
     // int length = CountryWidget.getLength;
@@ -85,7 +89,8 @@ class MapProvider with ChangeNotifier implements PaginationClass {
   bool firstTime = true;
 
   void animateToMyLocation() async {
-    LatLng latLng = await determinePosition();
+    final latLng = await determinePosition();
+    if (latLng == null) return;
     moveCameraTo(latLng);
   }
 

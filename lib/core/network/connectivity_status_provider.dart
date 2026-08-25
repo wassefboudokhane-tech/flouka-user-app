@@ -28,8 +28,7 @@ class ConnectivityStatusProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> retryLastAction() async {
-    markOnline();
-    notifyListeners();
+  Future<void> retryLastAction(Future<void> Function() retryAction) async {
+    await retryAction();
   }
 }

@@ -15,14 +15,19 @@ class LanguageProvider extends ChangeNotifier {
   late Locale
   language; // use this var when control state of language widget then use it for change language
   Locale _appLocale = const Locale('fr');
-  static const List<Locale> languages = [Locale('ar', ''), Locale("en", ""),Locale("fr", "")];
+  static const List<Locale> languages = [
+    Locale('ar', ''),
+    Locale("en", ""),
+    Locale("fr", ""),
+  ];
   Locale get appLocal => _appLocale;
   static String? languageCode() {
-    return sharedPreferences.getString('language_code');
+    return sharedPreferences.getString('language_code') ??
+        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
   }
 
   static bool isAr() {
-    return languageCode() == 'fr';
+    return languageCode() == 'ar';
   }
 
   Future<String?> checkLanguageCode() async {
@@ -41,7 +46,15 @@ class LanguageProvider extends ChangeNotifier {
   Future fetchLocale() async {
     var prefs = await SharedPreferences.getInstance();
     String? language = prefs.getString('language_code');
-    _appLocale = Locale(language ?? "fr");
+    final systemLanguage =
+        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+    final supported = languages.any(
+      (locale) => locale.languageCode == systemLanguage,
+    );
+    _appLocale = Locale(language ?? (supported ? systemLanguage : 'fr'));
+    if (language == null) {
+      await prefs.setString('language_code', _appLocale.languageCode);
+    }
     notifyListeners();
   }
 
@@ -71,7 +84,9 @@ class LanguageProvider extends ChangeNotifier {
     if (localizedStrings.containsKey(key) &&
         localizedStrings[key] is Map &&
         localizedStrings[key].containsKey(value)) {
-      return localizedStrings[key][value]?.toString() ?? value?.toString() ?? key;
+      return localizedStrings[key][value]?.toString() ??
+          value?.toString() ??
+          key;
     }
     return value?.toString() ?? key;
   }
@@ -89,6 +104,7 @@ class LanguageProvider extends ChangeNotifier {
   Future afterChangeLanguage() async {
     navPARU(const SplashView());
   }
+
   // void showLanguageDialog() {
   //   customAlertDialog(
   //     title: translate('global', "choose_lang"),
@@ -119,7 +135,8 @@ class LanguageProvider extends ChangeNotifier {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           ),
-          content: Padding(padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 2.h,),
+          content: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 2.h),
             child: Stack(
               alignment: AlignmentDirectional.topStart,
               clipBehavior: Clip.none,
@@ -134,14 +151,25 @@ class LanguageProvider extends ChangeNotifier {
                       style: TextStyleClass.normalStyle(),
                     ),
                     SizedBox(height: 0.5.h),
-                    Text(LanguageProvider.translate('warning', 'choose_lang_content',),
-                      style: TextStyleClass.normalStyle(color:  const Color(0xff656363),).copyWith(height: 1.5),
+                    Text(
+                      LanguageProvider.translate(
+                        'warning',
+                        'choose_lang_content',
+                      ),
+                      style: TextStyleClass.normalStyle(
+                        color: const Color(0xff656363),
+                      ).copyWith(height: 1.5),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 3.h),
-                    SizedBox(width: 100.w,
-                      child: Wrap(runSpacing: 1.h,spacing: 2.w,crossAxisAlignment: WrapCrossAlignment.center,
-                        runAlignment: WrapAlignment.center,alignment: WrapAlignment.center,
+                    SizedBox(
+                      width: 100.w,
+                      child: Wrap(
+                        runSpacing: 1.h,
+                        spacing: 2.w,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        runAlignment: WrapAlignment.center,
+                        alignment: WrapAlignment.center,
                         children: [
                           InkWell(
                             onTap: () {
@@ -154,12 +182,14 @@ class LanguageProvider extends ChangeNotifier {
                                 vertical: 1.h,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8),
                                 color: const Color(0xff11683D),
                               ),
                               child: Text(
-                                LanguageProvider.translate('buttons', 'العربية 🇸🇦',),
+                                LanguageProvider.translate(
+                                  'buttons',
+                                  'العربية 🇸🇦',
+                                ),
                                 style: TextStyleClass.semiHeadStyle(
                                   color: Colors.white,
                                 ),
@@ -178,12 +208,14 @@ class LanguageProvider extends ChangeNotifier {
                                 vertical: 1.h,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8),
                                 color: const Color(0xFFCE1126),
                               ),
                               child: Text(
-                                LanguageProvider.translate('buttons', 'French 🇫🇷',),
+                                LanguageProvider.translate(
+                                  'buttons',
+                                  'French 🇫🇷',
+                                ),
                                 style: TextStyleClass.semiHeadStyle(
                                   color: Colors.white,
                                 ),
@@ -202,12 +234,14 @@ class LanguageProvider extends ChangeNotifier {
                                 vertical: 1.h,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(8),
-                                color:const Color(0xff0E5196),
+                                borderRadius: BorderRadius.circular(8),
+                                color: const Color(0xff0E5196),
                               ),
                               child: Text(
-                                LanguageProvider.translate('buttons', 'English 🇺🇸',),
+                                LanguageProvider.translate(
+                                  'buttons',
+                                  'English 🇺🇸',
+                                ),
                                 style: TextStyleClass.headStyle(
                                   color: Colors.white,
                                 ),

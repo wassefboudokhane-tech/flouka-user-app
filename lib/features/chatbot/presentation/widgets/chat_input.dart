@@ -4,13 +4,10 @@ import 'package:flouka/core/widgets/svg_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/config/app_color.dart';
 import '../../../language/presentation/provider/language_provider.dart';
-
-
 
 class ChatInput extends StatelessWidget {
   final TextEditingController controller;
@@ -38,8 +35,12 @@ class ChatInput extends StatelessWidget {
                 maxLines: 4,
                 style: TextStyleClass.normalStyle(color: Colors.black),
                 keyboardType: TextInputType.multiline,
+                textDirection: LanguageProvider.direction(),
                 decoration: InputDecoration(
-                  hintText: LanguageProvider.translate('global', 'type_message'),
+                  hintText: LanguageProvider.translate(
+                    'global',
+                    'type_message',
+                  ),
                   hintStyle: TextStyleClass.normalStyle(color: Colors.black),
                   border: InputBorder.none,
                   fillColor: Colors.transparent,
@@ -59,8 +60,9 @@ class ChatInput extends StatelessWidget {
                 transform: Matrix4.rotationY(3.1416),
                 child: Transform(
                   alignment: Alignment.center,
-                  transform: Matrix4.identity()..scale(LanguageProvider.isAr()?1.0: -1.0, 1.0),
-                  child: SvgWidget(svg: AppImages.send,color: Colors.white,),
+                  transform: Matrix4.identity()
+                    ..scale(LanguageProvider.isAr() ? -1.0 : 1.0, 1.0),
+                  child: SvgWidget(svg: AppImages.send, color: Colors.white),
                 ),
               ),
             ),

@@ -18,6 +18,7 @@ class FloatingChatBubble extends StatefulWidget {
 class FloatingChatBubbleState extends State<FloatingChatBubble>
     with SingleTickerProviderStateMixin {
   Offset position = const Offset(20, 200);
+  bool hasInitialPosition = false;
   bool isChatOpen = false;
   late Size screenSize;
   late AnimationController _controller;
@@ -68,6 +69,11 @@ class FloatingChatBubbleState extends State<FloatingChatBubble>
 
     // 🧩 Detect keyboard height
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    if (keyboardHeight > 0) return const SizedBox.shrink();
+    if (!hasInitialPosition) {
+      position = Offset(screenSize.width - 70, screenSize.height - 190);
+      hasInitialPosition = true;
+    }
 
     // Adjust position if keyboard is open
     double adjustedTop = position.dy;
@@ -154,15 +160,18 @@ class FloatingChatBubbleState extends State<FloatingChatBubble>
             },
             onPanEnd: (_) => _animateToEdge(),
             onTap: () {
-              Provider.of<ChatBotProvider>(context,listen: false).goToChatBotPage();
+              Provider.of<ChatBotProvider>(
+                context,
+                listen: false,
+              ).goToChatBotPage();
               // setState(() {
               //   isChatOpen = !isChatOpen;
               // });
             },
             child: Material(
               elevation: 6,
-              shape:  CircleBorder(),
-              child: Image.asset(AppImages.AI,width: 10.w,),
+              shape: CircleBorder(),
+              child: Image.asset(AppImages.AI, width: 10.w),
             ),
           ),
         ),

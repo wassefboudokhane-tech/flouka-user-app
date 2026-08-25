@@ -21,15 +21,16 @@ import '../../domain/utils/synthesize_options.dart';
 import '../pages/products_details_view.dart';
 import 'product_variant_provider.dart' show ProductVariantProvider;
 
-class ProductDetailsProvider extends ChangeNotifier implements ProviderStructureModel<ProductEntity> {
+class ProductDetailsProvider extends ChangeNotifier
+    implements ProviderStructureModel<ProductEntity> {
   @override
   ProductEntity? data;
+  String? errorMessage;
 
   @override
   Map? inputs;
 
-
-  Map<int,int> variants = {};
+  Map<int, int> variants = {};
   // bool isLoading = false;
 
   final ProductUseCase productUseCase;
@@ -40,6 +41,7 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
     quantity++;
     notifyListeners();
   }
+
   void decrementQuantity() {
     quantity--;
     notifyListeners();
@@ -50,6 +52,7 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
   @override
   void clear() {
     data = null;
+    errorMessage = null;
     // colors = [];
     // sizes = [];
     notifyListeners();
@@ -58,12 +61,12 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
   int imageIndex = 0;
   // int variantIndex = 0;
   final CarouselSliderController controller = CarouselSliderController();
-  void changeImageIndex({required int index}){
+  void changeImageIndex({required int index}) {
     imageIndex = index;
     notifyListeners();
   }
 
-  void animateToImage({required int index}){
+  void animateToImage({required int index}) {
     controller.animateToPage(index);
     notifyListeners();
   }
@@ -71,11 +74,16 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
   @override
   Future getData() async {
     if (inputs == null || inputs!['product_id'] == null) return;
-    AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false);
+    AuthProvider authProvider = Provider.of(
+      Constants.globalContext(),
+      listen: false,
+    );
     Map<String, dynamic> dataToUse = {
-      'product_id': productsIDs.isEmpty ? inputs!['product_id'] : productsIDs.last,
+      'product_id': productsIDs.isEmpty
+          ? inputs!['product_id']
+          : productsIDs.last,
     };
-    if(authProvider.currentLocation !=null){
+    if (authProvider.currentLocation != null) {
       dataToUse['lat'] = authProvider.currentLocation?.latitude;
       dataToUse['lng'] = authProvider.currentLocation?.longitude;
     }
@@ -83,25 +91,28 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
     // isLoading = true;data = null;
     notifyListeners();
     final result = await productUseCase.getProductDetails(dataToUse);
-    result.fold((l) {
-      showToast(l.message ?? '');
-      log(l.message ?? '');
-      if(productsIDs.isNotEmpty){
-        productsIDs.removeLast();
-      }
-    }, (
-      productDetails,
-    ) {
-      data = productDetails;
-      try {
-        mergeLiveOrSynthesize(data!);
-        selectDefaultAttributes();
-      } catch (e, st) {
-        log('variant enrich failed: $e\n$st');
-      }
-      notifyListeners();
-    });
-
+    result.fold(
+      (l) {
+        errorMessage = l.message ?? '';
+        showToast(errorMessage!);
+        log(errorMessage!);
+        if (productsIDs.isNotEmpty) {
+          productsIDs.removeLast();
+        }
+        notifyListeners();
+      },
+      (productDetails) {
+        data = productDetails;
+        errorMessage = null;
+        try {
+          mergeLiveOrSynthesize(data!);
+          selectDefaultAttributes();
+        } catch (e, st) {
+          log('variant enrich failed: $e\n$st');
+        }
+        notifyListeners();
+      },
+    );
   }
 
   void backToLastProduct() {
@@ -117,29 +128,33 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
     }
   }
 
-  List<ProductImage> images(){
-    if(variantEntity()?.images.isNotEmpty??false){
+  List<ProductImage> images() {
+    if (variantEntity()?.images.isNotEmpty ?? false) {
       return variantEntity()!.images;
     }
-    return  data!.images;
+    return data!.images;
   }
 
   @override
   void goToPage([Map<String, dynamic>? inputs]) {
     init(inputs);
     if (productsIDs.length == 1) {
-      navP(const ProductsDetailsView(showAppBar: true,));
+      navP(const ProductsDetailsView(showAppBar: true));
     }
   }
-  void init([Map<String, dynamic>? inputs]){
+
+  void init([Map<String, dynamic>? inputs]) {
     this.inputs = inputs;
-    imageIndex=0;
+    imageIndex = 0;
     variants = {};
-    Provider.of<ProductQuantityProvider>(Constants.globalContext(), listen: false)
-        .reset();
+    Provider.of<ProductQuantityProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).reset();
     final productId = inputs?['product_id'];
 
-    if (productId != null && (productsIDs.isEmpty || productsIDs.last != productId)) {
+    if (productId != null &&
+        (productsIDs.isEmpty || productsIDs.last != productId)) {
       productsIDs.add(productId);
     }
     refresh();
@@ -151,7 +166,12 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
     await getData();
   }
 
-  List<Color> colorsList = [Colors.red, Colors.green, Colors.blue, Colors.purple];
+  List<Color> colorsList = [
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.purple,
+  ];
   late Color selectedColor = colorsList.first;
 
   void onColorChange(Color newColor) {
@@ -164,37 +184,44 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
     return selectedColor == color;
   }
 
-  void rebuild(){
+  void rebuild() {
     notifyListeners();
   }
 
-  Future createReport({required int id,required String type,required String comment}) async {
-    Map<String,dynamic> data ={};
+  Future createReport({
+    required int id,
+    required String type,
+    required String comment,
+  }) async {
+    Map<String, dynamic> data = {};
     data['id'] = id;
     data['type'] = type;
     data['message'] = comment;
     loading();
-    Either<DioException, bool> response = await productUseCase.createReport(data);
+    Either<DioException, bool> response = await productUseCase.createReport(
+      data,
+    );
     navPop();
-    response.fold((l) {
-    }, (r) {
-      successDialog(then: (){
-        navPop();
-      });
+    response.fold((l) {}, (r) {
+      successDialog(
+        then: () {
+          navPop();
+        },
+      );
       notifyListeners();
     });
   }
 
-  void addToCart(ProductEntity product){
+  void addToCart(ProductEntity product) {
     // Variant / incomplete listing → open PDP to choose options.
-    if(product.haveVariant || product.stock == null || product.store == null){
-      goToPage({
-        'product_id': product.id,
-        'is_similar': false,
-      });
+    if (product.haveVariant || product.stock == null || product.store == null) {
+      goToPage({'product_id': product.id, 'is_similar': false});
       return;
     }
-    final cartProvider = Provider.of<CartProvider>(Constants.globalContext(),listen: false);
+    final cartProvider = Provider.of<CartProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
     cartProvider.addToCart(
       storeId: product.store!.id,
       quantity: 1,
@@ -206,5 +233,4 @@ class ProductDetailsProvider extends ChangeNotifier implements ProviderStructure
       image: product.image,
     );
   }
-
 }

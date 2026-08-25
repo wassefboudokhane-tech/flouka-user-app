@@ -73,8 +73,10 @@ class AuthProvider extends ChangeNotifier {
         return false;
       },
       (_) {
-        Provider.of<OtpProvider>(Constants.globalContext(), listen: false)
-            .goToOTPView();
+        Provider.of<OtpProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).goToOTPView();
         return true;
       },
     );
@@ -150,13 +152,16 @@ class AuthProvider extends ChangeNotifier {
       data,
     );
     navPop();
-    login.fold((l) {
-      showToast(l.message.toString());
-      },(r) async {
+    login.fold(
+      (l) {
+        showToast(l.message.toString());
+      },
+      (r) async {
         loginSuccess(r, isSocial: true);
       },
     );
   }
+
   Future<void> deleteAccount() async {
     loading();
     await authUseCase.deleteAccount();
@@ -166,12 +171,17 @@ class AuthProvider extends ChangeNotifier {
     goToLoginView();
   }
 
-
-  void loginSuccess(UserEntity userEntity, {bool isSocial = false,bool fromSplash = false,
-    bool fromAddress = false, bool firstAddress = false,bool isEdit = false,
-    bool skipHome = false}) async{
+  Future<void> loginSuccess(
+    UserEntity userEntity, {
+    bool isSocial = false,
+    bool fromSplash = false,
+    bool fromAddress = false,
+    bool firstAddress = false,
+    bool isEdit = false,
+    bool skipHome = false,
+  }) async {
     this.userEntity = userEntity;
-    if(isEdit){
+    if (isEdit) {
       navPop();
       return;
     }
@@ -179,19 +189,21 @@ class AuthProvider extends ChangeNotifier {
       ApiHandel.getInstance.updateHeader(userEntity.token!);
       sharedPreferences.setString('token', userEntity.token!);
     }
-    await Provider.of<CartProvider>(Constants.globalContext(), listen: false)
-        .syncGuestCartAfterLogin();
-    if (userEntity.addressEntity != null) {
-      setLatLng(LatLng(
-        userEntity.addressEntity!.lat!,
-        userEntity.addressEntity!.lng!,
-      ));
+    await Provider.of<CartProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).syncGuestCartAfterLogin();
+    final address = userEntity.addressEntity;
+    if (address?.lat != null && address?.lng != null) {
+      setLatLng(LatLng(address!.lat!, address.lng!));
     }
     authStep = AuthStep.phone;
     notifyListeners();
     if (skipHome) return;
-    Provider.of<NavBarProvider>(Constants.globalContext(), listen: false)
-        .goToNavView(fromSplash: fromSplash);
+    Provider.of<NavBarProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).goToNavView(fromSplash: fromSplash);
   }
 
   LatLng? currentLocation;
@@ -200,19 +212,22 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-   bool isAwayFromHome(){
-    if(currentLocation != null && userEntity?.addressEntity != null){
+  bool isAwayFromHome() {
+    final address = userEntity?.addressEntity;
+    if (currentLocation != null &&
+        address?.lat != null &&
+        address?.lng != null) {
       double distance = calculateDistance(
         currentLocation!,
-        LatLng(userEntity!.addressEntity!.lat!, userEntity!.addressEntity!.lng!),
+        LatLng(address!.lat!, address.lng!),
       );
-      if(distance > 2){
+      if (distance > 2) {
         return true;
       }
       return false;
     }
     return false;
-   }
+  }
 
   void rebuild() {
     notifyListeners();
@@ -231,7 +246,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> googleLogin() async {
-    if(!termsAccepted){
+    if (!termsAccepted) {
       showToast(LanguageProvider.translate('validation', 'terms'));
       return;
     }
@@ -249,7 +264,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> appleLogin() async {
     try {
-      if(!termsAccepted){
+      if (!termsAccepted) {
         showToast(LanguageProvider.translate('validation', 'terms'));
         return;
       }
@@ -265,8 +280,14 @@ class AuthProvider extends ChangeNotifier {
         ),
       );
 
-      String yourToken = credential.identityToken!;
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(yourToken); // email, sub
+      final yourToken = credential.identityToken;
+      if (yourToken == null || yourToken.isEmpty) {
+        showToast(LanguageProvider.translate('error', 'apple_token_missing'));
+        return;
+      }
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(
+        yourToken,
+      ); // email, sub
       String? email = decodedToken['email'];
       String appleIdentifier = decodedToken['sub'];
       String? name;
@@ -292,10 +313,11 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-
-
-
-  Future getProfile({bool fromAddress = false,bool fromSplash = false, bool firstAddress = false}) async {
+  Future getProfile({
+    bool fromAddress = false,
+    bool fromSplash = false,
+    bool firstAddress = false,
+  }) async {
     final result = await authUseCase.getProfile();
     result.fold(
       (l) {
@@ -305,35 +327,51 @@ class AuthProvider extends ChangeNotifier {
         }
       },
       (r) {
-        loginSuccess(r, fromAddress: fromAddress, fromSplash: fromSplash,firstAddress: firstAddress);
+        loginSuccess(
+          r,
+          fromAddress: fromAddress,
+          fromSplash: fromSplash,
+          firstAddress: firstAddress,
+        );
       },
     );
   }
 
-  Future refreshToken() async {
-    String token = sharedPreferences.getString('token')!;
+  Future<bool> refreshToken() async {
+    final token = sharedPreferences.getString('token');
+    if (token == null || token.isEmpty) return false;
     Map<String, dynamic> data = {'token': token};
     final result = await authUseCase.refreshToken(data);
-    result.fold((l){
-      sharedPreferences.remove('token');
-      try {
-        Constants.globalContext()
-            .read<ConnectivityStatusProvider>()
-            .markSessionExpired();
-      } catch (_) {}
-    }, (r) {
-      sharedPreferences.setString('token', r);
-      ApiHandel.getInstance.updateHeader(r);
-    });
+    return result.fold(
+      (l) {
+        sharedPreferences.remove('token');
+        try {
+          Constants.globalContext()
+              .read<ConnectivityStatusProvider>()
+              .markSessionExpired();
+        } catch (_) {}
+        return false;
+      },
+      (r) {
+        sharedPreferences.setString('token', r);
+        ApiHandel.getInstance.updateHeader(r);
+        return true;
+      },
+    );
   }
 
   showLogoutDialog() {
     showPopUpDialog(
       title: LanguageProvider.translate('settings', 'logout'),
-      onConfirm: () {
-        final result = authUseCase.logout({
-          "token": FirebaseMessaging.instance.getToken(),
+      onConfirm: () async {
+        String? messagingToken;
+        try {
+          messagingToken = await FirebaseMessaging.instance.getToken();
+        } catch (_) {}
+        final result = await authUseCase.logout({
+          if (messagingToken != null) "token": messagingToken,
         });
+        result.fold((failure) => showToast(failure.message ?? ''), (_) {});
         successLogout();
       },
     );
@@ -364,7 +402,10 @@ class AuthProvider extends ChangeNotifier {
 
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
 
-  OtpProvider otpProvider = Provider.of(Constants.globalContext(), listen: false);
+  OtpProvider otpProvider = Provider.of(
+    Constants.globalContext(),
+    listen: false,
+  );
 
   Future<void> sendOTP({bool isResend = false}) async {
     if (!loginFormKey.currentState!.validate()) {
@@ -380,7 +421,7 @@ class AuthProvider extends ChangeNotifier {
       data[element.key] = element.controller.text.trim();
     }
     OtpProvider otpProvider = Constants.globalContext().read();
-    data['phone_code'] = defaultCountry.toString().replaceFirst('+',"");
+    data['phone_code'] = defaultCountry.toString().replaceFirst('+', "");
     loading();
     final result = await authUseCase.sendOtp(data);
     navPop();
@@ -409,9 +450,12 @@ class AuthProvider extends ChangeNotifier {
     sharedPreferences.remove('login');
     sharedPreferences.remove('phone');
     sharedPreferences.remove('token');
+    ApiHandel.getInstance.updateHeader('');
     userEntity = null;
-    Provider.of<CartProvider>(Constants.globalContext(), listen: false)
-        .resetGuestMergeFlag();
+    Provider.of<CartProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).resetGuestMergeFlag();
     goToLoginView();
   }
 
@@ -440,6 +484,7 @@ class AuthProvider extends ChangeNotifier {
   bool isGuest() {
     return this.userEntity == null;
   }
+
   void toggleTermsAccepted(bool? value) {
     termsAccepted = value ?? false;
     notifyListeners();

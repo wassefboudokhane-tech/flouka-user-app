@@ -13,7 +13,9 @@ import 'cart_provider.dart';
 
 class CouponProvider extends ChangeNotifier {
   List<CouponEntity>? couponEntity;
-  List<CouponField> couponsFields = [CouponField(controller: TextEditingController(), isApplied: false)];
+  List<CouponField> couponsFields = [
+    CouponField(controller: TextEditingController(), isApplied: false),
+  ];
   final CartUseCase cartUseCase;
   CouponProvider(this.cartUseCase);
 
@@ -25,11 +27,27 @@ class CouponProvider extends ChangeNotifier {
       couponField.isApplied = false;
       return;
     }
-    data['coupon'] = couponField.controller.text;
-    if(couponsFields.isNotEmpty){
-      List<String> coupons=[];
+    final couponCode = couponField.controller.text.trim();
+    final isDuplicate =
+        couponEntity?.any(
+          (coupon) =>
+              coupon.coupon?.trim().toLowerCase() == couponCode.toLowerCase(),
+        ) ??
+        false;
+    if (isDuplicate) {
+      lastCouponError = LanguageProvider.translate(
+        'recovery',
+        'coupon_already_applied',
+      );
+      notifyListeners();
+      return;
+    }
+    data['coupon'] = couponCode;
+    if (couponsFields.isNotEmpty) {
+      List<String> coupons = [];
       for (var element in couponsFields) {
-        coupons.add(element.controller.text);
+        final value = element.controller.text.trim();
+        if (value.isNotEmpty) coupons.add(value);
       }
       data['coupons[]'] = coupons;
     }
@@ -40,7 +58,8 @@ class CouponProvider extends ChangeNotifier {
     navPop();
     response.fold(
       (l) {
-        lastCouponError = l.message ??
+        lastCouponError =
+            l.message ??
             LanguageProvider.translate('recovery', 'coupon_invalid');
         notifyListeners();
       },
@@ -49,7 +68,9 @@ class CouponProvider extends ChangeNotifier {
         couponEntity ??= [];
         couponEntity?.add(r);
         couponField.isApplied = true;
-        couponsFields.add(CouponField(controller: TextEditingController(), isApplied: false));
+        couponsFields.add(
+          CouponField(controller: TextEditingController(), isApplied: false),
+        );
         notifyListeners();
         Provider.of<CartProvider>(
           Constants.globalContext(),
@@ -67,13 +88,18 @@ class CouponProvider extends ChangeNotifier {
     } else {
       lastCouponError = null;
       coupon.isApplied = false;
-      couponEntity?.removeWhere((element) => element.coupon == coupon.controller.text);
+      couponEntity?.removeWhere(
+        (element) => element.coupon == coupon.controller.text,
+      );
       couponsFields.remove(coupon);
       coupon.controller.clear();
       notifyListeners();
       coupon.controller.text = '';
     }
-    Provider.of<CheckoutProvider>(Constants.globalContext(), listen: false,).notifyListeners();
+    Provider.of<CheckoutProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).notifyListeners();
   }
 
   // num? calcCoupon(num price) {
@@ -94,27 +120,28 @@ class CouponProvider extends ChangeNotifier {
   //   return null;
   // }
 
-  num? calcDiscount(){
+  num? calcDiscount() {
     num discount = 0;
-    if(couponEntity!=null){
-      for(var element in couponEntity!){
-        discount += element.discount??0;
+    if (couponEntity != null) {
+      for (var element in couponEntity!) {
+        discount += element.discount ?? 0;
       }
       return discount;
     }
 
     return null;
-
   }
 
   void clear() {
     couponEntity = null;
-    couponsFields = [CouponField(controller: TextEditingController(), isApplied: false)];
+    couponsFields = [
+      CouponField(controller: TextEditingController(), isApplied: false),
+    ];
     notifyListeners();
   }
 }
 
-class CouponField{
+class CouponField {
   TextEditingController controller;
   bool isApplied;
   CouponField({required this.controller, required this.isApplied});

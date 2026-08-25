@@ -70,9 +70,9 @@ class CartProvider extends ChangeNotifier
           stockId: stockId,
           variantLabel: line.variant?.attributeValues.isNotEmpty == true
               ? line.variant!.attributeValues
-                  .map((a) => a.valueName ?? '')
-                  .where((s) => s.isNotEmpty)
-                  .join(' / ')
+                    .map((a) => a.valueName ?? '')
+                    .where((s) => s.isNotEmpty)
+                    .join(' / ')
               : null,
         ),
       );
@@ -95,41 +95,50 @@ class CartProvider extends ChangeNotifier
     }
 
     final serverResult = await cartUseCase.getCart();
+    if (serverResult.isLeft()) {
+      serverResult.fold((l) => showToast(l.message ?? ''), (_) {});
+      return;
+    }
     final serverLines = serverResult.fold((l) {
-      showToast(l.message ?? '');
       return <CartEntity>[];
     }, (r) => r);
 
-    final serverItems = serverLines.map((line) {
-      return MergeCartItem(
-        id: line.product?.id ?? 0,
-        title: line.variant?.name ?? line.product?.title ?? '',
-        vendorName: line.product?.store?.name ?? '',
-        price: line.unitPrice ?? 0,
-        image: line.product?.image,
-        qty: line.quantity ?? 1,
-        storeId: line.storeId,
-        stockId: line.storeProductStockId,
-        serverCartId: line.id,
-      );
-    }).where((i) => i.id != 0).toList();
+    final serverItems = serverLines
+        .map((line) {
+          return MergeCartItem(
+            id: line.product?.id ?? 0,
+            title: line.variant?.name ?? line.product?.title ?? '',
+            vendorName: line.product?.store?.name ?? '',
+            price: line.unitPrice ?? 0,
+            image: line.product?.image,
+            qty: line.quantity ?? 1,
+            storeId: line.storeId,
+            stockId: line.storeProductStockId,
+            serverCartId: line.id,
+          );
+        })
+        .where((i) => i.id != 0)
+        .toList();
 
     final guestMerge = guestItems.map(MergeCartItem.fromGuest).toList();
     final merged = mergeGuestIntoServer(serverItems, guestMerge);
 
     for (final item in guestItemsNeedingServerSync(merged, serverItems)) {
-      if (item.stockId == null || item.storeId == null) continue;
-      await cartUseCase.addToCart({
+      if (item.stockId == null || item.storeId == null) return;
+      final result = await cartUseCase.addToCart({
         'store_id': item.storeId,
         'quantity': item.qty,
         'store_product_stock_id': item.stockId,
       });
+      if (result.isLeft()) return;
     }
 
     for (final bump in serverQtyIncreases(merged, serverItems)) {
       for (var i = 0; i < bump.delta; i++) {
-        final result = await cartUseCase.increaseCart({'id': bump.serverCartId});
-        if (result.isLeft()) break;
+        final result = await cartUseCase.increaseCart({
+          'id': bump.serverCartId,
+        });
+        if (result.isLeft()) return;
       }
     }
 
@@ -165,10 +174,10 @@ class CartProvider extends ChangeNotifier
 
   @override
   void goToPage([Map<String, dynamic>? inputs]) async {
-    Provider.of<CouponProvider>(Constants.globalContext(), listen: false)
-        .couponsFields = [
-      CouponField(controller: TextEditingController(), isApplied: false),
-    ];
+    Provider.of<CouponProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).clear();
     await refresh();
     navP(const CartView());
     notifyListeners();
@@ -204,12 +213,7 @@ class CartProvider extends ChangeNotifier
       grouped.putIfAbsent(line.storeId, () => []).add(line);
     }
     return grouped.entries
-        .map(
-          (entry) => CartVendorGroup(
-            storeId: entry.key,
-            items: entry.value,
-          ),
-        )
+        .map((entry) => CartVendorGroup(storeId: entry.key, items: entry.value))
         .toList();
   }
 

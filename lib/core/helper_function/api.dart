@@ -17,12 +17,12 @@ import 'prefs.dart';
 class ApiHandel {
   static ApiHandel? _instance;
   late Dio dio;
+  static const Duration _connectTimeout = Duration(seconds: 10);
+  static const Duration _receiveTimeout = Duration(seconds: 15);
 
   void _markOnline() {
     try {
-      Constants.globalContext()
-          .read<ConnectivityStatusProvider>()
-          .markOnline();
+      Constants.globalContext().read<ConnectivityStatusProvider>().markOnline();
     } catch (_) {}
   }
 
@@ -51,20 +51,31 @@ class ApiHandel {
     dio = Dio(
       BaseOptions(
         baseUrl: Constants.domain,
+        connectTimeout: _connectTimeout,
+        sendTimeout: _receiveTimeout,
+        receiveTimeout: _receiveTimeout,
         // will not throw errors
         validateStatus: (status) => true,
         headers: {
           "lang": lang ?? "fr",
           'Content-Type': 'application/json',
-          "Authorization": 'Bearer $token',
+          if (token != null && token!.isNotEmpty)
+            "Authorization": 'Bearer $token',
         },
       ),
     );
     try {
       final value = await Future.wait([
         for (var i in LanguageProvider.languages)
-          Dio().get('${Constants.baseUri}app_languages/user/${i.languageCode}.json'),
-      ]);
+          Dio(
+            BaseOptions(
+              connectTimeout: _connectTimeout,
+              receiveTimeout: _receiveTimeout,
+            ),
+          ).get(
+            '${Constants.baseUri}app_languages/user/${i.languageCode}.json',
+          ),
+      ]).timeout(const Duration(seconds: 10));
       Map data = {};
       for (int i = 0; i < LanguageProvider.languages.length; i++) {
         data[LanguageProvider.languages[i].languageCode] = value[i].data;
@@ -88,9 +99,13 @@ class ApiHandel {
     }
     dio.options = BaseOptions(
       baseUrl: Constants.domain,
+      connectTimeout: _connectTimeout,
+      sendTimeout: _receiveTimeout,
+      receiveTimeout: _receiveTimeout,
+      validateStatus: (status) => true,
       // baseUrl: Constants.domain,
       headers: {
-        "Authorization": 'Bearer $token',
+        if (token.isNotEmpty) "Authorization": 'Bearer $token',
         "lang": lang ?? "fr",
         'Content-Type': 'application/json',
       },
@@ -140,8 +155,7 @@ class ApiHandel {
   Future<Either<DioException, Response>> delete(
     path, [
     Map<String, dynamic>? data,
-  ]) async
-  {
+  ]) async {
     try {
       await reLogin(path);
       cancelToken = CancelToken();
@@ -184,7 +198,6 @@ class ApiHandel {
     try {
       await reLogin(path);
 
-
       cancelToken = CancelToken();
       Response response = await dio.post(
         path,
@@ -196,7 +209,8 @@ class ApiHandel {
 
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
-          ((!response.data.containsKey('code')) || response.data['code'] == 200)) {
+          ((!response.data.containsKey('code')) ||
+              response.data['code'] == 200)) {
         _markOnline();
         return Right(response);
       }
@@ -259,7 +273,7 @@ class ApiHandel {
         await getDownloadPath(path.split('/').last),
         cancelToken: cancelToken,
       );
-      if (response.statusCode == 200 && response.data['code'] == 200) {
+      if (response.statusCode == 200) {
         return Right(response);
       }
       return Left(dioException(response));
@@ -279,8 +293,25 @@ class ApiHandel {
 
   Future reLogin(String url) async {
     String? token = sharedPreferences.getString('token');
-    if (!url.contains('refresh_token') && token != null && token.isNotEmpty && JwtDecoder.isExpired(token)) {
-      await Provider.of<AuthProvider>(Constants.globalContext(), listen: false,).refreshToken();
+    if (!url.contains('refresh_token') &&
+        token != null &&
+        token.isNotEmpty &&
+        JwtDecoder.isExpired(token)) {
+      final refreshed = await Provider.of<AuthProvider>(
+        Constants.globalContext(),
+        listen: false,
+      ).refreshToken();
+      if (!refreshed) {
+        final request = RequestOptions(baseUrl: Constants.domain, path: url);
+        throw DioException(
+          requestOptions: request,
+          response: Response(
+            requestOptions: request,
+            statusCode: 401,
+            data: const {'message': 'Session expired'},
+          ),
+        );
+      }
     }
   }
 }

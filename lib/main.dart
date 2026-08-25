@@ -15,8 +15,7 @@ import 'core/models/local_notifications.dart';
 import 'features/language/presentation/provider/language_provider.dart';
 import 'firebase_options.dart';
 import 'flouka_app.dart';
-import 'http_overrides_stub.dart'
-    if (dart.library.io) 'http_overrides_io.dart';
+import 'http_overrides_stub.dart' if (dart.library.io) 'http_overrides_io.dart';
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage event) async {
@@ -30,7 +29,9 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage event) async {
   }
 }
 
-Future<void> localMessagingBackgroundHandler(NotificationResponse response) async {
+Future<void> localMessagingBackgroundHandler(
+  NotificationResponse response,
+) async {
   clickNoti(response.payload!);
 }
 
@@ -78,6 +79,10 @@ void main() async {
 
   final language = LanguageProvider();
   await language.fetchLocale();
+  ApiHandel.getInstance.updateHeader(
+    sharedPreferences.getString('token') ?? '',
+    language: language.appLocal.languageCode,
+  );
   await init();
   runApp(MyApp(language: language));
 }

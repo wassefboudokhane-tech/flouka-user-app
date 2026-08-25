@@ -45,12 +45,11 @@ class NavBarProvider extends ChangeNotifier {
 
   List<BottomNaBarEntity> bottomNavigationBarItemEntity = [];
 
-  void goToNavView({bool fromSplash = false}) async{
-
+  void goToNavView({bool fromSplash = false}) async {
     currentIndex = 0;
-    if(!fromSplash)loading();
+    if (!fromSplash) loading();
     await getAllData();
-    if(!fromSplash)navPop();
+    if (!fromSplash) navPop();
     bottomNavigationBarItemEntity = [
       BottomNaBarEntity(
         index: 0,
@@ -77,33 +76,78 @@ class NavBarProvider extends ChangeNotifier {
     navPARU(const NavBarView());
   }
 
-  Future getAllData()async{
-    AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false);
-    if(!AuthProvider.isLogin()){
-      LatLng current = await determinePosition();
-      Provider.of<AuthProvider>(Constants.globalContext(),listen: false).setLatLng(current);
+  Future getAllData() async {
+    AuthProvider authProvider = Provider.of(
+      Constants.globalContext(),
+      listen: false,
+    );
+    if (!AuthProvider.isLogin()) {
+      final current = await determinePosition();
+      if (current != null) {
+        Provider.of<AuthProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).setLatLng(current);
+      }
     }
-     Future.wait([
-      Provider.of<BestProductsProvider>(Constants.globalContext(), listen: false,).refresh(),
-      Provider.of<FilterProductProvider>(Constants.globalContext(), listen: false,).getData(),
-      Provider.of<StoresProvider>(Constants.globalContext(), listen: false,).getHomeStores(),
-      Provider.of<OfferSectionProvider>(Constants.globalContext(), listen: false,).getData(),
-      Provider.of<StoryProvider>(Constants.globalContext(), listen: false).getData(),
-      Provider.of<CategoryProvider>(Constants.globalContext(), listen: false,).getCategories(),
-      Provider.of<PopularCategoriesProvider>(Constants.globalContext(), listen: false,).getCategories(),
-      Provider.of<RecommendProductsProvider>(Constants.globalContext(), listen: false,).getRecommendedHomeData(),
-      Provider.of<HomeProductsProvider>(Constants.globalContext(), listen: false,).getProducts(),
-    ]);
-     Provider.of<VideoProvider>(Constants.globalContext(), listen: false,).refresh();
-    if(AuthProvider.isLogin()){
-      await Provider.of<CartProvider>(Constants.globalContext(), listen: false)
-          .syncGuestCartAfterLogin();
+    try {
+      await Future.wait([
+        Provider.of<BestProductsProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).refresh(),
+        Provider.of<FilterProductProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getData(),
+        Provider.of<StoresProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getHomeStores(),
+        Provider.of<OfferSectionProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getData(),
+        Provider.of<StoryProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getData(),
+        Provider.of<CategoryProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getCategories(),
+        Provider.of<PopularCategoriesProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getCategories(),
+        Provider.of<RecommendProductsProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getRecommendedHomeData(),
+        Provider.of<HomeProductsProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getProducts(),
+        Provider.of<VideoProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).refresh(),
+      ]).timeout(const Duration(seconds: 15));
+    } catch (error) {
+      debugPrint('Home preload failed or timed out: $error');
+    }
+    if (AuthProvider.isLogin()) {
+      await Provider.of<CartProvider>(
+        Constants.globalContext(),
+        listen: false,
+      ).syncGuestCartAfterLogin();
     } else {
-      Provider.of<CartProvider>(Constants.globalContext(), listen: false)
-          .loadGuestCart();
+      Provider.of<CartProvider>(
+        Constants.globalContext(),
+        listen: false,
+      ).loadGuestCart();
     }
   }
-
 
   void setExploreTabIndex(int index) {
     if (exploreTabIndex != index) {
@@ -113,23 +157,31 @@ class NavBarProvider extends ChangeNotifier {
   }
 
   void changeIndex(int index) {
-   if(index!=currentIndex){
-     if(index==1){
-       Provider.of<SubcategoryProvider>(Constants.globalContext(),listen: false).clear();
-     }
-     if(index==2){
-       Provider.of<OrderProvider>(Constants.globalContext(),listen: false).refresh();
-     }
-     if(index==3){
-       Provider.of<SettingsProvider>(Constants.globalContext(),listen: false).getData();
-     }
-     currentIndex = index;
-     notifyListeners();
-   }
+    if (index != currentIndex) {
+      if (index == 1) {
+        Provider.of<SubcategoryProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).clear();
+      }
+      if (index == 2) {
+        Provider.of<OrderProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).refresh();
+      }
+      if (index == 3) {
+        Provider.of<SettingsProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getData();
+      }
+      currentIndex = index;
+      notifyListeners();
+    }
   }
 
   bool isSelected(int index) {
     return currentIndex == index;
   }
-
 }

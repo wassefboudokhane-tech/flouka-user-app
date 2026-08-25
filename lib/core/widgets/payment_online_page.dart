@@ -5,6 +5,7 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/helper_function/navigation.dart';
 import '../../features/language/presentation/provider/language_provider.dart';
 import '../helper_function/api.dart';
+import '../models/payment_result.dart';
 
 class PaymentOnlinePage extends StatefulWidget {
   final num total;
@@ -17,7 +18,15 @@ class PaymentOnlinePage extends StatefulWidget {
 
 class _PaymentOnlinePageState extends State<PaymentOnlinePage> {
   WebViewController controller = WebViewController();
-  // bool hasNavigated = false; // Flag to prevent multiple navigations
+  bool hasNavigated = false;
+
+  NavigationDecision _finish(String result) {
+    if (hasNavigated) return NavigationDecision.prevent;
+    hasNavigated = true;
+    Navigator.of(context).pop(result);
+    return NavigationDecision.prevent;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,18 +46,11 @@ class _PaymentOnlinePageState extends State<PaymentOnlinePage> {
           },
           onNavigationRequest: (NavigationRequest request) {
             String url = request.url;
-            if (url.contains('status=failed') && !url.contains('callback')) {
-              // hasNavigated = true; // Set the flag
-              navPop('field');
-              return NavigationDecision.prevent;
-              // controller.loadRequest(Uri.parse("about:blank")); // Clear WebView
-            } else if (url.contains('status=paid') && !url.contains('callback')) {
-              // hasNavigated = true; // Set the flag
+            final result = PaymentResult.fromUrl(url);
+            if (result != null) {
               debugPrint('paid');
               debugPrint(url);
-              navPop('paid');
-              return NavigationDecision.prevent;
-              // controller.loadRequest(Uri.parse("about:blank")); // Clear WebView
+              return _finish(result);
             }
 
             return NavigationDecision.navigate;

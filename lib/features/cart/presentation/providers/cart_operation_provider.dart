@@ -88,7 +88,10 @@ extension CartOperations on CartProvider {
       (l) {
         showToast(l.message!);
       },
-      (r) {},
+      (r) {
+        data = [];
+        rebuild();
+      },
     );
   }
 
@@ -131,8 +134,10 @@ extension CartOperations on CartProvider {
     String? variantLabel,
   }) async {
     if (isGuestMode ||
-        Provider.of<AuthProvider>(Constants.globalContext(), listen: false)
-                .userEntity ==
+        Provider.of<AuthProvider>(
+              Constants.globalContext(),
+              listen: false,
+            ).userEntity ==
             null) {
       if (productId == null) {
         showToast(LanguageProvider.translate('error', 'error'));

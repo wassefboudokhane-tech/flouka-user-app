@@ -13,6 +13,7 @@ import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/helper_function/loading.dart';
 import '../../../../core/helper_function/navigation.dart';
 import '../../../../core/network/recovery_error_handler.dart';
+import '../../../../core/models/payment_result.dart';
 import '../../../../core/widgets/payment_online_page.dart';
 import '../../../address/presentation/providers/address_provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -45,12 +46,14 @@ class CheckoutProvider extends ChangeNotifier {
     }
     return convertDataToNum(sub.toStringAsFixed(2))!;
   }
+
   num deliveryPrice() {
-    if(getFreeDelivery()){
+    if (getFreeDelivery()) {
       return 0;
     }
-    final settings =
-    Constants.globalContext().read<SettingsProvider>().settingsEntity!;
+    final settings = Constants.globalContext()
+        .read<SettingsProvider>()
+        .settingsEntity!;
 
     final num basePrice = settings.deliveryPrice;
 
@@ -65,45 +68,59 @@ class CheckoutProvider extends ChangeNotifier {
   }
 
   num tax() {
-    SettingsProvider settingsProvider=Provider.of<SettingsProvider>(Constants.globalContext(), listen: false,);
-    return convertDataToNum((((settingsProvider.settingsEntity?.tax??0) / 100) *
-        (subtotal() - (couponProvider.calcDiscount() ?? 0))).toStringAsFixed(2))!;
-
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    return convertDataToNum(
+      (((settingsProvider.settingsEntity?.tax ?? 0) / 100) *
+              (subtotal() - (couponProvider.calcDiscount() ?? 0)))
+          .toStringAsFixed(2),
+    )!;
   }
 
   num total() {
-    CouponProvider couponProvider=Provider.of<CouponProvider>(Constants.globalContext(), listen: false,);
-    return convertDataToNum((subtotal() + tax()).toStringAsFixed(2))! - ((couponProvider.calcDiscount() ?? 0))+deliveryPrice() ;
+    CouponProvider couponProvider = Provider.of<CouponProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
+    return convertDataToNum((subtotal() + tax()).toStringAsFixed(2))! -
+        ((couponProvider.calcDiscount() ?? 0)) +
+        deliveryPrice();
   }
 
-  num diffDeliveryNeed(){
-    SettingsEntity settingsEntity = Constants.globalContext().read<SettingsProvider>().settingsEntity!;
-    return max(settingsEntity.minFreeDelivery-subtotal(), 0);
+  num diffDeliveryNeed() {
+    SettingsEntity settingsEntity = Constants.globalContext()
+        .read<SettingsProvider>()
+        .settingsEntity!;
+    return max(settingsEntity.minFreeDelivery - subtotal(), 0);
   }
 
   double freeDeliveryProgress() {
-    final settings =
-        Constants.globalContext().read<SettingsProvider>().settingsEntity;
+    final settings = Constants.globalContext()
+        .read<SettingsProvider>()
+        .settingsEntity;
     if (settings == null || settings.minFreeDelivery <= 0) {
       return 1;
     }
     return (subtotal() / settings.minFreeDelivery).clamp(0.0, 1.0);
   }
 
-  String? freeDelvieryText(){
-
-    if(diffDeliveryNeed()>0){
-      return LanguageProvider.translate('global', 'but_more_for_free_delivery').replaceAll('*num*',
-          diffDeliveryNeed().toStringAsFixed(2));
+  String? freeDelvieryText() {
+    if (diffDeliveryNeed() > 0) {
+      return LanguageProvider.translate(
+        'global',
+        'but_more_for_free_delivery',
+      ).replaceAll('*num*', diffDeliveryNeed().toStringAsFixed(2));
     }
-    if((cart.data?.length??0)==1){
+    if ((cart.data?.length ?? 0) == 1) {
       return LanguageProvider.translate('global', 'buy_one_more');
     }
     return LanguageProvider.translate('global', 'free_delivery');
   }
 
-  bool getFreeDelivery(){
-    return diffDeliveryNeed()==0&&(cart.data?.length??0)>1;
+  bool getFreeDelivery() {
+    return diffDeliveryNeed() == 0 && (cart.data?.length ?? 0) > 1;
   }
 
   CouponEntity? couponEntity;
@@ -148,8 +165,7 @@ class CheckoutProvider extends ChangeNotifier {
       'discount': couponProvider.calcDiscount() ?? 0,
     };
     for (int i = 0; i < (couponProvider.couponEntity?.length ?? 0); i++) {
-      dataToUse['coupons[$i][coupon]'] =
-          couponProvider.couponEntity?[i].coupon;
+      dataToUse['coupons[$i][coupon]'] = couponProvider.couponEntity?[i].coupon;
       dataToUse['coupons[$i][discount]'] =
           couponProvider.couponEntity?[i].discount;
     }
@@ -292,15 +308,16 @@ class CheckoutProvider extends ChangeNotifier {
     Constants.globalContext(),
     listen: false,
   );
-  final cart = Provider.of<CartProvider>(Constants.globalContext(), listen: false);
+  final cart = Provider.of<CartProvider>(
+    Constants.globalContext(),
+    listen: false,
+  );
 
-  bool  termsAccepted = false;
-  void toggleTermsAccepted(bool val){
+  bool termsAccepted = false;
+  void toggleTermsAccepted(bool val) {
     termsAccepted = val;
     notifyListeners();
   }
-
-
 
   void makeOrder() async {
     if (selectedPaymentMethod.toAPI == 'online') {
@@ -311,15 +328,14 @@ class CheckoutProvider extends ChangeNotifier {
         navP(
           PaymentOnlinePage(total: total(), type: 'order_$orderId'),
           then: (val) {
-            if (val == 'paid') {
+            if (val == PaymentResult.paid) {
               navPU();
               ordersProvider.goToPage();
               cart.clear();
-            } else if (val == 'filed') {
+            } else if (val == PaymentResult.failed) {
               showToast(LanguageProvider.translate('error', 'error'));
+              cart.refresh();
             }
-            navPU();
-            cart.refresh();
           },
         );
       });

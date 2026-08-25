@@ -21,10 +21,19 @@ class CartBubbleWidget extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        final itemLabel = LanguageProvider.translate(
-          'navbar',
-          'cart_bubble_items',
-        ).replaceAll('*num*', cart.totalItemCount.toString());
+        final count = cart.totalItemCount;
+        final itemLabel = LanguageProvider.isAr()
+            ? count == 1
+                  ? 'منتج واحد'
+                  : count == 2
+                  ? 'منتجان'
+                  : count >= 3 && count <= 10
+                  ? '$count منتجات'
+                  : '$count منتجًا'
+            : LanguageProvider.translate(
+                'navbar',
+                'cart_bubble_items',
+              ).replaceAll('*num*', count.toString());
 
         final totalLabel = LanguageProvider.translate(
           'navbar',
@@ -53,24 +62,28 @@ class CartBubbleWidget extends StatelessWidget {
                     children: [
                       Text(
                         itemLabel,
-                        style: TextStyleClass.captionStyle(
-                          color: AppColor.backgroundColor.withValues(alpha: 0.5),
-                        ).copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 9.5,
-                          height: 1,
-                        ),
+                        style:
+                            TextStyleClass.captionStyle(
+                              color: AppColor.backgroundColor.withValues(
+                                alpha: 0.5,
+                              ),
+                            ).copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 9.5,
+                              height: 1,
+                            ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         totalLabel,
-                        style: TextStyleClass.smallStyle(
-                          color: AppColor.backgroundColor,
-                        ).copyWith(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 13.5,
-                          height: 1.2,
-                        ),
+                        style:
+                            TextStyleClass.smallStyle(
+                              color: AppColor.backgroundColor,
+                            ).copyWith(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 13.5,
+                              height: 1.2,
+                            ),
                       ),
                     ],
                   ),
@@ -78,10 +91,10 @@ class CartBubbleWidget extends StatelessWidget {
                   Container(
                     width: 32,
                     height: 32,
-                  decoration: BoxDecoration(
-                    color: AppColor.limeColor,
-                    shape: BoxShape.circle,
-                  ),
+                    decoration: BoxDecoration(
+                      color: AppColor.limeColor,
+                      shape: BoxShape.circle,
+                    ),
                     alignment: Alignment.center,
                     child: Transform.translate(
                       offset: const Offset(-1, 0),

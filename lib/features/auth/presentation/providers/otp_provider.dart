@@ -13,6 +13,7 @@ import '../../domain/usecases/auth_use_case.dart';
 import '../views/otp_view.dart';
 import '../widgets/country_widget.dart';
 import 'auth_provider.dart';
+import 'complete_info_provider.dart';
 
 class OtpProvider extends ChangeNotifier {
   final AuthUseCase authUsceCase;
@@ -27,11 +28,13 @@ class OtpProvider extends ChangeNotifier {
   }
 
   String _otpValue = '';
+  String? lastOtpError;
 
   bool get isOtpComplete => _otpValue.length == 4;
 
   void onOtpChanged(String value) {
     _otpValue = value;
+    if (lastOtpError != null) lastOtpError = null;
     notifyListeners();
   }
 
@@ -39,6 +42,7 @@ class OtpProvider extends ChangeNotifier {
   void prepareOtpStep() {
     otpController = PinInputController();
     _otpValue = '';
+    lastOtpError = null;
     startTimer();
   }
 
@@ -80,24 +84,41 @@ class OtpProvider extends ChangeNotifier {
     Map<String, dynamic> data = {};
     data["otp"] = otpController.text.trim();
     data["phone"] = authProvider.loginTextFieldList[0].controller.text;
-    data['phone_code'] = defaultCountry.toString().replaceFirst('+',"");
+    data['phone_code'] = defaultCountry.toString().replaceFirst('+', "");
     loading();
     final result = await authUsceCase.checkCode(data);
     navPop();
-    result.fold((l) => showToast(l.message!), (r) async {
-      final pendingAddress = PendingAddressStore.hasData;
-      authProvider.loginSuccess(r, skipHome: pendingAddress);
-      if (pendingAddress) {
-        // Close OTP sheet/page before creating address.
-        if (Navigator.of(Constants.globalContext()).canPop()) {
-          navPop();
+    await result.fold(
+      (l) async {
+        lastOtpError =
+            l.message ?? LanguageProvider.translate('error', 'error');
+        notifyListeners();
+        showToast(lastOtpError!);
+      },
+      (r) async {
+        final pendingAddress = PendingAddressStore.hasData;
+        final needsProfile = r.name == null || r.name!.trim().isEmpty;
+        await authProvider.loginSuccess(
+          r,
+          skipHome: pendingAddress || needsProfile,
+        );
+        if (pendingAddress) {
+          // Close OTP sheet/page before creating address.
+          if (Navigator.of(Constants.globalContext()).canPop()) {
+            navPop();
+          }
+          await Provider.of<AddressDetailsProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).flushPendingAddress();
+        } else if (needsProfile) {
+          Provider.of<CompleteInfoProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).goToCompleteInfoView();
         }
-        await Provider.of<AddressDetailsProvider>(
-          Constants.globalContext(),
-          listen: false,
-        ).flushPendingAddress();
-      }
-    });
+      },
+    );
   }
 
   String sendCode(value) {
@@ -116,10 +137,10 @@ class OtpProvider extends ChangeNotifier {
 
     Map<String, dynamic> data = {};
     data["phone"] = authProvider.loginTextFieldList[0].controller.text;
-    if(otpPhoneCode?.isEmpty??true){
+    if (otpPhoneCode?.isEmpty ?? true) {
       otpPhoneCode = defaultCountry;
     }
-    data['phone_code'] = otpPhoneCode.toString().replaceFirst('+',"");
+    data['phone_code'] = otpPhoneCode.toString().replaceFirst('+', "");
     loading();
     final result = await authUsceCase.sendOtp(data);
     navPop();

@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -28,6 +27,8 @@
         android:label="Flouka"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
 
     <!-- Google Maps API Key -->
         <meta-data

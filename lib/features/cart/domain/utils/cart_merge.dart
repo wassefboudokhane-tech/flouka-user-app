@@ -11,6 +11,8 @@ class MergeCartItem {
   final int? stockId;
   final int? serverCartId;
 
+  String get mergeKey => '${storeId ?? 0}:${stockId ?? 'product:$id'}';
+
   const MergeCartItem({
     required this.id,
     required this.title,
@@ -61,19 +63,19 @@ class MergeCartItem {
 }
 
 /// Merge guest local cart into existing server-mapped items.
-/// Guest wins on qty when same product id already exists on server.
+/// Variants are distinct lines; stock id (plus store) is the stable identity.
 List<MergeCartItem> mergeGuestIntoServer(
   List<MergeCartItem> serverItems,
   List<MergeCartItem> guestItems,
 ) {
-  final byId = <int, MergeCartItem>{};
+  final byId = <String, MergeCartItem>{};
   for (final item in serverItems) {
-    byId[item.id] = item;
+    byId[item.mergeKey] = item;
   }
   for (final guest in guestItems) {
-    final existing = byId[guest.id];
+    final existing = byId[guest.mergeKey];
     if (existing != null) {
-      byId[guest.id] = existing.copyWith(
+      byId[guest.mergeKey] = existing.copyWith(
         qty: existing.qty > guest.qty ? existing.qty : guest.qty,
         title: existing.title.isNotEmpty ? existing.title : guest.title,
         vendorName: existing.vendorName.isNotEmpty
@@ -85,7 +87,7 @@ List<MergeCartItem> mergeGuestIntoServer(
         stockId: existing.stockId ?? guest.stockId,
       );
     } else {
-      byId[guest.id] = guest.copyWith(serverCartId: null);
+      byId[guest.mergeKey] = guest.copyWith(serverCartId: null);
     }
   }
   return byId.values.toList();
@@ -95,11 +97,11 @@ List<MergeCartItem> guestItemsNeedingServerSync(
   List<MergeCartItem> merged,
   List<MergeCartItem> serverItems,
 ) {
-  final serverIds = serverItems.map((i) => i.id).toSet();
+  final serverIds = serverItems.map((i) => i.mergeKey).toSet();
   return merged
       .where(
         (i) =>
-            !serverIds.contains(i.id) &&
+            !serverIds.contains(i.mergeKey) &&
             i.stockId != null &&
             i.storeId != null,
       )
@@ -110,10 +112,10 @@ List<({int serverCartId, int delta})> serverQtyIncreases(
   List<MergeCartItem> merged,
   List<MergeCartItem> serverItems,
 ) {
-  final serverById = {for (final i in serverItems) i.id: i};
+  final serverById = {for (final i in serverItems) i.mergeKey: i};
   final result = <({int serverCartId, int delta})>[];
   for (final item in merged) {
-    final server = serverById[item.id];
+    final server = serverById[item.mergeKey];
     final serverCartId = server?.serverCartId;
     if (serverCartId == null) continue;
     final delta = item.qty - server!.qty;

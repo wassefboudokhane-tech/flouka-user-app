@@ -41,13 +41,45 @@ class ProductsDetailsView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColor.canvasColor,
         appBar: null,
-        bottomNavigationBar: productDetailsProvider.data != null &&
+        bottomNavigationBar:
+            productDetailsProvider.data != null &&
                 productDetailsProvider.shouldShowAddToCart()
             ? const ProductDetailsBuyFooterWidget()
             : null,
         body: Builder(
           builder: (context) {
             if (productDetailsProvider.data == null) {
+              if (productDetailsProvider.errorMessage != null) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.pageGutter),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.error_outline, size: 44),
+                        const SizedBox(height: 12),
+                        Text(
+                          productDetailsProvider.errorMessage!,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        FilledButton(
+                          onPressed: productDetailsProvider.refresh,
+                          child: Text(
+                            LanguageProvider.translate('buttons', 'retry'),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: productDetailsProvider.backToLastProduct,
+                          child: Text(
+                            LanguageProvider.translate('buttons', 'back'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
               return const Center(
                 child: LoadingAnimationWidget(gif: Lotties.loading),
               );
@@ -60,10 +92,9 @@ class ProductsDetailsView extends StatelessWidget {
             final rawStrike = variant != null
                 ? (variant.offerPrice != null ? variant.price : null)
                 : (product.offerPrice != null ? product.price : null);
-            final strikePrice =
-                (rawStrike != null && rawStrike != displayPrice)
-                    ? rawStrike
-                    : null;
+            final strikePrice = (rawStrike != null && rawStrike != displayPrice)
+                ? rawStrike
+                : null;
 
             return SingleChildScrollView(
               padding: const EdgeInsets.only(bottom: 24),
@@ -94,8 +125,10 @@ class ProductsDetailsView extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: product.store!.name.toUpperCase(),
-                                  style: TextStyleClass.vendorStyle()
-                                      .copyWith(fontSize: 11.5, height: 1),
+                                  style: TextStyleClass.vendorStyle().copyWith(
+                                    fontSize: 11.5,
+                                    height: 1,
+                                  ),
                                 ),
                                 if (product.store!.address.isNotEmpty)
                                   TextSpan(
@@ -112,14 +145,15 @@ class ProductsDetailsView extends StatelessWidget {
                         const SizedBox(height: 6),
                         Text(
                           product.title ?? '',
-                          style: TextStyleClass.semiHeadStyle(
-                            color: AppColor.inkColor,
-                          ).copyWith(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            height: 1.24,
-                            letterSpacing: -0.01,
-                          ),
+                          style:
+                              TextStyleClass.semiHeadStyle(
+                                color: AppColor.inkColor,
+                              ).copyWith(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                height: 1.24,
+                                letterSpacing: -0.01,
+                              ),
                         ),
                         const SizedBox(height: 11),
                         Row(
@@ -133,23 +167,25 @@ class ProductsDetailsView extends StatelessWidget {
                             const SizedBox(width: 9),
                             Text(
                               LanguageProvider.translate('global', 'currency'),
-                              style: TextStyleClass.smallStyle(
-                                color: AppColor.mutedColor,
-                              ).copyWith(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                              ),
+                              style:
+                                  TextStyleClass.smallStyle(
+                                    color: AppColor.mutedColor,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13,
+                                  ),
                             ),
                             if (strikePrice != null) ...[
                               const SizedBox(width: 9),
                               Text(
                                 '$strikePrice',
-                                style: TextStyleClass.smallStyle(
-                                  color: AppColor.mutedColor,
-                                ).copyWith(
-                                  decoration: TextDecoration.lineThrough,
-                                  fontSize: 13,
-                                ),
+                                style:
+                                    TextStyleClass.smallStyle(
+                                      color: AppColor.mutedColor,
+                                    ).copyWith(
+                                      decoration: TextDecoration.lineThrough,
+                                      fontSize: 13,
+                                    ),
                               ),
                             ],
                             if ((product.discountPercentage ?? 0) > 0) ...[
@@ -161,17 +197,19 @@ class ProductsDetailsView extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: AppColor.redSoft,
-                                  borderRadius:
-                                      BorderRadius.circular(AppRadius.pill),
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.pill,
+                                  ),
                                 ),
                                 child: Text(
                                   '-${product.discountPercentage!.toStringAsFixed(0)}%',
-                                  style: TextStyleClass.captionStyle(
-                                    color: AppColor.DealColor,
-                                  ).copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 11,
-                                  ),
+                                  style:
+                                      TextStyleClass.captionStyle(
+                                        color: AppColor.DealColor,
+                                      ).copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 11,
+                                      ),
                                 ),
                               ),
                             ],
@@ -208,8 +246,9 @@ class ProductsDetailsView extends StatelessWidget {
                             'global',
                             'Proudact Reating & Reviwes',
                           ),
-                          style: TextStyleClass.normalStyle()
-                              .copyWith(fontWeight: FontWeight.w700),
+                          style: TextStyleClass.normalStyle().copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         AvgRatingWidget(rating: product.rate ?? 0),
                         if (product.reviewImages.isNotEmpty) ...[
@@ -278,11 +317,14 @@ class ProductsDetailsView extends StatelessWidget {
                               'global',
                               'Frequently Bought Together',
                             ),
-                            style: TextStyleClass.normalStyle()
-                                .copyWith(fontWeight: FontWeight.w700),
+                            style: TextStyleClass.normalStyle().copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           const SizedBox(height: 10),
-                          FrequentlyListWidget(relatedProducts: product.related),
+                          FrequentlyListWidget(
+                            relatedProducts: product.related,
+                          ),
                         ],
                       ),
                     ),
@@ -300,12 +342,10 @@ class ProductsDetailsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            LanguageProvider.translate(
-                              'global',
-                              'Description',
+                            LanguageProvider.translate('global', 'Description'),
+                            style: TextStyleClass.normalStyle().copyWith(
+                              fontWeight: FontWeight.w700,
                             ),
-                            style: TextStyleClass.normalStyle()
-                                .copyWith(fontWeight: FontWeight.w700),
                           ),
                           const SizedBox(height: 10),
                           Text(
@@ -343,10 +383,10 @@ class _ChatVendorButton extends StatelessWidget {
           showGuestDialog();
           return;
         }
-        Provider.of<MessageProvider>(context, listen: false).goToMessagePage(
-          orderId: 0,
-          storeId: storeId,
-        );
+        Provider.of<MessageProvider>(
+          context,
+          listen: false,
+        ).goToMessagePage(orderId: 0, storeId: storeId);
       },
       icon: Icon(
         Icons.chat_bubble_outline,
@@ -355,8 +395,9 @@ class _ChatVendorButton extends StatelessWidget {
       ),
       label: Text(
         LanguageProvider.translate('global', 'chat_vendor'),
-        style: TextStyleClass.smallStyle(color: AppColor.deepColor)
-            .copyWith(fontWeight: FontWeight.w700),
+        style: TextStyleClass.smallStyle(
+          color: AppColor.deepColor,
+        ).copyWith(fontWeight: FontWeight.w700),
       ),
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColor.deepColor,

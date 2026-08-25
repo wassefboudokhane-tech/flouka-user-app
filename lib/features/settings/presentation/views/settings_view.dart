@@ -81,10 +81,8 @@ class _SettingsViewState extends State<SettingsView> {
     final tickets = context.watch<TicketsProvider>();
     final language = context.watch<LanguageProvider>();
 
-    final openTickets = tickets.tickets
-            ?.where((t) => t.status != 'closed')
-            .length ??
-        0;
+    final openTickets =
+        tickets.tickets?.where((t) => t.status != 'closed').length ?? 0;
 
     return Scaffold(
       backgroundColor: AppColor.canvasColor,
@@ -128,12 +126,13 @@ class _SettingsViewState extends State<SettingsView> {
                         child: user?.image == null
                             ? Text(
                                 _initials(user?.name),
-                                style: TextStyleClass.semiHeadStyle(
-                                  color: AppColor.deepColor,
-                                ).copyWith(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 20,
-                                ),
+                                style:
+                                    TextStyleClass.semiHeadStyle(
+                                      color: AppColor.deepColor,
+                                    ).copyWith(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 20,
+                                    ),
                               )
                             : null,
                       ),
@@ -148,13 +147,14 @@ class _SettingsViewState extends State<SettingsView> {
                                     'settings',
                                     'hi_guest',
                                   ),
-                              style: TextStyleClass.semiHeadStyle(
-                                color: Colors.white,
-                              ).copyWith(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 18,
-                                height: 1.1,
-                              ),
+                              style:
+                                  TextStyleClass.semiHeadStyle(
+                                    color: Colors.white,
+                                  ).copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 18,
+                                    height: 1.1,
+                                  ),
                             ),
                             if (user?.phone != null) ...[
                               const SizedBox(height: 4),
@@ -174,6 +174,8 @@ class _SettingsViewState extends State<SettingsView> {
                             context
                                 .read<CompleteInfoProvider>()
                                 .goToCompleteInfoView(isEdit: true);
+                          } else {
+                            auth.goToLoginView();
                           }
                         },
                         style: TextButton.styleFrom(
@@ -191,8 +193,13 @@ class _SettingsViewState extends State<SettingsView> {
                         ),
                         child: Text(
                           LanguageProvider.translate('buttons', 'EDIT'),
-                          style: TextStyleClass.captionStyle(color: Colors.white)
-                              .copyWith(fontWeight: FontWeight.w700, fontSize: 11.5),
+                          style:
+                              TextStyleClass.captionStyle(
+                                color: Colors.white,
+                              ).copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 11.5,
+                              ),
                         ),
                       ),
                     ],
@@ -215,9 +222,8 @@ class _SettingsViewState extends State<SettingsView> {
                           'settings',
                           'wallet_balance',
                         ),
-                        onTap: () => context
-                            .read<WalletProvider>()
-                            .goToWalletPage(),
+                        onTap: () =>
+                            context.read<WalletProvider>().goToWalletPage(),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -229,8 +235,7 @@ class _SettingsViewState extends State<SettingsView> {
                           'active_orders',
                         ),
                         showDot: _activeOrders(orders.data) > 0,
-                        onTap: () =>
-                            context.read<OrderProvider>().goToPage(),
+                        onTap: () => context.read<OrderProvider>().goToPage(),
                       ),
                     ),
                   ],
@@ -277,8 +282,9 @@ class _SettingsViewState extends State<SettingsView> {
                     title: LanguageProvider.translate('settings', 'support'),
                     badge: openTickets > 0 ? '$openTickets' : null,
                     onTap: () {
-                      settingsProvider.generalSettings
-                          .firstWhere((e) => e['title'] == 'support')['onTap']();
+                      settingsProvider.generalSettings.firstWhere(
+                        (e) => e['title'] == 'support',
+                      )['onTap']();
                     },
                   ),
                   ProfileMenuRowWidget(
@@ -288,7 +294,10 @@ class _SettingsViewState extends State<SettingsView> {
                     showChevron: false,
                   ),
                   ProfileMenuRowWidget(
-                    title: LanguageProvider.translate('settings', 'notifications'),
+                    title: LanguageProvider.translate(
+                      'settings',
+                      'notifications',
+                    ),
                     onTap: () => context
                         .read<NotificationProvider>()
                         .goToNotificationPage(),
@@ -350,8 +359,9 @@ class _StatCard extends StatelessWidget {
                 children: [
                   Text(
                     value,
-                    style: TextStyleClass.headStyle(color: AppColor.deepColor)
-                        .copyWith(fontSize: 22, fontWeight: FontWeight.w800),
+                    style: TextStyleClass.headStyle(
+                      color: AppColor.deepColor,
+                    ).copyWith(fontSize: 22, fontWeight: FontWeight.w800),
                   ),
                   if (showDot) ...[
                     const SizedBox(width: 6),
@@ -369,8 +379,9 @@ class _StatCard extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 label,
-                style: TextStyleClass.captionStyle(color: AppColor.mutedColor)
-                    .copyWith(fontSize: 11, height: 1.3),
+                style: TextStyleClass.captionStyle(
+                  color: AppColor.mutedColor,
+                ).copyWith(fontSize: 11, height: 1.3),
               ),
             ],
           ),
@@ -402,10 +413,10 @@ class _MenuSection extends StatelessWidget {
             title.toUpperCase(),
             style: TextStyleClass.captionStyle(color: AppColor.mutedColor)
                 .copyWith(
-              fontWeight: FontWeight.w800,
-              fontSize: 11,
-              letterSpacing: 0.1,
-            ),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 11,
+                  letterSpacing: 0.1,
+                ),
           ),
           const SizedBox(height: 9),
           Container(

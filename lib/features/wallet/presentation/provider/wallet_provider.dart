@@ -11,6 +11,7 @@ import '../../../../core/helper_function/convert.dart';
 import '../../../../core/helper_function/helper_function.dart';
 import '../../../../core/helper_function/navigation.dart';
 import '../../../../core/models/pagination_class.dart';
+import '../../../../core/models/payment_result.dart';
 import '../../../../core/widgets/payment_online_page.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
@@ -27,7 +28,8 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
   Future walletOperations() async {
     Map<String, dynamic> data = {};
     data['page'] = pageIndex;
-    Either<DioException, List<OperationEntity>> login = await walletUseCases.walletOperations(data);
+    Either<DioException, List<OperationEntity>> login = await walletUseCases
+        .walletOperations(data);
     login.fold(
       (l) {
         showToast("${l.message}");
@@ -48,10 +50,10 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
 
   void goToWalletPage() {
     if (AuthProvider.isLogin()) {
-    refresh();
-    navP(const UserWalletHome());
+      refresh();
+      navP(const UserWalletHome());
     } else {
-    showGuestDialog();
+      showGuestDialog();
     }
   }
 
@@ -86,7 +88,10 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
   TextEditingController walletChargeController = TextEditingController();
 
   void decreaseWallet(num price) {
-    AuthProvider authProvider = Provider.of<AuthProvider>(Constants.globalContext(), listen: false,);
+    AuthProvider authProvider = Provider.of<AuthProvider>(
+      Constants.globalContext(),
+      listen: false,
+    );
     authProvider.userEntity!.wallet = (authProvider.userEntity!.wallet) - price;
     authProvider.rebuild();
   }
@@ -141,7 +146,7 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
     navP(
       PaymentOnlinePage(total: convertDataToNum(value)!, type: 'wallet'),
       then: (val) {
-        if (val == 'paid') {
+        if (val == PaymentResult.paid) {
           // SettingsProvider userProfileProvider = Provider.of(
           //   Constants.globalContext(),
           //   listen: false,
@@ -151,7 +156,7 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
               authProvider.userEntity!.wallet + convertDataToNum(value)!;
           authProvider.rebuild();
           notifyListeners();
-        } else if (val == 'filed') {
+        } else if (val == PaymentResult.failed) {
           showToast(LanguageProvider.translate('error', 'error'));
         }
       },

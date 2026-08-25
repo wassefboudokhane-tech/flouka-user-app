@@ -11,26 +11,38 @@ import '../../banners/presentation/provider/banners_provider.dart';
 import '../../navbar/presentation/provider/nav_bar_provider.dart';
 
 class SplashProvider extends ChangeNotifier {
-
   void startApp() async {
     bool isFirstTime = !(sharedPreferences.getBool('onBoarding') ?? false);
     final context = Constants.globalContext();
     var auth = Provider.of<AuthProvider>(context, listen: false);
     String? isLoggedIn = sharedPreferences.getString('token');
-    await Future.wait([
-      Provider.of<CityProvider>(Constants.globalContext(), listen: false,).getCities(),
-      Provider.of<BannersProvider>(Constants.globalContext(),listen: false,).getBanners(),
-      Provider.of<SettingsProvider>(Constants.globalContext(), listen: false,).getSettings(),
-    ]);
+    try {
+      await Future.wait([
+        Provider.of<CityProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getCities(),
+        Provider.of<BannersProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getBanners(),
+        Provider.of<SettingsProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getSettings(),
+      ]).timeout(const Duration(seconds: 12));
+    } catch (error) {
+      debugPrint('Splash preload failed or timed out: $error');
+    }
 
-    if(isFirstTime){
+    if (isFirstTime) {
       navPARU(const OnBoardingView());
       return;
     }
     if (isLoggedIn != null) {
-        auth.getProfile(fromSplash: true);
-      } else {
-        // auth.goToLoginView();
+      auth.getProfile(fromSplash: true);
+    } else {
+      // auth.goToLoginView();
       context.read<NavBarProvider>().goToNavView(fromSplash: true);
     }
   }

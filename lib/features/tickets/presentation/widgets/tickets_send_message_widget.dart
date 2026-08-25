@@ -30,91 +30,132 @@ class TicketSendMessageWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColor.primaryColor.withOpacity(0.4),
         ),
-        padding: EdgeInsets.only(top: 0.8.h,bottom: 3.h),
+        padding: EdgeInsets.only(top: 0.8.h, bottom: 3.h),
         child: Stack(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                ticketMessageProvider.controller.text.isEmpty? SocialMediaRecorder(
-                  sendRequestFunction: (soundFile,time) async{
-                    await delay(100);
-                    ticketMessageProvider.addMessage(file: soundFile,type: 'audio',sec: convertToSeconds(time));
-                  },
-                  recordIconWhenLockBackGroundColor: Colors.transparent,
-                  recordIconWhenLockedRecord: Icon(
-                    Icons.send,
-                    textDirection: LanguageProvider.isAr()?TextDirection.ltr:TextDirection.ltr,
-                    size: Constants.isTablet?40: 18,
-                    color: Colors.white,
-                  ),
+                ticketMessageProvider.controller.text.isEmpty
+                    ? SocialMediaRecorder(
+                        sendRequestFunction: (soundFile, time) async {
+                          await delay(100);
+                          ticketMessageProvider.addMessage(
+                            file: soundFile,
+                            type: 'audio',
+                            sec: convertToSeconds(time),
+                          );
+                        },
+                        recordIconWhenLockBackGroundColor: Colors.transparent,
+                        recordIconWhenLockedRecord: Icon(
+                          Icons.send,
+                          textDirection: LanguageProvider.direction(),
+                          size: Constants.isTablet ? 40 : 18,
+                          color: Colors.white,
+                        ),
 
-                  slideToCancelTextStyle: TextStyleClass.normalStyle(color: Colors.white),
-                  cancelTextStyle: TextStyleClass.normalStyle(color: Colors.white),
-                  counterTextStyle: TextStyleClass.normalStyle(color: Colors.white),
-                  recordIconBackGroundColor: Colors.transparent,
-                  fullRecordPackageHeight: 6.h,
-                  counterBackGroundColor: Colors.transparent,
-                  cancelText: LanguageProvider.translate('buttons', 'cancel'),
-                  slideToCancelText: LanguageProvider.translate('global', 'slide_to_cancel'),
-                  cancelTextBackGroundColor: Colors.transparent,
-                  recordIcon: Icon(Icons.mic,color: Colors.white,size: Constants.isTablet?40:30,),
-                  backGroundColor: Colors.transparent,
-
-                ):
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w),
-                  child: InkWell(
-                    onTap: (){
-                      FocusScope.of(context).unfocus();
-                      ticketMessageProvider.addMessage(type: 'text');
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 1.5.h),
-                      child: Icon(Icons.send,color: Colors.white,size: Constants.isTablet?40:30,
-                        textDirection: LanguageProvider.isAr()?TextDirection.ltr:TextDirection.ltr,
+                        slideToCancelTextStyle: TextStyleClass.normalStyle(
+                          color: Colors.white,
+                        ),
+                        cancelTextStyle: TextStyleClass.normalStyle(
+                          color: Colors.white,
+                        ),
+                        counterTextStyle: TextStyleClass.normalStyle(
+                          color: Colors.white,
+                        ),
+                        recordIconBackGroundColor: Colors.transparent,
+                        fullRecordPackageHeight: 6.h,
+                        counterBackGroundColor: Colors.transparent,
+                        cancelText: LanguageProvider.translate(
+                          'buttons',
+                          'cancel',
+                        ),
+                        slideToCancelText: LanguageProvider.translate(
+                          'global',
+                          'slide_to_cancel',
+                        ),
+                        cancelTextBackGroundColor: Colors.transparent,
+                        recordIcon: Icon(
+                          Icons.mic,
+                          color: Colors.white,
+                          size: Constants.isTablet ? 40 : 30,
+                        ),
+                        backGroundColor: Colors.transparent,
+                      )
+                    : Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 2.w),
+                        child: InkWell(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            ticketMessageProvider.addMessage(type: 'text');
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 1.5.h),
+                            child: Icon(
+                              Icons.send,
+                              color: Colors.white,
+                              size: Constants.isTablet ? 40 : 30,
+                              textDirection: LanguageProvider.direction(),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
                 Expanded(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       InkWell(
-                        key:btnKey,
-                        onTap: ()async{
+                        key: btnKey,
+                        onTap: () async {
                           final XFile? image = await chooseImage();
-                          if(image!=null){
-                            navP(ImagePreviewWidget(img: image, showSendButton: false,isTicket: true,));
+                          if (image != null) {
+                            navP(
+                              ImagePreviewWidget(
+                                img: image,
+                                showSendButton: false,
+                                isTicket: true,
+                              ),
+                            );
                           }
                         },
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 1.5.h),
-                          child: Icon(Icons.image,color: Colors.white,size:Constants.isTablet?40: 30,),
+                          child: Icon(
+                            Icons.image,
+                            color: Colors.white,
+                            size: Constants.isTablet ? 40 : 30,
+                          ),
                         ),
                       ),
-                      SizedBox(width: 2.w,),
+                      SizedBox(width: 2.w),
                       Expanded(
-                        child: TextFieldWidget(controller: ticketMessageProvider.controller,
+                        child: TextFieldWidget(
+                          controller: ticketMessageProvider.controller,
                           maxLines: 3,
                           minLines: 1,
                           // height: 5.h,
                           counter: "",
-                          onChange: (val){
-                            if(val.isEmpty){
+                          onChange: (val) {
+                            if (val.isEmpty) {
                               ticketMessageProvider.rebuild();
                             }
-                            if(val.length==1){
+                            if (val.length == 1) {
                               ticketMessageProvider.rebuild();
                             }
-
                           },
-                          style: TextStyleClass.normalStyle(color: Colors.black),
-                          contentPadding: EdgeInsets.symmetric(vertical: 0.7.h,horizontal: 3.w),
-                          color: Colors.white,borderRadius: 15,borderColor: Colors.transparent,),
+                          style: TextStyleClass.normalStyle(
+                            color: Colors.black,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 0.7.h,
+                            horizontal: 3.w,
+                          ),
+                          color: Colors.white,
+                          borderRadius: 15,
+                          borderColor: Colors.transparent,
+                        ),
                       ),
-                      SizedBox(width: 2.w,),
+                      SizedBox(width: 2.w),
                     ],
                   ),
                 ),

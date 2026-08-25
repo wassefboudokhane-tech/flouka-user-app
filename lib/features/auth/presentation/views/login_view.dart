@@ -84,18 +84,17 @@ class _PhoneStep extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyleClass.headStyle(color: AppColor.deepColor).copyWith(
-            fontWeight: FontWeight.w800,
-            fontSize: 24,
-            height: 1.2,
-          ),
+          style: TextStyleClass.headStyle(
+            color: AppColor.deepColor,
+          ).copyWith(fontWeight: FontWeight.w800, fontSize: 24, height: 1.2),
         ),
         if (subtitle.isNotEmpty) ...[
           const SizedBox(height: 8),
           Text(
             subtitle,
-            style: TextStyleClass.normalStyle(color: AppColor.mutedColor)
-                .copyWith(fontSize: 15, height: 1.45),
+            style: TextStyleClass.normalStyle(
+              color: AppColor.mutedColor,
+            ).copyWith(fontSize: 15, height: 1.45),
           ),
         ],
         const SizedBox(height: 24),
@@ -106,8 +105,8 @@ class _PhoneStep extends StatelessWidget {
         ListenableBuilder(
           listenable: authProvider.loginTextFieldList.first.controller,
           builder: (context, _) {
-            final phone =
-                authProvider.loginTextFieldList.first.controller.text.trim();
+            final phone = authProvider.loginTextFieldList.first.controller.text
+                .trim();
             return Selector<AuthProvider, bool>(
               selector: (_, p) => p.termsAccepted,
               builder: (context, termsAccepted, __) {
@@ -125,8 +124,9 @@ class _PhoneStep extends StatelessWidget {
           onPressed: authProvider.continueAsGuest,
           child: Text(
             LanguageProvider.translate('auth', 'guest_description'),
-            style: TextStyleClass.normalStyle(color: AppColor.mutedColor)
-                .copyWith(fontWeight: FontWeight.w600, fontSize: 14),
+            style: TextStyleClass.normalStyle(
+              color: AppColor.mutedColor,
+            ).copyWith(fontWeight: FontWeight.w600, fontSize: 14),
           ),
         ),
       ],
@@ -147,17 +147,16 @@ class _OtpStep extends StatelessWidget {
       children: [
         Text(
           LanguageProvider.translate('auth', 'otp'),
-          style: TextStyleClass.headStyle(color: AppColor.deepColor).copyWith(
-            fontWeight: FontWeight.w800,
-            fontSize: 24,
-            height: 1.2,
-          ),
+          style: TextStyleClass.headStyle(
+            color: AppColor.deepColor,
+          ).copyWith(fontWeight: FontWeight.w800, fontSize: 24, height: 1.2),
         ),
         const SizedBox(height: 10),
         Text.rich(
           TextSpan(
-            style: TextStyleClass.normalStyle(color: AppColor.mutedColor)
-                .copyWith(fontSize: 15, height: 1.45),
+            style: TextStyleClass.normalStyle(
+              color: AppColor.mutedColor,
+            ).copyWith(fontSize: 15, height: 1.45),
             children: [
               TextSpan(
                 text: LanguageProvider.translate(
@@ -167,8 +166,9 @@ class _OtpStep extends StatelessWidget {
               ),
               TextSpan(
                 text: ' $defaultCountry $phone',
-                style: TextStyleClass.normalStyle(color: AppColor.deepColor)
-                    .copyWith(fontWeight: FontWeight.w700),
+                style: TextStyleClass.normalStyle(
+                  color: AppColor.deepColor,
+                ).copyWith(fontWeight: FontWeight.w700),
               ),
             ],
           ),
@@ -185,15 +185,29 @@ class _OtpStep extends StatelessWidget {
             ),
             child: Text(
               LanguageProvider.translate('auth', 'change_phone'),
-              style: TextStyleClass.smallStyle(color: AppColor.primaryColor)
-                  .copyWith(fontWeight: FontWeight.w700),
+              style: TextStyleClass.smallStyle(
+                color: AppColor.primaryColor,
+              ).copyWith(fontWeight: FontWeight.w700),
             ),
           ),
         ),
         const SizedBox(height: 16),
         CustomOTPField(
-          onCompleted: (_) =>
-              context.read<OtpProvider>().checkCode(),
+          onCompleted: (_) => context.read<OtpProvider>().checkCode(),
+        ),
+        Selector<OtpProvider, String?>(
+          selector: (_, provider) => provider.lastOtpError,
+          builder: (context, error, _) {
+            if (error == null || error.isEmpty) return const SizedBox.shrink();
+            return Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                error,
+                style: TextStyleClass.smallStyle(color: Colors.red.shade700),
+                textAlign: TextAlign.center,
+              ),
+            );
+          },
         ),
         const SizedBox(height: 12),
         Container(
@@ -205,8 +219,9 @@ class _OtpStep extends StatelessWidget {
           ),
           child: Text(
             LanguageProvider.translate('auth', 'otp_sms_hint'),
-            style: TextStyleClass.captionStyle(color: AppColor.mutedColor)
-                .copyWith(fontSize: 12, height: 1.35),
+            style: TextStyleClass.captionStyle(
+              color: AppColor.mutedColor,
+            ).copyWith(fontSize: 12, height: 1.35),
           ),
         ),
         const SizedBox(height: 14),
@@ -225,18 +240,22 @@ class _OtpStep extends StatelessWidget {
                     : null,
                 borderRadius: BorderRadius.circular(8),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
                   child: Text(
                     text,
-                    style: TextStyleClass.normalStyle(
-                      color: canResend
-                          ? AppColor.primaryColor
-                          : AppColor.mutedColor,
-                    ).copyWith(
-                      fontWeight:
-                          canResend ? FontWeight.w700 : FontWeight.w500,
-                    ),
+                    style:
+                        TextStyleClass.normalStyle(
+                          color: canResend
+                              ? AppColor.primaryColor
+                              : AppColor.mutedColor,
+                        ).copyWith(
+                          fontWeight: canResend
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                        ),
                   ),
                 ),
               );

@@ -81,7 +81,6 @@ class AddressDetailsProvider extends ChangeNotifier {
     // ),
   ];
 
-
   void resetData() {
     currentPos = null;
     controller = null;
@@ -109,9 +108,18 @@ class AddressDetailsProvider extends ChangeNotifier {
     setMarker();
   }
 
-  CityProvider cityProvider = Provider.of(Constants.globalContext(), listen: false);
-  AreaProvider areaProvider = Provider.of(Constants.globalContext(), listen: false);
-  NeighborhoodProvider neighborhoodProvider = Provider.of(Constants.globalContext(), listen: false);
+  CityProvider cityProvider = Provider.of(
+    Constants.globalContext(),
+    listen: false,
+  );
+  AreaProvider areaProvider = Provider.of(
+    Constants.globalContext(),
+    listen: false,
+  );
+  NeighborhoodProvider neighborhoodProvider = Provider.of(
+    Constants.globalContext(),
+    listen: false,
+  );
   // PartsProvider partsProvider = Provider.of(
   //   Constants.globalContext(),
   //   listen: false,
@@ -148,14 +156,17 @@ class AddressDetailsProvider extends ChangeNotifier {
   void addAddress() async {
     Map<String, dynamic> data = addressData();
     loading();
-    Either<DioException, AddressEntity> value =
-        await addressUseCases.createAddress(data);
+    Either<DioException, AddressEntity> value = await addressUseCases
+        .createAddress(data);
     dismissLoading();
     await value.fold(
       (l) async {
         final msg = l.message ?? '';
         if (_isAuthError(msg)) {
-          await _startOtpThenCreate(data);
+          await _startOtpThenSave(
+            data,
+            operation: PendingAddressOperation.create,
+          );
           return;
         }
         showToast(msg);
@@ -176,7 +187,10 @@ class AddressDetailsProvider extends ChangeNotifier {
         text.contains('401');
   }
 
-  Future<void> _startOtpThenCreate(Map<String, dynamic> data) async {
+  Future<void> _startOtpThenSave(
+    Map<String, dynamic> data, {
+    required PendingAddressOperation operation,
+  }) async {
     final auth = Provider.of<AuthProvider>(
       Constants.globalContext(),
       listen: false,
@@ -191,7 +205,7 @@ class AddressDetailsProvider extends ChangeNotifier {
     if (data['phone_code'] != null) {
       defaultCountry = '+${data['phone_code']}';
     }
-    PendingAddressStore.data = Map<String, dynamic>.from(data);
+    PendingAddressStore.save(data, forOperation: operation);
     showToast(
       LanguageProvider.translate('address', 'verify_phone_to_save'),
       isSnack: true,
@@ -201,19 +215,36 @@ class AddressDetailsProvider extends ChangeNotifier {
 
   Future<void> flushPendingAddress() async {
     final data = PendingAddressStore.data;
-    PendingAddressStore.clear();
     if (data == null) return;
+    final operation = PendingAddressStore.operation;
     loading();
-    final value = await addressUseCases.createAddress(data);
+    final value = operation == PendingAddressOperation.update
+        ? await addressUseCases.updateAddress(data)
+        : await addressUseCases.createAddress(data);
     dismissLoading();
     await value.fold(
       (l) async {
         showToast(l.message ?? LanguageProvider.translate('error', 'error'));
-        Provider.of<NavBarProvider>(Constants.globalContext(), listen: false)
-            .goToNavView();
       },
       (r) async {
-        await _onAddressCreated(r, fromPendingOtp: true);
+        PendingAddressStore.clear();
+        if (operation == PendingAddressOperation.update) {
+          final addressProvider = Provider.of<AddressProvider>(
+            Constants.globalContext(),
+            listen: false,
+          );
+          addressProvider.updateAddress(r);
+          await Provider.of<AuthProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).getProfile(fromAddress: true);
+          Provider.of<NavBarProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).goToNavView();
+        } else {
+          await _onAddressCreated(r, fromPendingOtp: true);
+        }
       },
     );
   }
@@ -241,8 +272,10 @@ class AddressDetailsProvider extends ChangeNotifier {
       then: () {
         clear();
         if (fromPendingOtp) {
-          Provider.of<NavBarProvider>(Constants.globalContext(), listen: false)
-              .goToNavView();
+          Provider.of<NavBarProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).goToNavView();
           return;
         }
         if (!shouldPopTwice) return;
@@ -265,26 +298,34 @@ class AddressDetailsProvider extends ChangeNotifier {
     Map<String, dynamic> data = addressData();
     data['address_id'] = addressEntity?.id;
     loading();
-    Either<DioException, AddressEntity> value = await addressUseCases.updateAddress(
-      data,
-    );
+    Either<DioException, AddressEntity> value = await addressUseCases
+        .updateAddress(data);
     dismissLoading();
     value.fold(
       (l) {
         final msg = l.message ?? '';
         if (_isAuthError(msg)) {
-          _startOtpThenCreate({...data});
+          _startOtpThenSave(data, operation: PendingAddressOperation.update);
           return;
         }
         showToast(msg);
       },
       (r) {
-        AddressProvider addressProvider = Provider.of(Constants.globalContext(), listen: false,);
+        AddressProvider addressProvider = Provider.of(
+          Constants.globalContext(),
+          listen: false,
+        );
         addressProvider.updateAddress(r);
-        Provider.of<AuthProvider>(Constants.globalContext(), listen: false).getProfile(fromAddress: true);
-        if(r.isDefault == true) {
+        Provider.of<AuthProvider>(
+          Constants.globalContext(),
+          listen: false,
+        ).getProfile(fromAddress: true);
+        if (r.isDefault == true) {
           addressProvider.changeDefault(id: r.id!);
-          CartProvider cartProvider = Provider.of(Constants.globalContext(), listen: false,);
+          CartProvider cartProvider = Provider.of(
+            Constants.globalContext(),
+            listen: false,
+          );
           cartProvider.deleteCart();
         }
         // playSuccessSound(path: 'success.mp4');
@@ -314,7 +355,10 @@ class AddressDetailsProvider extends ChangeNotifier {
 
   Future<void> _saveNewAddress() async {
     if (!AuthProvider.isLogin()) {
-      await _startOtpThenCreate(addressData());
+      await _startOtpThenSave(
+        addressData(),
+        operation: PendingAddressOperation.create,
+      );
       return;
     }
     addAddress();
@@ -339,13 +383,13 @@ class AddressDetailsProvider extends ChangeNotifier {
     data['neighborhood_id'] = neighborhoodProvider.neighborhood!.id;
     data['lat'] = lat;
     data['lng'] = lng;
-    if(isMakeDefault !=false){
+    if (isMakeDefault != false) {
       data['default'] = isMakeDefault;
     }
     if (addressEntity != null) {
       data['id'] = addressEntity!.id;
     }
-    data['phone_code'] = defaultCountry.toString().replaceFirst('+',"");
+    data['phone_code'] = defaultCountry.toString().replaceFirst('+', "");
     return data;
   }
 
@@ -354,7 +398,6 @@ class AddressDetailsProvider extends ChangeNotifier {
     controller?.moveCamera(CameraUpdate.newLatLng(latLng));
     notifyListeners();
   }
-
 
   bool firstAddress = false;
 
@@ -374,8 +417,8 @@ class AddressDetailsProvider extends ChangeNotifier {
       );
       defaultCountry = addressEntity?.phoneCode == null
           ? (authProvider.userEntity?.phoneCode == null
-              ? '+216'
-              : '+${authProvider.userEntity!.phoneCode!}')
+                ? '+216'
+                : '+${authProvider.userEntity!.phoneCode!}')
           : '+${addressEntity!.phoneCode!}';
       final length = CountryWidget.getLength;
       inputs.firstWhere((element) => element.key == 'phone').length = length;
@@ -404,16 +447,22 @@ class AddressDetailsProvider extends ChangeNotifier {
         loading();
         try {
           final position = await determinePosition();
+          if (position == null) {
+            dismissLoading();
+            return null;
+          }
           setData(position.latitude, position.longitude);
         } catch (_) {
-          // Tunis centre as safe fallback when GPS unavailable (web / denied)
-          setData(36.8065, 10.1815);
+          dismissLoading();
+          return null;
         }
         navPop();
       }
 
-      await Provider.of<CityProvider>(Constants.globalContext(), listen: false)
-          .getCities();
+      await Provider.of<CityProvider>(
+        Constants.globalContext(),
+        listen: false,
+      ).getCities();
 
       navP(
         const AddressFormPage(),
@@ -446,14 +495,21 @@ class AddressDetailsProvider extends ChangeNotifier {
       cityProvider.cityEntity = cityProvider.cities.firstWhere(
         (element) => element.id == addressEntity!.areaEntity!.cityId,
       );
-      await areaProvider.getArea(id: cityProvider.cityEntity!.id, fromAddress: true);
+      await areaProvider.getArea(
+        id: cityProvider.cityEntity!.id,
+        fromAddress: true,
+      );
       areaProvider.areaEntity = areaProvider.areas.firstWhere(
         (element) => element.id == addressEntity!.areaEntity!.id,
       );
-      await neighborhoodProvider.getNeighborhood(id: areaProvider.areaEntity!.id, fromAddress: true);
-      neighborhoodProvider.neighborhood = neighborhoodProvider.neighborhoods.firstWhere(
-        (element) => element.id == addressEntity!.neighborhoodEntity!.id,
+      await neighborhoodProvider.getNeighborhood(
+        id: areaProvider.areaEntity!.id,
+        fromAddress: true,
       );
+      neighborhoodProvider.neighborhood = neighborhoodProvider.neighborhoods
+          .firstWhere(
+            (element) => element.id == addressEntity!.neighborhoodEntity!.id,
+          );
     }
 
     // partsProvider.selectedPart = partsProvider.parts.firstWhere(
@@ -461,7 +517,7 @@ class AddressDetailsProvider extends ChangeNotifier {
     // );
 
     inputs.firstWhere((element) => element.key == 'phone').controller.text =
-        addressEntity!.phone ?? (authProvider.userEntity?.phone??"");
+        addressEntity!.phone ?? (authProvider.userEntity?.phone ?? "");
     inputs.firstWhere((element) => element.key == 'name').controller.text =
         addressEntity!.addressName ?? "";
     inputs.firstWhere((element) => element.key == 'address').controller.text =
@@ -469,7 +525,8 @@ class AddressDetailsProvider extends ChangeNotifier {
   }
 
   void animateToMyLocation() async {
-    LatLng latLng = await determinePosition();
+    final latLng = await determinePosition();
+    if (latLng == null) return;
     moveCameraTo(latLng);
   }
 

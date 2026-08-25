@@ -28,7 +28,7 @@ class AddressProvider extends ChangeNotifier {
       },
       (r) {
         address = r;
-        for(var element in address!){
+        for (var element in address!) {
           print('eeeeeeeeeeeeeeeeeeee${element}');
         }
         notifyListeners();
@@ -43,12 +43,15 @@ class AddressProvider extends ChangeNotifier {
   }
 
   void updateAddress(AddressEntity addressEntity) {
-    int index = address!.indexWhere((element) => element.id == addressEntity.id);
+    int index = address!.indexWhere(
+      (element) => element.id == addressEntity.id,
+    );
     if (index != -1) {
       address![index] = addressEntity;
       notifyListeners();
     }
-    if (this.addressEntity != null && this.addressEntity!.id == addressEntity.id) {
+    if (this.addressEntity != null &&
+        this.addressEntity!.id == addressEntity.id) {
       this.addressEntity = addressEntity;
     }
   }
@@ -66,15 +69,14 @@ class AddressProvider extends ChangeNotifier {
       // image: Images.locationImage,
       top: -18.h,
       backConfirm: Colors.red,
-      confirmFound: false,
       // backCancel: AppColor.redColor,
-      confirm: '',
+      confirm: 'delete',
       cancelTextColor: Colors.black,
       confirmTap: () {
         navPop();
         deleteAddress(id);
       },
-      cancel: 'delete',
+      cancel: 'cancel',
       cancelTap: () {
         navPop();
         // deleteAddress(id);
@@ -86,7 +88,9 @@ class AddressProvider extends ChangeNotifier {
     Map<String, dynamic> data = {};
     data['address_id'] = id;
     loading();
-    Either<DioException, bool> value = await addressUseCases.deleteAddress(data);
+    Either<DioException, bool> value = await addressUseCases.deleteAddress(
+      data,
+    );
     navPop();
     value.fold(
       (l) {
@@ -129,16 +133,16 @@ class AddressProvider extends ChangeNotifier {
     navP(const SavedAddressesPage());
   }
 
-  void changeDefault({required int id}){
-  if(address != null){
-    address!.forEach((element) {
-      if(element.id !=id){
-        element.isDefault = false;
-      }else{
-        element.isDefault = true;
-      }
-    });
-  }
+  void changeDefault({required int id}) {
+    if (address != null) {
+      address!.forEach((element) {
+        if (element.id != id) {
+          element.isDefault = false;
+        } else {
+          element.isDefault = true;
+        }
+      });
+    }
 
     notifyListeners();
   }
@@ -152,7 +156,10 @@ class AddressProvider extends ChangeNotifier {
       'name': target.addressName ?? '',
       'address': target.address ?? '',
       'phone': target.phone ?? '',
-      'phone_code': (target.phoneCode ?? '216').toString().replaceFirst('+', ''),
+      'phone_code': (target.phoneCode ?? '216').toString().replaceFirst(
+        '+',
+        '',
+      ),
       'area_id': target.areaId ?? target.areaEntity?.id,
       'neighborhood_id': target.neighborhoodEntity?.id,
       'lat': target.lat,
@@ -162,14 +169,11 @@ class AddressProvider extends ChangeNotifier {
     loading();
     final value = await addressUseCases.updateAddress(data);
     navPop();
-    value.fold(
-      (l) => showToast(l.message ?? ''),
-      (r) {
-        changeDefault(id: r.id!);
-        updateAddress(r);
-        successDialog();
-      },
-    );
+    value.fold((l) => showToast(l.message ?? ''), (r) {
+      changeDefault(id: r.id!);
+      updateAddress(r);
+      successDialog();
+    });
   }
 
   void setAddress(AddressEntity addressEntity) async {

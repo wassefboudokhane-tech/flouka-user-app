@@ -28,46 +28,48 @@ class FloukaPrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label =
-        translateKey ? LanguageProvider.translate('buttons', text) : text;
+    final label = translateKey
+        ? LanguageProvider.translate('buttons', text)
+        : text;
     return Opacity(
       opacity: enabled ? 1 : 0.5,
-      child: InkWell(
-        onTap: enabled ? onTap : null,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        child: Container(
-          width: width ?? double.infinity,
-          height: height ?? AppSpacing.ctaHeight,
-          decoration: BoxDecoration(
-            color: AppColor.limeColor,
-            borderRadius: BorderRadius.circular(AppRadius.pill),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.primaryColor.withValues(alpha: 0.22),
-                blurRadius: 14,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (widget != null) ...[
-                widget!,
-                const SizedBox(width: 8),
-              ],
-              Flexible(
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: TextStyleClass.buttonStyle(color: AppColor.deepColor)
-                      .copyWith(fontWeight: FontWeight.w800),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: enabled ? onTap : null,
+          borderRadius: BorderRadius.circular(AppRadius.pill),
+          child: Container(
+            width: width ?? double.infinity,
+            height: height ?? AppSpacing.ctaHeight,
+            decoration: BoxDecoration(
+              color: AppColor.limeColor,
+              borderRadius: BorderRadius.circular(AppRadius.pill),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColor.primaryColor.withValues(alpha: 0.22),
+                  blurRadius: 14,
+                  offset: const Offset(0, 4),
                 ),
-              ),
-            ],
+              ],
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget != null) ...[widget!, const SizedBox(width: 8)],
+                Flexible(
+                  child: Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: TextStyleClass.buttonStyle(
+                      color: AppColor.deepColor,
+                    ).copyWith(fontWeight: FontWeight.w800),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
