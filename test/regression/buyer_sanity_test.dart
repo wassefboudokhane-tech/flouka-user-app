@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -13,6 +14,7 @@ import 'package:flouka/features/cart/presentation/widgets/custom_cart_button_wid
 import 'package:flouka/features/favorite/presentation/providers/favorite_provider.dart';
 import 'package:flouka/features/language/domain/entities/app_localizations.dart';
 import 'package:flouka/features/language/domain/language_copy.dart';
+import 'package:flouka/features/sanity/presentation/buyer_sanity_page.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
 import 'package:flouka/features/products/domain/entity/product_review_entity.dart';
@@ -21,6 +23,7 @@ import 'package:flouka/features/products/domain/user_case/product_use_case.dart'
 import 'package:flouka/features/products/presentation/providers/categories_product_search_provider.dart';
 import 'package:flouka/features/products/presentation/widgets/hot_deals_home_container_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -145,6 +148,33 @@ void main() {
     expect(hint, isNot('search'));
   });
 
+  testWidgets('guest sanity page reports each buyer check', (tester) async {
+    await tester.pumpWidget(
+      DefaultAssetBundle(
+        bundle: _SanityAssetBundle(),
+        child: MediaQuery(
+          data: const MediaQueryData(size: Size(1200, 900)),
+          child: Sizer(
+            builder: (context, orientation, deviceType) {
+              return const MaterialApp(home: BuyerSanityPage());
+            },
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Le total s’arrête avant la bulle.'),
+      400,
+    );
+    expect(find.text('« Rechercher... »'), findsWidgets);
+    expect(find.text('Échec'), findsNothing);
+    await tester.drag(find.byType(ListView), const Offset(0, 3000));
+    await tester.pumpAndSettle();
+    expect(find.text('Contrôle de bon fonctionnement'), findsOneWidget);
+    expect(find.text('10 / 10 réussis'), findsOneWidget);
+  });
+
   testWidgets('cart total stays left of the chat bubble', (tester) async {
     const bubbleKey = Key('chat-bubble');
     await tester.pumpWidget(
@@ -254,6 +284,14 @@ ProductEntity _sampleProduct() {
     attributes: const [],
     variants: const [],
   );
+}
+
+class _SanityAssetBundle extends CachingAssetBundle {
+  @override
+  Future<ByteData> load(String key) async {
+    final bytes = File(key).readAsBytesSync();
+    return ByteData.view(Uint8List.fromList(bytes).buffer);
+  }
 }
 
 class _UnusedRepo implements ProductRepo {
