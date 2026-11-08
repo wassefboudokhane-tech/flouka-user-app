@@ -8,8 +8,7 @@ import 'package:flouka/core/config/app_shadow.dart';
 import 'package:flouka/core/widgets/flouka_primary_button.dart';
 import 'package:flouka/core/helper_function/convert.dart';
 import 'package:flouka/core/dialog/guest_dialog.dart';
-import 'package:flouka/core/dialog/snack_bar.dart';
-import 'package:flouka/features/address/presentation/providers/address_provider.dart';
+import 'package:flouka/features/cart/domain/checkout_entry.dart';
 import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import '../providers/cart_provider.dart';
@@ -43,7 +42,6 @@ class CustomCartButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final checkoutProvider = Provider.of<CheckoutProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
     final currency = LanguageProvider.translate('global', 'currency');
     final vendorCount = cartProvider.vendorCount;
 
@@ -78,41 +76,20 @@ class CustomCartButtonWidget extends StatelessWidget {
             '${formatPrice(checkoutProvider.deliveryPrice())} $currency',
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                LanguageProvider.translate('global', 'total'),
-                style: TextStyleClass.smallStyle(color: AppColor.mutedColor),
-              ),
-              Text(
-                '${formatPrice(checkoutProvider.total())} $currency',
-                style: TextStyleClass.cartTotalStyle(),
-              ),
-            ],
+          CartSummaryTotal(
+            label: LanguageProvider.translate('global', 'total'),
+            amount: '${formatPrice(checkoutProvider.total())} $currency',
           ),
           const SizedBox(height: 12),
           FloukaPrimaryButton(
             onTap: () {
-              if (!AuthProvider.isLogin()) {
+              if (checkoutEntryBlockedForGuest(
+                isLoggedIn: AuthProvider.isLogin(),
+              )) {
                 showGuestDialog();
                 return;
               }
-              if (authProvider.userEntity?.addressEntity != null) {
-                checkoutProvider.goToPage();
-              } else {
-                showToast(
-                  LanguageProvider.translate('error', 'add_address'),
-                  isSnack: true,
-                  action: {
-                    'text': LanguageProvider.translate('buttons', 'add'),
-                    'onTap': () {
-                      Provider.of<AddressProvider>(context, listen: false)
-                          .goToAddressPage();
-                    },
-                  },
-                );
-              }
+              checkoutProvider.goToPage();
             },
             text: LanguageProvider.translate('cart', 'validate_order'),
             translateKey: false,
@@ -121,6 +98,45 @@ class CustomCartButtonWidget extends StatelessWidget {
         ],
       ),
     ),
+    );
+  }
+}
+
+/// Cart total, kept clear of the floating chat bubble on the right.
+class CartSummaryTotal extends StatelessWidget {
+  const CartSummaryTotal({
+    super.key,
+    required this.label,
+    required this.amount,
+  });
+
+  final String label;
+  final String amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(
+        end: AppSpacing.chatBubbleClearance,
+      ),
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: TextStyleClass.smallStyle(color: AppColor.mutedColor),
+          ),
+          const Spacer(),
+          Flexible(
+            child: Text(
+              amount,
+              key: const Key('cart-total-amount'),
+              textAlign: TextAlign.end,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyleClass.cartTotalStyle(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
