@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flouka/core/config/app_spacing.dart';
@@ -9,6 +12,7 @@ import 'package:flouka/features/cart/domain/checkout_entry.dart';
 import 'package:flouka/features/cart/presentation/widgets/custom_cart_button_widget.dart';
 import 'package:flouka/features/favorite/presentation/providers/favorite_provider.dart';
 import 'package:flouka/features/language/domain/entities/app_localizations.dart';
+import 'package:flouka/features/language/domain/language_copy.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
 import 'package:flouka/features/products/domain/entity/product_review_entity.dart';
@@ -94,6 +98,51 @@ void main() {
       (details) => details.exceptionAsString().contains('overflowed'),
     );
     expect(overflow, isEmpty);
+  });
+
+  test('category, banner, store, and story photos use the web image path', () {
+    const sources = [
+      'lib/features/categories/presentation/widgets/category_image_container_widget.dart',
+      'lib/features/categories/presentation/widgets/popular_category_container_widget.dart',
+      'lib/features/categories/presentation/widgets/subcategory_tiles.dart',
+      'lib/features/banners/presentation/widgets/carousel_slider_widget.dart',
+      'lib/features/stores/presentation/widgets/stores_container_home_widget.dart',
+      'lib/features/stores/presentation/widgets/stores_home_section.dart',
+      'lib/features/stores/presentation/widgets/store_details_hero_widget.dart',
+      'lib/features/home/presentation/widgets/home_stories_row_widget.dart',
+      'lib/features/stories/presentation/widgets/story_item_widget.dart',
+    ];
+    for (final path in sources) {
+      final source = File(path).readAsStringSync();
+      expect(source, isNot(contains('CachedNetworkImage')), reason: path);
+      expect(
+        source.contains('FloukaNetworkImage') ||
+            source.contains('floukaImageProvider'),
+        isTrue,
+        reason: path,
+      );
+    }
+    expect(
+      floukaImageProvider(
+        'https://floka.zeroonez.com/images/categories/roses.jpg',
+        web: true,
+      ),
+      isA<NetworkImage>(),
+    );
+  });
+
+  test('french search hint falls back to the bundled string', () async {
+    final raw = await File('assets/languages/fr.json').readAsString();
+    final bundled = json.decode(raw) as Map<String, dynamic>;
+    final hint = languageCopy(
+      remoteLanguages: const {},
+      languageCode: 'fr',
+      bundled: bundled,
+      parent: 'global',
+      key: 'search',
+    );
+    expect(hint, 'Rechercher...');
+    expect(hint, isNot('search'));
   });
 
   testWidgets('cart total stays left of the chat bubble', (tester) async {
