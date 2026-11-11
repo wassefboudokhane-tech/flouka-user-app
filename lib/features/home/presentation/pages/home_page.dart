@@ -2,6 +2,7 @@ import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/categories/presentation/widgets/popular_categories_Section.dart';
+import 'package:flouka/features/creators/presentation/widgets/home_creators_row_widget.dart';
 import 'package:flouka/features/home/presentation/widgets/far_away_container_widget.dart';
 import 'package:flouka/features/home/presentation/widgets/home_appbar_widget.dart';
 import 'package:flouka/features/home/presentation/widgets/home_promo_band_widget.dart';
@@ -51,6 +52,7 @@ class HomePage extends StatelessWidget {
                             if (authProvider.isAwayFromHome())
                               const FarAwayContainerWidget(),
                             const HomeStoriesRowWidget(),
+                            const HomeCreatorsRowWidget(),
                             const HomePromoBandWidget(),
                             MarketplaceProductRail(
                               title: LanguageProvider.translate(

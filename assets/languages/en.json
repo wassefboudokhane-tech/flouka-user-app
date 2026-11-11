@@ -1,4 +1,10 @@
 {
+  "creators": {
+    "follow_title": "Creators to follow",
+    "picks_title": "Their picks",
+    "affiliate_note": "Affiliate links · the creator earns a commission",
+    "empty_picks": "No picks yet"
+  },
   "on_boarding": {
     "Welcome!": "Welcome!",
     "Irrelevant results again?": "Irrelevant results again?",
@@ -41,7 +47,7 @@
     "store_details": "Store details",
     "best_selling": "Best sellers",
     "under_50": "Under 50 TND",
-    "trust_line": "Cash on delivery · 24–48 h · 7-day returns",
+    "trust_line": "Cash on delivery · 24–48 h · 10-day returns",
     "promo_title": "All crafts under 50 dinars",
     "promo_subtitle": "142 items · free delivery from 90 TND",
     "promo_cta": "View"
@@ -246,7 +252,7 @@
     "currency": "TND",
     "cod_badge": "Cash on delivery",
     "delivery_24_48": "Delivered in 24–48 h",
-    "return_7_days": "7-day returns",
+    "return_7_days": "Returns within 10 working days",
     "product_card_rating": "★ *rate* · *num* reviews",
     "shared_image_hint": "Same photo for every color — pick color and size to order.",
     "chat_vendor": "Chat with seller",

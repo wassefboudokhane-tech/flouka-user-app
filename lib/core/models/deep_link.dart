@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
+import '../creator_attribution.dart';
 import '../helper_function/convert.dart';
 
 enum DeepLinkKind { store, product }
@@ -38,6 +39,8 @@ class DeepLinkService {
   bool _initialized = false;
 
   void _handleUri(Uri? uri) {
+    // A shared creator link credits that creator for the next order.
+    CreatorAttributionStore.capture(parseCreatorRef(uri));
     final target = parseDeepLink(uri);
     if (target == null) return;
     if (target.kind == DeepLinkKind.store) {

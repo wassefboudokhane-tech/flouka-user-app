@@ -1,4 +1,10 @@
 {
+  "creators": {
+    "follow_title": "Créateurs à suivre",
+    "picks_title": "Ses recommandations",
+    "affiliate_note": "Liens affiliés · le créateur touche une commission",
+    "empty_picks": "Aucune recommandation pour le moment"
+  },
   "on_boarding": {
     "Welcome!": "Bienvenue !",
     "Irrelevant results again?": "Des résultats non pertinents encore ?",
@@ -41,7 +47,7 @@
     "store_details": "Détails du magasin",
     "best_selling": "Meilleures ventes",
     "under_50": "Moins de 50 TND",
-    "trust_line": "Paiement à la livraison · 24–48 h · Retour 7 j",
+    "trust_line": "Paiement à la livraison · 24–48 h · Retour 10 jours",
     "promo_title": "Tout l'artisanat sous 50 dinars",
     "promo_subtitle": "142 articles · livraison gratuite dès 90 TND",
     "promo_cta": "Voir"
@@ -246,7 +252,7 @@
     "currency": "TND",
     "cod_badge": "Paiement à la livraison",
     "delivery_24_48": "Livré en 24–48 h",
-    "return_7_days": "Retour sous 7 jours",
+    "return_7_days": "Retour sous 10 jours ouvrables",
     "product_card_rating": "★ *rate* · *num* avis",
     "shared_image_hint": "Même photo pour toutes les couleurs — choisissez couleur et taille pour commander.",
     "chat_vendor": "Contacter le vendeur",
