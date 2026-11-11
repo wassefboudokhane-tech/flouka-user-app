@@ -1,3 +1,4 @@
+import 'package:flouka/core/creator_attribution.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flouka/core/constants/app_images.dart';
@@ -31,6 +32,7 @@ class SettingsProvider extends ChangeNotifier {
 
     response.fold((l) => showToast(l.message ?? ""), (r) {
       settingsEntity = r;
+      CreatorAttributionStore.backendReady = r.creatorsEnabled;
       getData();
       notifyListeners();
     });

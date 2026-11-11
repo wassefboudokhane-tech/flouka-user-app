@@ -8,6 +8,7 @@ void main() {
     clock = DateTime(2026, 11, 1, 10);
     CreatorAttributionStore.now = () => clock;
     CreatorAttributionStore.onChanged = null;
+    CreatorAttributionStore.backendReady = false;
     CreatorAttributionStore.restore(null, null);
   });
 
@@ -37,6 +38,15 @@ void main() {
     expect(normalizeCreatorRef('<script>'), isNull);
     expect(CreatorAttributionStore.capture('yas mine'), isFalse);
     expect(CreatorAttributionStore.activeRef(), isNull);
+  });
+
+  test('orders carry the creator only once the backend accepts it', () {
+    CreatorAttributionStore.capture('yasmine');
+    expect(CreatorAttributionStore.refForOrder(), isNull);
+    expect(CreatorAttributionStore.activeRef(), 'yasmine');
+
+    CreatorAttributionStore.backendReady = true;
+    expect(CreatorAttributionStore.refForOrder(), 'yasmine');
   });
 
   test('last click wins', () {

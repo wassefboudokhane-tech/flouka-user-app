@@ -165,7 +165,7 @@ class CheckoutProvider extends ChangeNotifier {
       'can_ship_auto': termsAccepted ? 1 : 0,
       'discount': couponProvider.calcDiscount() ?? 0,
     };
-    final creatorRef = CreatorAttributionStore.activeRef();
+    final creatorRef = CreatorAttributionStore.refForOrder();
     if (creatorRef != null) dataToUse['creator_ref'] = creatorRef;
     for (int i = 0; i < (couponProvider.couponEntity?.length ?? 0); i++) {
       dataToUse['coupons[$i][coupon]'] = couponProvider.couponEntity?[i].coupon;

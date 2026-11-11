@@ -19,6 +19,7 @@ class SettingsModel extends SettingsEntity {
     required super.tax,
     required super.deliveryPrice,
     required super.minFreeDelivery,
+    super.creatorsEnabled,
   });
 
   factory SettingsModel.fromJson(Map data) {
@@ -42,6 +43,7 @@ class SettingsModel extends SettingsEntity {
       tax: convertDataToNum(data["tax"] ?? 0)!,
       deliveryPrice: convertDataToNum(data['delivery_price']) ?? 0,
       minFreeDelivery: convertDataToNum(data['min_free_delivery']) ?? 0,
+      creatorsEnabled: convertDataToBool(data['creators_enabled']),
     );
   }
 }
