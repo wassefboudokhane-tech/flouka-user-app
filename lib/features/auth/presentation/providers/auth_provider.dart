@@ -118,6 +118,7 @@ class AuthProvider extends ChangeNotifier {
     String? name,
     String? image,
     String? email,
+    String? identityToken,
   }) async {
     String token;
     try {
@@ -133,7 +134,8 @@ class AuthProvider extends ChangeNotifier {
       if (image != null) {
         data['image'] = image;
       }
-      data['social_token'] = id;
+      // The API signs in only with the token Apple signed, never the bare id.
+      data['social_token'] = identityToken;
     } else {
       // Google login
       data['name'] = googleUser?.displayName;
@@ -141,9 +143,8 @@ class AuthProvider extends ChangeNotifier {
       if (googleUser?.photoUrl != null) {
         data['image'] = googleUser?.photoUrl;
       }
-      // if (googleUser?.id != null) {
-      //   data['social_token'] = googleUser?.id;
-      // }
+      // The API signs in only with the ID token Google signed.
+      data['social_token'] = googleUser?.authentication.idToken;
     }
     data['login_from'] = loginFrom;
     data['token'] = token;
@@ -240,7 +241,11 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> _initGoogle() async {
     if (!_isGoogleInitialized) {
-      await _googleSignIn.initialize();
+      // The web client id makes Android issue an ID token the API accepts.
+      await _googleSignIn.initialize(
+        serverClientId:
+            '284237387262-bbvh479purd5civvlbvhan7bo666hmc0.apps.googleusercontent.com',
+      );
       _isGoogleInitialized = true;
     }
   }
@@ -303,6 +308,7 @@ class AuthProvider extends ChangeNotifier {
       await socialLogin(
         loginFrom: 'apple',
         id: appleIdentifier,
+        identityToken: yourToken,
         name: name,
         email: email,
       );
