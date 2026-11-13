@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/constants/app_images.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/features/products/presentation/providers/products_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,10 +57,10 @@ class CartItemWidget extends StatelessWidget {
               child: SizedBox(
                 width: AppSpacing.cartLineImage,
                 height: AppSpacing.cartLineImage,
-                child: CachedNetworkImage(
-                  imageUrl: cartEntity.product?.image ?? '',
+                child: FloukaNetworkImage(
+                  url: cartEntity.product?.image ?? '',
                   fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => Image.asset(
+                  error: Image.asset(
                     AppImages.logo,
                     fit: BoxFit.cover,
                   ),

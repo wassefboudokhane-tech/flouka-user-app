@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/widgets/custom_star_rating_widget.dart';
@@ -44,7 +44,7 @@ class StoresContainerHomeWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColor.limeColor, width: 2),
                 image: DecorationImage(
-                  image: CachedNetworkImageProvider(store.vendor.logo),
+                  image: floukaImageProvider(store.vendor.logo),
                   fit: BoxFit.cover,
                 ),
               ),

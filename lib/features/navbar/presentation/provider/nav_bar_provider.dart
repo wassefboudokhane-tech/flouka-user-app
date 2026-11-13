@@ -16,6 +16,7 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/helper_function/location.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../categories/presentation/providers/categories_provider.dart';
+import '../../../creators/presentation/providers/creators_provider.dart';
 import '../../../categories/presentation/providers/popular_categories_provider.dart';
 import '../../../filters/presentation/providers/filter_product_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
@@ -90,6 +91,11 @@ class NavBarProvider extends ChangeNotifier {
         ).setLatLng(current);
       }
     }
+    // Creators are optional on home: load them without blocking startup.
+    Provider.of<CreatorsProvider>(
+      Constants.globalContext(),
+      listen: false,
+    ).load();
     try {
       await Future.wait([
         Provider.of<BestProductsProvider>(

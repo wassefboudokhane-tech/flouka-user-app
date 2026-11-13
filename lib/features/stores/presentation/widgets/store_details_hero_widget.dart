@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
@@ -103,8 +103,8 @@ class StoreDetailsHeroWidget extends StatelessWidget {
                       ),
                       clipBehavior: Clip.antiAlias,
                       child: store.vendor?.logo != null
-                          ? CachedNetworkImage(
-                              imageUrl: store.vendor!.logo,
+                          ? FloukaNetworkImage(
+                              url: store.vendor!.logo,
                               fit: BoxFit.cover,
                             )
                           : null,

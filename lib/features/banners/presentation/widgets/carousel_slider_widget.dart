@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flouka/core/constants/constants.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -39,11 +39,11 @@ class CarouselSliderWidget extends StatelessWidget {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: CachedNetworkImage(
-                        imageUrl: item.image,
+                      child: FloukaNetworkImage(
+                        url: item.image,
                         fit: BoxFit.cover,
                         width: double.infinity,
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        error: const Icon(Icons.error),
                       ),
                     ),
                   ),

@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/widgets/see_all_button.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
@@ -87,7 +87,7 @@ class StoresHomeSection extends StatelessWidget {
                               width: 2.5,
                             ),
                             image: DecorationImage(
-                              image: CachedNetworkImageProvider(store.vendor.logo),
+                              image: floukaImageProvider(store.vendor.logo),
                               fit: BoxFit.cover,
                             ),
                           ),

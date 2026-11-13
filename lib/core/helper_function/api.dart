@@ -7,18 +7,19 @@ import 'package:provider/provider.dart';
 // import 'package:provider/provider.dart';
 // import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
+import '../../features/language/domain/language_copy.dart';
 import '../../features/language/presentation/provider/language_provider.dart';
 import '../constants/constants.dart';
 import '../network/connectivity_status_provider.dart';
 import 'convert.dart';
 import 'helper_function.dart';
+import 'api_timeouts.dart';
 import 'prefs.dart';
 
 class ApiHandel {
   static ApiHandel? _instance;
   late Dio dio;
-  static const Duration _connectTimeout = Duration(seconds: 10);
-  static const Duration _receiveTimeout = Duration(seconds: 15);
+  static final ApiTimeouts _timeouts = ApiTimeouts.forPlatform(isWeb: kIsWeb);
 
   void _markOnline() {
     try {
@@ -51,9 +52,9 @@ class ApiHandel {
     dio = Dio(
       BaseOptions(
         baseUrl: Constants.domain,
-        connectTimeout: _connectTimeout,
-        sendTimeout: _receiveTimeout,
-        receiveTimeout: _receiveTimeout,
+        connectTimeout: _timeouts.connectTimeout,
+        sendTimeout: _timeouts.sendTimeout,
+        receiveTimeout: _timeouts.receiveTimeout,
         // will not throw errors
         validateStatus: (status) => true,
         headers: {
@@ -69,8 +70,8 @@ class ApiHandel {
         for (var i in LanguageProvider.languages)
           Dio(
             BaseOptions(
-              connectTimeout: _connectTimeout,
-              receiveTimeout: _receiveTimeout,
+              connectTimeout: _timeouts.connectTimeout,
+              receiveTimeout: _timeouts.receiveTimeout,
             ),
           ).get(
             '${Constants.baseUri}app_languages/user/${i.languageCode}.json',
@@ -83,7 +84,9 @@ class ApiHandel {
       languages = data;
     } catch (e, st) {
       debugPrint('Language files load failed (CORS / network): $e\n$st');
-      languages = {};
+      languages = await loadBundledLanguageFiles(
+        LanguageProvider.languages.map((locale) => locale.languageCode),
+      );
     }
   }
 
@@ -99,9 +102,9 @@ class ApiHandel {
     }
     dio.options = BaseOptions(
       baseUrl: Constants.domain,
-      connectTimeout: _connectTimeout,
-      sendTimeout: _receiveTimeout,
-      receiveTimeout: _receiveTimeout,
+      connectTimeout: _timeouts.connectTimeout,
+      sendTimeout: _timeouts.sendTimeout,
+      receiveTimeout: _timeouts.receiveTimeout,
       validateStatus: (status) => true,
       // baseUrl: Constants.domain,
       headers: {

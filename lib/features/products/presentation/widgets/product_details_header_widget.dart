@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_radius.dart';
@@ -6,6 +5,7 @@ import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/constants/app_images.dart';
 import 'package:flouka/core/constants/constants.dart';
 import 'package:flouka/core/widgets/flouka_back_button.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/widgets/svg_widget.dart';
 import 'package:flouka/features/favorite/presentation/providers/favorite_provider.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
@@ -51,12 +51,11 @@ class ProductDetailsHeaderWidget extends StatelessWidget {
             CarouselSlider(
               items: images.map((item) {
                 return PinchZoom(
-                  child: CachedNetworkImage(
-                    imageUrl: item.image,
+                  child: FloukaNetworkImage(
+                    url: item.image,
                     fit: BoxFit.cover,
                     width: double.infinity,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                    error: const Icon(Icons.error),
                   ),
                 );
               }).toList(),

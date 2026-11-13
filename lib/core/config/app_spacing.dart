@@ -32,6 +32,9 @@ abstract class AppSpacing {
   /// Floating cart bubble height.
   static const double cartBubbleHeight = 46;
 
+  /// Right clearance so the cart total stays left of the chat bubble.
+  static const double chatBubbleClearance = 76;
+
   /// Bottom nav active pill (hi-fi).
   static const double navActivePillW = 44;
   static const double navActivePillH = 30;

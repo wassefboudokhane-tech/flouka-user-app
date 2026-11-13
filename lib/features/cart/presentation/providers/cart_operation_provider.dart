@@ -3,6 +3,7 @@ import 'package:flouka/core/dialog/guest_dialog.dart';
 import 'package:flouka/core/helper_function/loading.dart';
 import 'package:flouka/features/address/presentation/providers/address_provider.dart';
 import 'package:flouka/features/cart/data/data_source/guest_cart_local_data_source.dart';
+import 'package:flouka/features/cart/domain/checkout_entry.dart';
 import 'package:flouka/features/cart/domain/utils/guest_cart_mapper.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:provider/provider.dart';
@@ -197,8 +198,15 @@ extension CartOperations on CartProvider {
           Constants.globalContext(),
           listen: false,
         );
-        if (auth.userEntity == null) {
+        if (checkoutEntryBlockedForGuest(isLoggedIn: auth.userEntity != null)) {
           showGuestDialog();
+          return;
+        }
+        if (auth.userEntity == null) {
+          Provider.of<CheckoutProvider>(
+            Constants.globalContext(),
+            listen: false,
+          ).goToPage();
           return;
         }
         if (auth.userEntity?.addressEntity == null) {

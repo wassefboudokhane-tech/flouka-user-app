@@ -1,4 +1,10 @@
 {
+  "creators": {
+    "follow_title": "صنّاع محتوى للمتابعة",
+    "picks_title": "توصياته",
+    "affiliate_note": "روابط تسويقية · صانع المحتوى يحصل على عمولة",
+    "empty_picks": "لا توجد توصيات حالياً"
+  },
   "on_boarding": {
     "Welcome!": "مرحبًا!",
     "Irrelevant results again?": "نتائج غير ذات صلة مرة أخرى؟",
@@ -41,7 +47,7 @@
     "store_details": "تفاصيل المتجر",
     "best_selling": "الأكثر مبيعًا",
     "under_50": "أقل من 50 د.ت",
-    "trust_line": "الدفع عند الاستلام · 24–48 س · إرجاع 7 أيام",
+    "trust_line": "الدفع عند الاستلام · 24–48 س · إرجاع 10 أيام",
     "promo_title": "كل الحرف تحت 50 دينار",
     "promo_subtitle": "142 منتج · توصيل مجاني من 90 دينار",
     "promo_cta": "عرض"
@@ -242,10 +248,11 @@
     "products_count": "منتجات",
     "seller": "البائع",
     "app_name": "فلوكه",
+    "search": "بحث...",
     "currency": "TND",
     "cod_badge": "الدفع عند الاستلام",
     "delivery_24_48": "التوصيل خلال 24–48 س",
-    "return_7_days": "إرجاع خلال 7 أيام",
+    "return_7_days": "إرجاع خلال 10 أيام عمل",
     "product_card_rating": "★ *rate* · *num* تقييمات",
     "shared_image_hint": "نفس الصورة لكل الألوان — اختر اللون والحجم للطلب.",
     "chat_vendor": "محادثة البائع",

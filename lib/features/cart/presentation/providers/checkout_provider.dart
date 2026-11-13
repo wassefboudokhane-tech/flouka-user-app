@@ -1,3 +1,4 @@
+import 'package:flouka/core/creator_attribution.dart';
 import 'dart:math';
 
 import 'package:flouka/core/helper_function/convert.dart';
@@ -164,6 +165,8 @@ class CheckoutProvider extends ChangeNotifier {
       'can_ship_auto': termsAccepted ? 1 : 0,
       'discount': couponProvider.calcDiscount() ?? 0,
     };
+    final creatorRef = CreatorAttributionStore.refForOrder();
+    if (creatorRef != null) dataToUse['creator_ref'] = creatorRef;
     for (int i = 0; i < (couponProvider.couponEntity?.length ?? 0); i++) {
       dataToUse['coupons[$i][coupon]'] = couponProvider.couponEntity?[i].coupon;
       dataToUse['coupons[$i][discount]'] =
@@ -193,6 +196,7 @@ class CheckoutProvider extends ChangeNotifier {
       },
       (r) {
         orderId = r;
+        CreatorAttributionStore.clear();
         if (selectedPaymentMethod.toAPI == 'wallet') {
           final walletProvider = Provider.of<WalletProvider>(
             Constants.globalContext(),
@@ -233,6 +237,7 @@ class CheckoutProvider extends ChangeNotifier {
     navP(const CheckoutView());
   }
 
+  /// Cash only: vendors deliver and collect themselves.
   List<PaymentMethodEntity> paymentMethods = [
     PaymentMethodEntity(
       image: AppImages.cash,
@@ -240,17 +245,6 @@ class CheckoutProvider extends ChangeNotifier {
       toAPI: 'cash',
       isRecommended: true,
       subtitleKey: 'payment_cod_detail',
-    ),
-    PaymentMethodEntity(
-      image: AppImages.wallet,
-      paymentMethod: 'Wallet App',
-      toAPI: 'wallet',
-    ),
-    PaymentMethodEntity(
-      image: AppImages.visa,
-      paymentMethod: 'Debit/CreditCards',
-      toAPI: 'online',
-      subtitleKey: 'payment_card_detail',
     ),
   ];
 

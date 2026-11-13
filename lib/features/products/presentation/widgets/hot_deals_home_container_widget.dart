@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
@@ -28,8 +28,9 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
 
   /// Rail / grid cell height — must cover image + vendor + title + price + CTA.
   static double estimatedHeight(double cardWidth) {
-    // padding 10*2 + image 122 + vendor + title(2 lines) + price + CTA + gaps
-    return AppSpacing.productCardImageHeight + 168;
+    // padding 10*2 + image 122 + vendor + title(2 lines) + price + CTA + gaps.
+    // The extra 8px is the 2px RenderFlex overflow on the home rail.
+    return AppSpacing.productCardImageHeight + 176;
   }
 
   String _ratingLabel() {
@@ -91,7 +92,7 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                         ),
                         image: DecorationImage(
                           image: product.image != null
-                              ? CachedNetworkImageProvider(product.image!)
+                              ? floukaImageProvider(product.image!)
                               : const AssetImage(AppImages.logo),
                           fit: BoxFit.cover,
                         ),

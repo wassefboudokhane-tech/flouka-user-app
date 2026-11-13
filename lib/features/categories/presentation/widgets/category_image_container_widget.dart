@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/features/categories/domain/entity/category_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -18,13 +18,10 @@ class CategoryImageContainerWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.h),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: CachedNetworkImage(
-              imageUrl: category.image??"",
+            child: FloukaNetworkImage(
+              url: category.image??"",
               fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  const Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) =>
-                  const Center(child: Icon(Icons.error)),
+              error: const Center(child: Icon(Icons.error)),
             ),
           ),
         ),
