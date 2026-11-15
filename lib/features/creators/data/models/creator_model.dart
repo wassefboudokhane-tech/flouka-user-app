@@ -11,7 +11,6 @@ class CreatorModel extends CreatorEntity {
     required super.avatar,
     required super.bio,
     required super.niche,
-    required super.isFollowed,
     super.products,
   });
 
@@ -32,7 +31,6 @@ class CreatorModel extends CreatorEntity {
       avatar: json['avatar']?.toString(),
       bio: (json['bio'] ?? '').toString(),
       niche: json['niche']?.toString(),
-      isFollowed: convertDataToBool(json['is_follow']),
       products: products,
     );
   }

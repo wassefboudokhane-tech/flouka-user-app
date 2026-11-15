@@ -196,7 +196,8 @@ class CheckoutProvider extends ChangeNotifier {
       },
       (r) {
         orderId = r;
-        CreatorAttributionStore.clear();
+        // Sent once: later orders credit nobody until a new link is followed.
+        if (creatorRef != null) CreatorAttributionStore.clear();
         if (selectedPaymentMethod.toAPI == 'wallet') {
           final walletProvider = Provider.of<WalletProvider>(
             Constants.globalContext(),

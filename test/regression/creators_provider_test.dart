@@ -21,44 +21,36 @@ class _FakeRepo implements CreatorRepo {
 }
 
 void main() {
-  final failure = Left<DioException, List<CreatorEntity>>(
-    DioException(requestOptions: RequestOptions(path: 'get_creators')),
-  );
-
-  test('release build shows nothing when the endpoint is missing', () async {
-    final provider = CreatorsProvider(_FakeRepo(failure), allowDemoData: false);
+  test('no creators row when get_creators fails', () async {
+    final provider = CreatorsProvider(
+      _FakeRepo(
+        Left(
+          DioException(requestOptions: RequestOptions(path: 'get_creators')),
+        ),
+      ),
+    );
     await provider.load();
 
     expect(provider.creators, isEmpty);
-    expect(provider.isDemo, isFalse);
   });
 
-  test('debug build falls back to sample creators', () async {
-    final provider = CreatorsProvider(_FakeRepo(failure), allowDemoData: true);
-    await provider.load();
-
-    expect(provider.creators, demoCreators);
-    expect(provider.isDemo, isTrue);
-  });
-
-  test('backend creators always win over sample data', () async {
+  test('reads creators as get_creators returns them', () async {
     final real = CreatorModel.fromJson({
       'id': '7',
       'handle': 'nour',
       'name': 'Nour H.',
+      'niche': 'Beauté',
       'bio': 'Bio',
-      'is_follow': 1,
+      'avatar': null,
     });
-    final provider = CreatorsProvider(
-      _FakeRepo(Right([real])),
-      allowDemoData: true,
-    );
+    final provider = CreatorsProvider(_FakeRepo(Right([real])));
     await provider.load();
 
-    expect(provider.creators.single.handle, 'nour');
-    expect(provider.creators.single.id, 7);
-    expect(provider.creators.single.isFollowed, isTrue);
-    expect(provider.creators.single.initials, 'NH');
-    expect(provider.isDemo, isFalse);
+    final creator = provider.creators.single;
+    expect(creator.handle, 'nour');
+    expect(creator.id, 7);
+    expect(creator.niche, 'Beauté');
+    expect(creator.initials, 'NH');
+    expect(creator.products, isEmpty);
   });
 }

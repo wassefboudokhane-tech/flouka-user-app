@@ -9,7 +9,6 @@ class CreatorEntity {
   final String? avatar;
   final String bio;
   final String? niche;
-  final bool isFollowed;
 
   /// Products the creator recommends. Empty until the storefront is loaded.
   final List<ProductEntity> products;
@@ -21,7 +20,6 @@ class CreatorEntity {
     required this.avatar,
     required this.bio,
     required this.niche,
-    required this.isFollowed,
     this.products = const [],
   });
 

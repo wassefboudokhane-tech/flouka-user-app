@@ -6,7 +6,6 @@ import 'package:flouka/features/creators/presentation/providers/creators_provide
 import 'package:flouka/features/creators/presentation/widgets/creator_avatar.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
-import 'package:flouka/features/products/presentation/providers/home_products_provider.dart';
 import 'package:flouka/features/products/presentation/widgets/hot_deals_home_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,11 +25,7 @@ class CreatorStorefrontPage extends StatelessWidget {
       );
     }
 
-    // Sample creators have no picks of their own: show live home products so
-    // the screen can be reviewed with real cards.
-    final List<ProductEntity> products = provider.isDemo
-        ? context.watch<HomeProductsProvider>().productsList
-        : creator.products;
+    final List<ProductEntity> products = creator.products;
 
     return Scaffold(
       backgroundColor: AppColor.canvasColor,
@@ -55,8 +50,9 @@ class CreatorStorefrontPage extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.maybePop(context),
-                    tooltip:
-                        MaterialLocalizations.of(context).backButtonTooltip,
+                    tooltip: MaterialLocalizations.of(
+                      context,
+                    ).backButtonTooltip,
                     icon: const BackButtonIcon(),
                     color: Colors.white,
                   ),
@@ -172,12 +168,14 @@ class CreatorStorefrontPage extends StatelessWidget {
                       crossAxisCount: 2,
                       mainAxisSpacing: AppSpacing.cardGap,
                       crossAxisSpacing: AppSpacing.cardGap,
-                      childAspectRatio: cardW /
+                      childAspectRatio:
+                          cardW /
                           HotDealsHomeContainerWidget.estimatedHeight(cardW),
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => HotDealsHomeContainerWidget(
                         product: products[index],
+                        creator: creator,
                       ),
                       childCount: products.length,
                     ),

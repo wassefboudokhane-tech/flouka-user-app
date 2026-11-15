@@ -1,3 +1,4 @@
+import 'package:flouka/features/creators/presentation/widgets/creator_recommendation_banner.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/constants/app_lotties.dart';
@@ -102,6 +103,18 @@ class ProductsDetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ProductDetailsHeaderWidget(productEntity: product),
+                  if (productDetailsProvider.recommendedBy != null)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.pageGutter,
+                        14,
+                        AppSpacing.pageGutter,
+                        0,
+                      ),
+                      child: CreatorRecommendationBanner(
+                        creator: productDetailsProvider.recommendedBy!,
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
                       AppSpacing.pageGutter,

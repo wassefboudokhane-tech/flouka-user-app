@@ -1,3 +1,5 @@
+import 'package:flouka/core/creator_attribution.dart';
+import 'package:flouka/features/creators/domain/entity/creator_entity.dart';
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/config/app_radius.dart';
@@ -20,11 +22,15 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
     required this.product,
     this.isSimilar = false,
     this.width,
+    this.creator,
   });
 
   final ProductEntity product;
   final bool isSimilar;
   final double? width;
+
+  /// Set when the card sits in a creator's shop: opening it credits them.
+  final CreatorEntity? creator;
 
   /// Rail / grid cell height — must cover image + vendor + title + price + CTA.
   static double estimatedHeight(double cardWidth) {
@@ -53,9 +59,13 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
+        final from = creator;
+        // Same rule as a ?creator= link: 7 days, last click wins.
+        if (from != null) CreatorAttributionStore.capture(from.handle);
         Provider.of<ProductDetailsProvider>(context, listen: false).goToPage({
           'product_id': product.id,
           'is_similar': isSimilar,
+          if (from != null) 'creator': from,
         });
       },
       borderRadius: BorderRadius.circular(AppRadius.card),
@@ -116,10 +126,7 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                           '-${product.discountPercentage!.toStringAsFixed(0)}%',
                           style: TextStyleClass.captionStyle(
                             color: AppColor.backgroundColor,
-                          ).copyWith(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          ).copyWith(fontSize: 10, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -128,8 +135,7 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                     end: 7,
                     child: Consumer<FavoriteProvider>(
                       builder: (context, provider, _) {
-                        final isFav =
-                            provider.favoriteIds.contains(product.id);
+                        final isFav = provider.favoriteIds.contains(product.id);
                         return InkWell(
                           onTap: () => provider.toggleFavorite(product),
                           customBorder: const CircleBorder(),
@@ -146,9 +152,7 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                                   : Border.all(color: AppColor.borderColor),
                             ),
                             child: Icon(
-                              isFav
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
+                              isFav ? Icons.favorite : Icons.favorite_border,
                               color: isFav
                                   ? AppColor.backgroundColor
                                   : AppColor.primaryColor,
@@ -220,18 +224,17 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                     LanguageProvider.translate('global', 'cod_badge'),
                     style: TextStyleClass.captionStyle(
                       color: AppColor.navColor,
-                    ).copyWith(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    ).copyWith(fontSize: 10, fontWeight: FontWeight.w600),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 InkWell(
                   onTap: () {
-                    Provider.of<ProductDetailsProvider>(context, listen: false)
-                        .addToCart(product);
+                    Provider.of<ProductDetailsProvider>(
+                      context,
+                      listen: false,
+                    ).addToCart(product);
                   },
                   customBorder: const CircleBorder(),
                   child: Container(
@@ -244,13 +247,14 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Text(
                       '+',
-                      style: TextStyleClass.smallStyle(
-                        color: AppColor.deepColor,
-                      ).copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                        height: 1,
-                      ),
+                      style:
+                          TextStyleClass.smallStyle(
+                            color: AppColor.deepColor,
+                          ).copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            height: 1,
+                          ),
                     ),
                   ),
                 ),
