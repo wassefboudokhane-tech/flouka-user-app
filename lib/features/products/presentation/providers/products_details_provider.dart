@@ -218,10 +218,14 @@ class ProductDetailsProvider extends ChangeNotifier
     });
   }
 
-  void addToCart(ProductEntity product) {
+  void addToCart(ProductEntity product, {CreatorEntity? creator}) {
     // Variant / incomplete listing → open PDP to choose options.
     if (product.haveVariant || product.stock == null || product.store == null) {
-      goToPage({'product_id': product.id, 'is_similar': false});
+      goToPage({
+        'product_id': product.id,
+        'is_similar': false,
+        if (creator != null) 'creator': creator,
+      });
       return;
     }
     final cartProvider = Provider.of<CartProvider>(

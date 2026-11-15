@@ -231,10 +231,14 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
+                    final from = creator;
+                    // Adding from a creator shop credits them, same as opening
+                    // the product. Last click wins, for 7 days.
+                    if (from != null) CreatorAttributionStore.capture(from.handle);
                     Provider.of<ProductDetailsProvider>(
                       context,
                       listen: false,
-                    ).addToCart(product);
+                    ).addToCart(product, creator: from);
                   },
                   customBorder: const CircleBorder(),
                   child: Container(
