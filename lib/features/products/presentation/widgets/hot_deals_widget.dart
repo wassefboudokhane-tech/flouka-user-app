@@ -1,3 +1,4 @@
+import 'package:flouka/features/creators/domain/entity/creator_entity.dart';
 import 'package:flouka/features/home/presentation/widgets/marketplace_product_rail.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
@@ -9,10 +10,12 @@ class HotDealsWidget extends StatelessWidget {
     super.key,
     required this.products,
     this.isSimilar = true,
+    this.creator,
   });
 
   final List<ProductEntity> products;
   final bool isSimilar;
+  final CreatorEntity? creator;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class HotDealsWidget extends StatelessWidget {
         title: LanguageProvider.translate('home', 'related_products'),
         products: products,
         isSimilar: isSimilar,
+        creator: creator,
       ),
     );
   }
