@@ -423,7 +423,12 @@
     "driver_default": "سائق التوصيل",
     "driver_calls_before": "يتصل قبل 30 دقيقة",
     "file_complaint": "تقديم شكوى",
-    "contact_vendor": "مراسلة البائع"
+    "contact_vendor": "مراسلة البائع",
+    "login_title": "سجّل الدخول لرؤية طلباتك",
+    "login_hint": "تظهر طلباتك وتتبعها هنا بعد تسجيل الدخول.",
+    "login_cta": "تسجيل الدخول",
+    "load_failed": "تعذر تحميل طلباتك.",
+    "retry": "إعادة المحاولة"
   },
   "wallet": {
     "enter_value": "أدخل القيمة",

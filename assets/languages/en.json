@@ -423,7 +423,12 @@
     "driver_default": "Your driver",
     "driver_calls_before": "Calls you 30 min before",
     "file_complaint": "File a complaint",
-    "contact_vendor": "Contact vendor"
+    "contact_vendor": "Contact vendor",
+    "login_title": "Sign in to see your orders",
+    "login_hint": "Your orders and their tracking show here once you are signed in.",
+    "login_cta": "Sign in",
+    "load_failed": "Your orders could not be loaded.",
+    "retry": "Try again"
   },
   "wallet": {
     "enter_value": "Enter value",

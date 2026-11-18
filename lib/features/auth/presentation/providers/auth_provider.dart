@@ -82,7 +82,9 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
-  void goToLoginView() {
+  /// [replace]: false keeps the current screen under the login page, so
+  /// signing in from a tab (orders) comes back to it.
+  void goToLoginView({bool replace = true}) {
     defaultCountry = '+216';
     CountryWidget.getLength;
     authStep = AuthStep.phone;
@@ -97,7 +99,7 @@ class AuthProvider extends ChangeNotifier {
         length: phoneLength,
       ),
     ];
-    navPR(const LoginView());
+    replace ? navPR(const LoginView()) : navP(const LoginView());
   }
 
   void backToPhoneStep() {

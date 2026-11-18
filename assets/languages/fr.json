@@ -423,7 +423,12 @@
     "driver_default": "Votre livreur",
     "driver_calls_before": "Vous appelle 30 min avant",
     "file_complaint": "Déposer une réclamation",
-    "contact_vendor": "Contacter le vendeur"
+    "contact_vendor": "Contacter le vendeur",
+    "login_title": "Connectez-vous pour voir vos commandes",
+    "login_hint": "Vos commandes et leur suivi apparaissent ici une fois connecté.",
+    "login_cta": "Se connecter",
+    "load_failed": "Impossible de charger vos commandes.",
+    "retry": "Réessayer"
   },
   "wallet": {
     "enter_value": "Entrez une valeur",

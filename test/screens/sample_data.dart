@@ -1,3 +1,5 @@
+import 'package:flouka/core/widgets/flouka_boat_loader.dart';
+import 'package:flouka/features/orders/presentation/provider/order_provider.dart';
 import 'package:flouka/features/auth/presentation/views/login_view.dart';
 import 'package:flouka/features/favorite/presentation/views/favorite_view.dart';
 import 'package:flouka/features/navbar/presentation/views/explore_view.dart';
@@ -118,7 +120,23 @@ final sampleScreens = <SampleScreen>[
   SampleScreen('shop', () => const ShopProductsPage(), (c) {
     Provider.of<CategoriesProductSearchProvider>(c, listen: false).data = sampleProducts;
   }),
-  SampleScreen('orders', () => const OrdersView()),
+  SampleScreen('orders', () => const OrdersView(), (c) {
+    Provider.of<OrderProvider>(c, listen: false).needsLogin = true;
+  }),
+  SampleScreen('loader', () => Scaffold(
+        body: Center(
+          child: Wrap(spacing: 16, runSpacing: 24, children: [
+            for (final t in [0.0, 0.15, 0.3, 0.5, 0.7, 0.85])
+              SizedBox(
+                width: 110,
+                height: 80,
+                child: CustomPaint(
+                  painter: BoatLoaderPainter(t: t, color: const Color(0xFF1A1A1A), seaColor: const Color(0xFF5FA8C2)),
+                ),
+              ),
+          ]),
+        ),
+      )),
   SampleScreen('favorites', () => const FavoriteView()),
   SampleScreen('settings', () => const SettingsView()),
   SampleScreen('login', () => const LoginView()),
