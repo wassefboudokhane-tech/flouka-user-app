@@ -24,7 +24,7 @@ class StoresHomeSection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.95),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: const Color(0xffE6DDF2)),
       ),
       child: Column(
@@ -38,7 +38,7 @@ class StoresHomeSection extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(99),
                   gradient: LinearGradient(
-                    colors: [AppColor.limeColor, AppColor.primaryColor],
+                    colors: [AppColor.inkColor, AppColor.inkColor],
                   ),
                 ),
               ),

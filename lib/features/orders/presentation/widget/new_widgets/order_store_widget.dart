@@ -55,7 +55,7 @@ class OrderStoreWidget extends StatelessWidget {
               SizedBox(width: 2.w,),
               Text("${vendor.total} ${LanguageProvider.translate('global', 'currency')}",
                 style: TextStyleClass.semiHeadStyle(
-                  color: AppColor.primaryColor,
+                  color: AppColor.inkColor,
                 ).copyWith(fontWeight: FontWeight.bold),),
 
             ],

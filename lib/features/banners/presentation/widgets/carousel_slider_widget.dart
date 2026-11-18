@@ -38,7 +38,7 @@ class CarouselSliderWidget extends StatelessWidget {
                       }
                     },
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(4),
                       child: FloukaNetworkImage(
                         url: item.image,
                         fit: BoxFit.cover,

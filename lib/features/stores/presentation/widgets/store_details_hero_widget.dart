@@ -73,10 +73,10 @@ class StoreDetailsHeroWidget extends StatelessWidget {
                     ),
                     Material(
                       color: AppColor.inkColor.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                       child: InkWell(
                         onTap: () => _showMenu(context, provider),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(4),
                         child: SizedBox(
                           width: 38,
                           height: 38,

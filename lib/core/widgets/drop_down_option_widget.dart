@@ -38,7 +38,7 @@ class _DropDownOptionWidgetState extends State<DropDownOptionWidget> {
         child: Container(
           width: 90.w,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(4),
             color: Colors.white,
           ),
           child: Padding(

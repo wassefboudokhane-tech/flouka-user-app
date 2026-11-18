@@ -186,7 +186,7 @@ class _OtpStep extends StatelessWidget {
             child: Text(
               LanguageProvider.translate('auth', 'change_phone'),
               style: TextStyleClass.smallStyle(
-                color: AppColor.primaryColor,
+                color: AppColor.inkColor,
               ).copyWith(fontWeight: FontWeight.w700),
             ),
           ),
@@ -214,7 +214,7 @@ class _OtpStep extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: AppColor.softColor,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(color: AppColor.borderColor),
           ),
           child: Text(

@@ -34,7 +34,7 @@ class ProfileMenuRowWidget extends StatelessWidget {
                 color: AppColor.softColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(Icons.circle, size: 8, color: AppColor.primaryColor),
+              child: Icon(Icons.circle, size: 8, color: AppColor.inkColor),
             ),
             const SizedBox(width: 12),
             Expanded(

@@ -74,7 +74,7 @@ class RecoveryCardWidget extends StatelessWidget {
               onPressed: onSecondary,
               child: Text(
                 LanguageProvider.translate(section, secondaryKey!),
-                style: TextStyleClass.smallStyle(color: AppColor.primaryColor)
+                style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                     .copyWith(fontWeight: FontWeight.w700),
               ),
             ),

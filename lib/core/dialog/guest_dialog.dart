@@ -23,7 +23,7 @@ void showGuestDialog() {
     barrierColor: Colors.black.withValues(alpha: 0.45),
     builder: (context) {
       return Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         insetPadding: EdgeInsets.symmetric(horizontal: 6.w),
         child: Padding(
           padding: EdgeInsets.fromLTRB(5.w, 3.h, 5.w, 2.5.h),

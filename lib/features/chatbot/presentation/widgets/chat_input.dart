@@ -26,7 +26,7 @@ class ChatInput extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 // color: AppColor.primaryColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: AppColor.inkColor),
               ),
               child: TextField(

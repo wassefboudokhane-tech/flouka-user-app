@@ -81,10 +81,12 @@ void main() {
     expect(codes, containsAll(['ar', 'en', 'fr']));
   });
 
-  test('product rail is tall enough for the card that overflowed by 2px', () {
+  test('product rail leaves room under the photo for shop, title and price', () {
+    // The épuré card has no frame or padding; the overflow test below is
+    // what proves the rail is tall enough.
     expect(
       HotDealsHomeContainerWidget.estimatedHeight(AppSpacing.productCardWidth),
-      greaterThanOrEqualTo(AppSpacing.productCardImageHeight + 176),
+      greaterThanOrEqualTo(AppSpacing.productCardImageHeight + 90),
     );
   });
 

@@ -61,48 +61,12 @@ class HomeAppbarWidget extends StatelessWidget {
             },
           ),
           const SizedBox(height: 11),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: const BoxDecoration(),
-            child: Row(
-              children: [
-                for (var i = 0; i < badges.length; i++) ...[
-                  if (i > 0) const SizedBox(width: 6),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 5,
-                          height: 5,
-                          margin: const EdgeInsets.only(top: 4),
-                          decoration: BoxDecoration(
-                            color: AppColor.inkColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        Expanded(
-                          child: Text(
-                            badges[i],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyleClass.captionStyle(
-                              color: AppColor.mutedColor,
-                            ).copyWith(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 10,
-                              height: 1.25,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ],
-            ),
+          Text(
+            badges.join(' · '),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            style: TextStyleClass.captionStyle(color: AppColor.mutedColor)
+                .copyWith(fontSize: 11.5),
           ),
         ],
       ),

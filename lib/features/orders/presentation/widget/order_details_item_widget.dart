@@ -22,12 +22,12 @@ class OrderDetailsItemWidget extends StatelessWidget {
     return Material(
       elevation: 5,
       shadowColor: AppColor.primaryColor,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(4),
       child: Container(
         padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 2.h, bottom: 3.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Column(
           children: [

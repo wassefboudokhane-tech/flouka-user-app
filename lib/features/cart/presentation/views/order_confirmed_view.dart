@@ -457,7 +457,7 @@ class _EmailInvoiceCard extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: AppColor.inkColor,
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(4),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: TextField(

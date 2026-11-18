@@ -55,7 +55,7 @@ class FilterPage extends StatelessWidget {
                   return Container(
                     decoration: BoxDecoration(
                       color: AppColor.backgroundColor,
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(4),
                       border: Border.all(
                         color: hasValue
                             ? AppColor.primaryColor
@@ -101,7 +101,7 @@ class FilterPage extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyleClass.captionStyle(
-                                    color: AppColor.primaryColor,
+                                    color: AppColor.inkColor,
                                   ).copyWith(fontWeight: FontWeight.w700),
                                 ),
                               ),

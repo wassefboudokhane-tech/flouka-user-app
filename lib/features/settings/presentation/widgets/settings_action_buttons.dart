@@ -39,13 +39,13 @@ class SettingsActionButtons extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 2.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(color: Colors.grey.withOpacity(0.1)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.logout, color: AppColor.primaryColor, size: 20.sp),
+            Icon(Icons.logout, color: AppColor.inkColor, size: 20.sp),
             SizedBox(width: 3.w),
             Text(
               AuthProvider.isLogin()?LanguageProvider.translate("settings", "logout"):LanguageProvider.translate("buttons", "login"),
@@ -68,7 +68,7 @@ class SettingsActionButtons extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 2.h),
         decoration: BoxDecoration(
           color: AppColor.primaryColor,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

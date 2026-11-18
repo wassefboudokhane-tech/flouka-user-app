@@ -115,8 +115,8 @@ class _BuyerSanityPageState extends State<BuyerSanityPage> {
         HotDealsHomeContainerWidget.estimatedHeight(
               AppSpacing.productCardWidth,
             ) >=
-            AppSpacing.productCardImageHeight + 176,
-        'Le rail couvre le débordement de 2 px.',
+            AppSpacing.productCardImageHeight + 90,
+        'Place pour la boutique, le titre et le prix sous la photo.',
       ),
       _SanityRow(
         'Images catégorie, bannière, boutique et story',
@@ -295,7 +295,7 @@ class _SanityTile extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColor.borderColor),
       ),
       child: Row(

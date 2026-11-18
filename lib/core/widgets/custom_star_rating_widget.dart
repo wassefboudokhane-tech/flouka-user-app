@@ -21,9 +21,9 @@ class CustomStarRatingWidget extends StatelessWidget {
       itemSize: itemSize ?? 18.sp,
       allowHalfRating: true,
       ratingWidget: RatingWidget(
-        full: const Icon(Icons.star, color: Colors.amber),
-        half: const Icon(Icons.star_half, color: Colors.amber),
-        empty: const Icon(Icons.star_border, color: Colors.amber),
+        full: Icon(Icons.star, color: AppColor.inkColor),
+        half: Icon(Icons.star_half, color: AppColor.inkColor),
+        empty: Icon(Icons.star_border, color: AppColor.inkColor),
       ),
       onRatingUpdate: (value) {
         if(onRatingUpdate!=null){

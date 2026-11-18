@@ -15,8 +15,8 @@ Future showDropDownDialog(DropDownClass dropDownClass) async {
     isDismissible: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(25),
-        topRight: Radius.circular(25),
+        topLeft: Radius.circular(4),
+        topRight: Radius.circular(4),
       ),
     ),
     builder: (context) {
@@ -33,8 +33,8 @@ Future showDropDownDialog(DropDownClass dropDownClass) async {
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.8),
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(25),
-                topRight: Radius.circular(25),
+                topLeft: Radius.circular(4),
+                topRight: Radius.circular(4),
               ),
             ),
             padding: EdgeInsets.symmetric(vertical: 2.h),

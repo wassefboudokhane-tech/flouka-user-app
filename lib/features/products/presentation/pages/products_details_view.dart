@@ -8,6 +8,7 @@ import 'package:flouka/features/products/presentation/widgets/product_details_bu
 import 'package:flouka/features/products/presentation/widgets/product_details_header_widget.dart';
 import 'package:flouka/features/products/presentation/widgets/product_details_vendor_trust_widget.dart';
 import 'package:flouka/features/products/presentation/widgets/review_widget.dart';
+import 'package:flouka/core/helper_function/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/config/app_color.dart';
@@ -174,7 +175,7 @@ class ProductsDetailsView extends StatelessWidget {
                           textBaseline: TextBaseline.alphabetic,
                           children: [
                             Text(
-                              '${displayPrice ?? 0}',
+                              formatPrice(displayPrice ?? 0),
                               style: TextStyleClass.pdpPriceStyle(),
                             ),
                             const SizedBox(width: 9),
@@ -294,7 +295,7 @@ class ProductsDetailsView extends StatelessWidget {
                                     'see_all',
                                   ),
                                   style: TextStyleClass.normalStyle(
-                                    color: AppColor.primaryColor,
+                                    color: AppColor.inkColor,
                                   ),
                                 ),
                               ),

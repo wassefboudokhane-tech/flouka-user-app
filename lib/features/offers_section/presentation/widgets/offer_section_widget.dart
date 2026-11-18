@@ -22,7 +22,7 @@ class OffersSectionWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
       decoration: BoxDecoration(
         color: offerSectionEntity.color,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColor.borderColor.withValues(alpha: 0.5)),
       ),
       child: Column(

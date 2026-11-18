@@ -48,7 +48,7 @@ class gradiantButton extends StatelessWidget {
               Text(
                 vendor.name,
                 style: TextStyleClass.smallStyle(
-                  color: AppColor.primaryColor,
+                  color: AppColor.inkColor,
                 ),
               ),
             ],

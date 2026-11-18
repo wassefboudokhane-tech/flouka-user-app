@@ -39,7 +39,7 @@ class _OrderPriceExpansionTileWidgetState
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
           children: [

@@ -45,7 +45,7 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 28),
           decoration: BoxDecoration(
             color: AppColor.backgroundColor,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(color: AppColor.borderColor),
           ),
           child: Column(
@@ -59,7 +59,7 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
                     Container(
                       decoration: BoxDecoration(
                         color: AppColor.softColor,
-                        borderRadius: BorderRadius.circular(26),
+                        borderRadius: BorderRadius.circular(4),
                         border: Border.all(color: AppColor.borderColor),
                       ),
                     ),
@@ -143,7 +143,7 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   gradient: LinearGradient(
-                    colors: [AppColor.limeColor, AppColor.primaryColor],
+                    colors: [AppColor.inkColor, AppColor.inkColor],
                   ),
                 ),
               ),
@@ -160,7 +160,7 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
                 child: Text(
                   LanguageProvider.translate('global', 'see_all'),
                   style: TextStyleClass.captionStyle(
-                    color: AppColor.primaryColor,
+                    color: AppColor.inkColor,
                   ).copyWith(fontWeight: FontWeight.w700, fontSize: 12),
                 ),
               ),
@@ -208,8 +208,8 @@ class _CartIcon extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: AppColor.inkColor, width: 2.5),
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
+                  topLeft: Radius.circular(4),
+                  topRight: Radius.circular(4),
                 ),
               ),
             ),
@@ -233,13 +233,13 @@ class _FavoriteRow extends StatelessWidget {
       padding: const EdgeInsets.all(11),
       decoration: BoxDecoration(
         color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColor.borderColor),
       ),
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(13),
+            borderRadius: BorderRadius.circular(4),
             child: Container(
               width: 58,
               height: 58,

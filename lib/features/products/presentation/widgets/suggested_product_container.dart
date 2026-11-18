@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/widgets/price_widget.dart';
 import 'package:flouka/core/widgets/svg_widget.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
+import 'package:flouka/core/config/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -19,13 +20,6 @@ class SuggestedProductContainer extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
           child: Column(
             children: [
@@ -87,7 +81,7 @@ class SuggestedProductContainer extends StatelessWidget {
                       children: [
                         SvgWidget(
                           svg: AppImages.star,
-                          color: Colors.amber,
+                          color: AppColor.inkColor,
                           width: 16.sp,
                         ),
                         SizedBox(width: 1.w),
@@ -130,13 +124,6 @@ class SuggestedProductContainer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
             ),
             child: Icon(Icons.favorite_border, size: 4.w, color: Colors.black),
           ),

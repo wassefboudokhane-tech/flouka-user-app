@@ -28,7 +28,7 @@ class CheckoutCountWidget extends StatelessWidget {
           " ${cartProvider.data?.length ?? 0} "
           "${LanguageProvider.translate("global", "items")}",
           style: TextStyleClass.normalStyle(
-            color: AppColor.primaryColor,
+            color: AppColor.inkColor,
           ),
         ),
       ],

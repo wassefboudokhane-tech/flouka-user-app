@@ -22,7 +22,7 @@ class OrderWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColor.borderColor),
       ),
       child: IntrinsicHeight(
@@ -34,7 +34,7 @@ class OrderWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: order.status.color,
                 borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(16),
+                  left: Radius.circular(4),
                 ),
               ),
             ),

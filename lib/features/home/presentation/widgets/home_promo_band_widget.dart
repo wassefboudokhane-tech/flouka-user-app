@@ -95,18 +95,6 @@ class HomePromoBandWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Positioned(
-              top: -50,
-              right: -30,
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColor.softColor,
-                ),
-              ),
-            ),
           ],
         ),
       ),

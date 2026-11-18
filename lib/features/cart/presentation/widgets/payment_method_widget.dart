@@ -95,7 +95,7 @@ class PaymentMthodItemWidget extends StatelessWidget {
                       padding: const EdgeInsetsDirectional.only(start: 8),
                       child: Icon(
                         Icons.check_circle_rounded,
-                        color: AppColor.primaryColor,
+                        color: AppColor.inkColor,
                         size: 20,
                       ),
                     ),
@@ -148,7 +148,7 @@ class PaymentMthodItemWidget extends StatelessWidget {
                         'wallet_use_cod',
                       ),
                       style: TextStyleClass.captionStyle(
-                        color: AppColor.primaryColor,
+                        color: AppColor.inkColor,
                       ).copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),

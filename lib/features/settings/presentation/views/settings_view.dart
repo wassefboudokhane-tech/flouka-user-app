@@ -343,14 +343,14 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: AppColor.backgroundColor,
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(4),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(4),
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(color: AppColor.borderColor),
           ),
           child: Column(
@@ -423,7 +423,7 @@ class _MenuSection extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: AppColor.backgroundColor,
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(4),
               border: Border.all(color: AppColor.borderColor),
             ),
             child: Column(

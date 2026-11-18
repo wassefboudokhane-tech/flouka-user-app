@@ -59,7 +59,7 @@ class CheckoutStockBottomSheet {
                 Container(
                   decoration: BoxDecoration(
                     color: AppColor.backgroundColor,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(4),
                     border: Border.all(color: AppColor.borderColor),
                   ),
                   child: Column(
@@ -74,7 +74,7 @@ class CheckoutStockBottomSheet {
                                 height: 48,
                                 decoration: BoxDecoration(
                                   color: AppColor.softColor,
-                                  borderRadius: BorderRadius.circular(13),
+                                  borderRadius: BorderRadius.circular(4),
                                   border: Border.all(color: AppColor.borderColor),
                                 ),
                               ),

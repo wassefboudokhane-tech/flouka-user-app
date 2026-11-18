@@ -49,11 +49,11 @@ class _CommonQuestionDetailsWidgetState
                       child: open
                           ? Icon(
                               Icons.keyboard_arrow_down_sharp,
-                              color: AppColor.primaryColor,
+                              color: AppColor.inkColor,
                             )
                           : Icon(
                               Icons.arrow_forward_ios,
-                              color: AppColor.primaryColor,
+                              color: AppColor.inkColor,
                             ),
                     ),
                   ],

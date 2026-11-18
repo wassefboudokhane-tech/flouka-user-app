@@ -84,32 +84,12 @@ class _MerchCard extends StatelessWidget {
         color: Colors.white.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(AppRadius.card),
         border: Border.all(color: AppColor.borderColor),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                width: AppSpacing.railAccentW,
-                height: AppSpacing.railAccentH,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColor.limeColor, AppColor.primaryColor],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   title,
@@ -127,7 +107,7 @@ class _MerchCard extends StatelessWidget {
                 },
                 child: Text(
                   LanguageProvider.translate('global', 'see_all'),
-                  style: TextStyleClass.captionStyle(color: AppColor.primaryColor)
+                  style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w700),
                 ),
               ),

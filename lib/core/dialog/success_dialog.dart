@@ -58,7 +58,7 @@ void _showSuccessSheet({
     isScrollControlled: true,
     backgroundColor: AppColor.backgroundColor,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
     ),
     builder: (context) {
       final bottomInset = MediaQuery.viewPaddingOf(context).bottom;

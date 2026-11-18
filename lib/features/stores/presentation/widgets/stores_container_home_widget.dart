@@ -27,13 +27,6 @@ class StoresContainerHomeWidget extends StatelessWidget {
           color: Colors.white,
           border: Border.all(color: AppColor.borderColor),
           borderRadius: BorderRadius.circular(AppRadius.card),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -82,7 +75,7 @@ class StoresContainerHomeWidget extends StatelessWidget {
                       Text(
                         store.rate.toStringAsFixed(1),
                         style: TextStyleClass.captionStyle(
-                          color: AppColor.primaryColor,
+                          color: AppColor.inkColor,
                         ),
                       ),
                     ],

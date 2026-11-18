@@ -27,7 +27,7 @@ abstract class AppSpacing {
 
   /// Hi-fi product card (158×122 image + meta).
   static const double productCardWidth = 158;
-  static const double productCardImageHeight = 122;
+  static const double productCardImageHeight = 170;
 
   /// Floating cart bubble height.
   static const double cartBubbleHeight = 46;

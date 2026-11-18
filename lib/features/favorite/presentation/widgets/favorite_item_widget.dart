@@ -29,22 +29,15 @@ class FavoriteItemWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(color: const Color(0xffF0F0F0)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
         ),
         child: Stack(
           children: [
             Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(4),
                   child: CachedNetworkImage(
                     width: 20.w,
                     height: 20.w,
@@ -89,7 +82,7 @@ class FavoriteItemWidget extends StatelessWidget {
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: AppColor.primaryColor,
+                    color: AppColor.inkColor,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.add, color: Colors.white, size: 20),

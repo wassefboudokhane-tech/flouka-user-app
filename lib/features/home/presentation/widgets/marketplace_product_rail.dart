@@ -47,19 +47,6 @@ class MarketplaceProductRail extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Container(
-                  width: AppSpacing.railAccentW,
-                  height: AppSpacing.railAccentH,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColor.limeColor, AppColor.primaryColor],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 9),
                 Expanded(
                   child: Text(
                     title,

@@ -40,7 +40,7 @@ class NotificationWidget extends StatelessWidget {
       ),
       child: Material(
         color: AppColor.softColor,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(4),
         child: InkWell(
           onTap: () {
             navP(
@@ -50,7 +50,7 @@ class NotificationWidget extends StatelessWidget {
               ),
             );
           },
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(4),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
             child: Row(

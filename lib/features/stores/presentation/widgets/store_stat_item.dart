@@ -33,7 +33,7 @@ class StoreStatItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(4),
         color: isGlass
             ? AppColor.inkColor.withValues(alpha: 0.08)
             : AppColor.softColor,

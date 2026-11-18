@@ -50,13 +50,6 @@ class _SearchbarContainerState extends State<SearchbarContainer> {
         color: widget.fillColor ?? Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.btn),
         border: Border.all(color: AppColor.borderColor),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 14),
       child: Stack(

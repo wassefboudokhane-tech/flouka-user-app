@@ -67,9 +67,9 @@ class ReviewItemWidget extends StatelessWidget {
                             itemCount: 5,
                             itemSize: 16,
                             ratingWidget: RatingWidget(
-                              full: const Icon(Icons.star, color: Colors.amber),
-                              half: const Icon(Icons.star_half, color: Colors.amber),
-                              empty: const Icon(Icons.star_outline, color: Colors.amber),
+                              full: Icon(Icons.star, color: AppColor.inkColor),
+                              half: Icon(Icons.star_half, color: AppColor.inkColor),
+                              empty: Icon(Icons.star_outline, color: AppColor.inkColor),
                             ),
                             onRatingUpdate: (_) {},
                           ),
@@ -117,7 +117,7 @@ class ReviewItemWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
-                  color: AppColor.primaryColor,
+                  color: AppColor.inkColor,
                 ),
               ),
             ),

@@ -123,7 +123,7 @@ class _CategoryEmptyRecovery extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         decoration: BoxDecoration(
           color: AppColor.backgroundColor,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(color: AppColor.borderColor),
         ),
         child: Column(
@@ -134,7 +134,7 @@ class _CategoryEmptyRecovery extends StatelessWidget {
               height: 76,
               decoration: BoxDecoration(
                 color: AppColor.softColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: AppColor.borderColor),
               ),
               child: Center(

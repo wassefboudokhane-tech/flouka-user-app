@@ -33,7 +33,7 @@ class OrderVendorItems extends StatelessWidget {
                       height: 9.h,
                       width: 9.h,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(4),
                           image: DecorationImage(image:product?.image !=null ?
                           CachedNetworkImageProvider(product!.image!) :const AssetImage(AppImages.logo),
                               fit: BoxFit.cover)

@@ -17,7 +17,7 @@ class PopularCategoryContainerWidget extends StatelessWidget {
       width: 49.w,
       height: 12.h,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(4),
         child: Stack(
           fit: StackFit.expand,
           children: [

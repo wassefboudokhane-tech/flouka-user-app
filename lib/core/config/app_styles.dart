@@ -16,7 +16,7 @@ abstract class TextStyleClass {
     return GoogleFonts.rubik(
       color: color ?? AppColor.inkColor,
       fontSize: _fs(20, min: 18, max: 22),
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w600,
     );
   }
 
@@ -46,9 +46,9 @@ abstract class TextStyleClass {
 
   static TextStyle buttonStyle({Color? color}) {
     return GoogleFonts.rubik(
-      color: color ?? AppColor.deepColor,
+      color: color ?? AppColor.inkColor,
       fontSize: _fs(15, min: 13, max: 16),
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
     );
   }
 
@@ -66,12 +66,12 @@ abstract class TextStyleClass {
     );
   }
 
-  /// Product card vendor line — web 11px.
+  /// Product card vendor line: small grey, like the site.
   static TextStyle vendorStyle({Color? color}) {
     return GoogleFonts.rubik(
-      color: color ?? AppColor.primaryColor,
+      color: color ?? AppColor.mutedColor,
       fontSize: _fs(11, min: 10, max: 12),
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w400,
     );
   }
 
@@ -85,64 +85,64 @@ abstract class TextStyleClass {
     );
   }
 
-  /// Product price — web 19px w800 deep.
+  /// Product price: black, semibold.
   static TextStyle priceStyle({Color? color}) {
-    final fontSize = _fs(19, min: 17, max: 21);
+    final fontSize = _fs(15, min: 14, max: 16);
     return GoogleFonts.rubik(
-      color: color ?? AppColor.deepColor,
+      color: color ?? AppColor.inkColor,
       fontSize: fontSize,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w600,
       letterSpacing: fontSize * -0.02,
     );
   }
 
-  /// Rail section title — hi-fi 18px.
+  /// Section title.
   static TextStyle railTitleStyle({Color? color}) {
     return GoogleFonts.rubik(
-      color: color ?? AppColor.deepColor,
-      fontSize: _fs(18, min: 16, max: 20),
-      fontWeight: FontWeight.w800,
+      color: color ?? AppColor.inkColor,
+      fontSize: _fs(17, min: 16, max: 18),
+      fontWeight: FontWeight.w600,
       letterSpacing: -0.01,
     );
   }
 
-  /// Screen title — hi-fi 28px (Panier, Explorer, …).
+  /// Screen title (Panier, Explorer, …).
   static TextStyle screenTitleStyle({Color? color}) {
     return GoogleFonts.rubik(
-      color: color ?? AppColor.deepColor,
-      fontSize: _fs(28, min: 24, max: 30),
-      fontWeight: FontWeight.w800,
+      color: color ?? AppColor.inkColor,
+      fontSize: _fs(22, min: 20, max: 24),
+      fontWeight: FontWeight.w600,
       letterSpacing: -0.02,
       height: 1,
     );
   }
 
-  /// Cart line item price — hi-fi 17px w800.
+  /// Cart line item price.
   static TextStyle cartLinePriceStyle({Color? color}) {
     return GoogleFonts.rubik(
-      color: color ?? AppColor.deepColor,
-      fontSize: _fs(17, min: 15, max: 19),
-      fontWeight: FontWeight.w800,
+      color: color ?? AppColor.inkColor,
+      fontSize: _fs(15, min: 14, max: 16),
+      fontWeight: FontWeight.w600,
     );
   }
 
-  /// PDP hero price — hi-fi 34px w800.
+  /// Product page price.
   static TextStyle pdpPriceStyle({Color? color}) {
     return GoogleFonts.rubik(
-      color: color ?? AppColor.deepColor,
-      fontSize: _fs(34, min: 28, max: 36),
-      fontWeight: FontWeight.w800,
+      color: color ?? AppColor.inkColor,
+      fontSize: _fs(28, min: 24, max: 30),
+      fontWeight: FontWeight.w600,
       letterSpacing: -0.03,
       height: 1,
     );
   }
 
-  /// Cart summary total — refonte 26px w800.
+  /// Cart summary total.
   static TextStyle cartTotalStyle({Color? color}) {
     return GoogleFonts.rubik(
-      color: color ?? AppColor.deepColor,
-      fontSize: _fs(26, min: 22, max: 28),
-      fontWeight: FontWeight.w800,
+      color: color ?? AppColor.inkColor,
+      fontSize: _fs(20, min: 18, max: 22),
+      fontWeight: FontWeight.w600,
     );
   }
 

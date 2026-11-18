@@ -23,7 +23,7 @@ class ShimmerMessageWidget extends StatelessWidget {
                   height: 5.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),

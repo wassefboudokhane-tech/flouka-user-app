@@ -14,7 +14,7 @@ class DeliveryAddressWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: ListTile(
         leading: const SvgWidget(svg: AppImages.location),

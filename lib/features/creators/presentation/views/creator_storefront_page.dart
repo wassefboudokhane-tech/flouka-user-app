@@ -293,7 +293,6 @@ class _BrandValidatedBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.pill),
-        boxShadow: const [BoxShadow(color: Color(0x22000000), blurRadius: 6)],
       ),
       child: Text(
         '✓ ${LanguageProvider.translate('creators', 'brand_validated')}',

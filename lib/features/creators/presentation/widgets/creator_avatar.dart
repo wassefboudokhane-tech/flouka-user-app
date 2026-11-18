@@ -27,9 +27,9 @@ class CreatorAvatar extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColor.borderColor,
+        color: AppColor.limeColor,
         border: Border.all(
-          color: ringColor ?? AppColor.primaryColor,
+          color: ringColor ?? Colors.transparent,
           width: size >= 64 ? 3 : 2.5,
         ),
         image: hasPhoto

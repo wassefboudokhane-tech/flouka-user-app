@@ -226,7 +226,7 @@ class SearchResultsBarWidget extends StatelessWidget {
       context: context,
       backgroundColor: AppColor.backgroundColor,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
       ),
       builder: (ctx) {
         return SafeArea(
@@ -336,7 +336,7 @@ class _SortOption extends StatelessWidget {
         ),
       ),
       trailing: selected
-          ? Icon(Icons.check_rounded, color: AppColor.primaryColor)
+          ? Icon(Icons.check_rounded, color: AppColor.inkColor)
           : null,
     );
   }

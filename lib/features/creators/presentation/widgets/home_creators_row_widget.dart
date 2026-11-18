@@ -48,7 +48,7 @@ class HomeCreatorsRowWidget extends StatelessWidget {
                   button: true,
                   label: creator.name,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(4),
                     onTap: () => provider.openStorefront(creator),
                     child: SizedBox(
                       width: size + 6,

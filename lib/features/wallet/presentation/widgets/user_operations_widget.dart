@@ -17,7 +17,7 @@ class OperationWidgets extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(4),
       ),
       margin: EdgeInsets.only(bottom: 1.h),
       child: Row(

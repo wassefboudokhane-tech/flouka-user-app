@@ -22,7 +22,7 @@ void reportDialog({required String title, required String type, required int id}
     context: Constants.globalContext(),
     builder: (BuildContext context) {
       return AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         contentPadding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         content: SizedBox(
           width: 85.w,

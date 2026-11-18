@@ -85,7 +85,7 @@ class StoresTabsWidget extends StatelessWidget {
                   child: Text(
                     LanguageProvider.translate('global', 'see_all'),
                     style: TextStyleClass.captionStyle(
-                      color: AppColor.primaryColor,
+                      color: AppColor.inkColor,
                     ).copyWith(fontWeight: FontWeight.w700),
                   ),
                 ),

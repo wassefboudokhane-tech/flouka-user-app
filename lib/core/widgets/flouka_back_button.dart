@@ -16,7 +16,7 @@ class FloukaBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chevronColor = color ?? AppColor.deepColor;
+    final chevronColor = color ?? AppColor.inkColor;
     return Material(
       color: backgroundColor ?? AppColor.backgroundColor,
       borderRadius: BorderRadius.circular(AppRadius.checkoutBack),

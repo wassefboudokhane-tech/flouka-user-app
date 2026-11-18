@@ -112,7 +112,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
                             'skip_for_now',
                           ),
                           style: TextStyleClass.captionStyle(
-                            color: AppColor.primaryColor,
+                            color: AppColor.inkColor,
                           ).copyWith(fontWeight: FontWeight.w700, fontSize: 12),
                         ),
                       )
@@ -485,7 +485,7 @@ class _AddressTextField extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: AppColor.backgroundColor,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(color: AppColor.borderColor),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 14),

@@ -41,7 +41,7 @@ class DeliveryZoneRecoveryWidget extends StatelessWidget {
                 end: Alignment.bottomRight,
                 colors: [const Color(0xffE9E4DC), AppColor.canvasColor],
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(4),
               border: Border.all(color: AppColor.borderColor),
             ),
             child: Stack(
@@ -89,13 +89,6 @@ class DeliveryZoneRecoveryWidget extends StatelessWidget {
                           bottomRight: Radius.circular(99),
                           bottomLeft: Radius.circular(2),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColor.DealColor.withValues(alpha: 0.4),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
                       ),
                     ),
                   ),
@@ -109,7 +102,7 @@ class DeliveryZoneRecoveryWidget extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColor.backgroundColor,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: AppColor.DealColor, width: 1.5),
               ),
               child: Text(
@@ -172,7 +165,7 @@ class DeliveryZoneRecoveryWidget extends StatelessWidget {
                         margin: const EdgeInsetsDirectional.only(end: 8),
                         decoration: BoxDecoration(
                           color: AppColor.softColor,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(4),
                           border: Border.all(color: AppColor.borderColor),
                         ),
                         alignment: Alignment.center,
@@ -213,14 +206,14 @@ class _RecoveryOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: highlighted ? AppColor.softColor : AppColor.backgroundColor,
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(4),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(4),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(
               color: highlighted ? AppColor.borderColor : AppColor.borderColor,
             ),

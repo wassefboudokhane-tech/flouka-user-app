@@ -36,10 +36,7 @@ class AddressBottomSheet extends StatelessWidget {
           ).add(EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom)),
           decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            boxShadow: [
-              BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, -2)),
-            ],
+            borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
           ),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),

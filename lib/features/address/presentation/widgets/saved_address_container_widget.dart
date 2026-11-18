@@ -34,7 +34,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(
           color: isDefault ? AppColor.primaryColor : AppColor.borderColor,
           width: isDefault ? 1.6 : 1,
@@ -48,7 +48,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
               Icon(
                 Icons.location_on_rounded,
                 size: 18,
-                color: AppColor.primaryColor,
+                color: AppColor.inkColor,
               ),
               const SizedBox(width: 8),
               Expanded(

@@ -107,10 +107,10 @@ class SavedAddressesPage extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: mapProvider.goToMapPage,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(4),
                   child: DottedBorder(
                     options: RoundedRectDottedBorderOptions(
-                      radius: const Radius.circular(16),
+                      radius: const Radius.circular(4),
                       color: AppColor.primaryColor,
                       dashPattern: const [6, 4],
                       strokeWidth: 1.4,
@@ -122,7 +122,7 @@ class SavedAddressesPage extends StatelessWidget {
                       child: Text(
                         '+ ${LanguageProvider.translate('address', 'add_address')}',
                         style: TextStyleClass.buttonStyle(
-                          color: AppColor.primaryColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w800, fontSize: 14),
                       ),
                     ),
