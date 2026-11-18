@@ -372,7 +372,10 @@ class ProductsDetailsView extends StatelessWidget {
                     ),
                   ],
                   if (product.recommended.isNotEmpty)
-                    HotDealsWidget(products: product.recommended),
+                    HotDealsWidget(
+                      products: product.recommended,
+                      creator: productDetailsProvider.recommendedBy,
+                    ),
                 ],
               ),
             );
