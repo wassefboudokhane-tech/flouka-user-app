@@ -26,7 +26,7 @@ class CheckBoxWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: check ? AppColor.primaryColor : Colors.grey.shade300,
           borderRadius: BorderRadius.circular(3),
-          border: Border.all(color: AppColor.primaryColor, width: 2),
+          border: Border.all(color: AppColor.inkColor, width: 2),
         ),
         child: Container(
           decoration: BoxDecoration(

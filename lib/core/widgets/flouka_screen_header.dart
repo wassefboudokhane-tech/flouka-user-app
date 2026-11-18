@@ -44,12 +44,12 @@ class FloukaScreenHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: AppColor.limeColor,
+                color: AppColor.inkColor,
                 borderRadius: BorderRadius.circular(99),
               ),
               child: Text(
                 badge!,
-                style: TextStyleClass.captionStyle(color: AppColor.deepColor)
+                style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                     .copyWith(fontWeight: FontWeight.w800, fontSize: 11),
               ),
             ),

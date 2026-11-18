@@ -124,7 +124,7 @@ class _OrderIdRow extends StatelessWidget {
         Expanded(
           child: Text(
             '#FLK-${order.id}',
-            style: TextStyleClass.smallStyle(color: AppColor.deepColor).copyWith(
+            style: TextStyleClass.smallStyle(color: AppColor.inkColor).copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 14,
             ),

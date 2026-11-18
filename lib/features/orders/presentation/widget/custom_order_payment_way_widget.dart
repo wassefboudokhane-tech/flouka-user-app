@@ -18,7 +18,7 @@ class CustomOrderPaymentWayWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColor.primaryColor, width: 1.2),
+        border: Border.all(color: AppColor.inkColor, width: 1.2),
       ),
       child: Row(
         spacing: 16,

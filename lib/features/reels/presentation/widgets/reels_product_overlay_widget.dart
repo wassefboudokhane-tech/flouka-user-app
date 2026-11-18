@@ -79,7 +79,7 @@ class ReelsProductOverlayWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
                 child: Text(
                   LanguageProvider.translate('reels', 'add_product'),
-                  style: TextStyleClass.captionStyle(color: AppColor.deepColor)
+                  style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w800, fontSize: 12.5),
                 ),
               ),

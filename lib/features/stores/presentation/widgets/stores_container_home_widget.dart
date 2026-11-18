@@ -42,7 +42,7 @@ class StoresContainerHomeWidget extends StatelessWidget {
               height: 56,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColor.limeColor, width: 2),
+                border: Border.all(color: AppColor.inkColor, width: 2),
                 image: DecorationImage(
                   image: floukaImageProvider(store.vendor.logo),
                   fit: BoxFit.cover,
@@ -57,7 +57,7 @@ class StoresContainerHomeWidget extends StatelessWidget {
                 children: [
                   Text(
                     store.name,
-                    style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                    style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                         .copyWith(fontWeight: FontWeight.w700, fontSize: 15),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

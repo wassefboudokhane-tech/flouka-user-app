@@ -44,7 +44,7 @@ class CreatorAvatar extends StatelessWidget {
           : Text(
               creator.initials,
               style: TextStyleClass.normalStyle(
-                color: AppColor.deepColor,
+                color: AppColor.inkColor,
                 fontSize: size * 0.3,
               ).copyWith(fontWeight: FontWeight.w600),
             ),

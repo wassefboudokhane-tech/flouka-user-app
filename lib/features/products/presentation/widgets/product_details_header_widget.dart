@@ -111,7 +111,7 @@ class ProductDetailsHeaderWidget extends StatelessWidget {
                       child: Icon(
                         isFav ? Icons.favorite : Icons.favorite_border,
                         size: 17,
-                        color: AppColor.deepColor,
+                        color: AppColor.inkColor,
                       ),
                     );
                   },

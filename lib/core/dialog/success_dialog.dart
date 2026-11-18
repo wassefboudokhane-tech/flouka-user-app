@@ -105,7 +105,7 @@ void _showSuccessSheet({
                       child: Text(
                         LanguageProvider.translate('cart', 'validate_order'),
                         style: TextStyleClass.buttonStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w800),
                       ),
                     ),
@@ -143,7 +143,7 @@ void _showSuccessSheet({
                       child: Text(
                         LanguageProvider.translate('buttons', 'confirm'),
                         style: TextStyleClass.buttonStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w800),
                       ),
                     ),

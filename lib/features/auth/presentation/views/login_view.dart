@@ -85,7 +85,7 @@ class _PhoneStep extends StatelessWidget {
         Text(
           title,
           style: TextStyleClass.headStyle(
-            color: AppColor.deepColor,
+            color: AppColor.inkColor,
           ).copyWith(fontWeight: FontWeight.w800, fontSize: 24, height: 1.2),
         ),
         if (subtitle.isNotEmpty) ...[
@@ -148,7 +148,7 @@ class _OtpStep extends StatelessWidget {
         Text(
           LanguageProvider.translate('auth', 'otp'),
           style: TextStyleClass.headStyle(
-            color: AppColor.deepColor,
+            color: AppColor.inkColor,
           ).copyWith(fontWeight: FontWeight.w800, fontSize: 24, height: 1.2),
         ),
         const SizedBox(height: 10),
@@ -167,7 +167,7 @@ class _OtpStep extends StatelessWidget {
               TextSpan(
                 text: ' $defaultCountry $phone',
                 style: TextStyleClass.normalStyle(
-                  color: AppColor.deepColor,
+                  color: AppColor.inkColor,
                 ).copyWith(fontWeight: FontWeight.w700),
               ),
             ],

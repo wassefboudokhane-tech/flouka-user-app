@@ -31,7 +31,7 @@ class ServerErrorRecoveryWidget extends StatelessWidget {
           Text(
             LanguageProvider.translate('recovery', 'server_error_ref')
                 .replaceAll('*ref*', incidentRef),
-            style: TextStyleClass.captionStyle(color: AppColor.deepColor)
+            style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
         ],

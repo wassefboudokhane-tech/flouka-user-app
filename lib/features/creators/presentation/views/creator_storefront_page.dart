@@ -37,10 +37,8 @@ class CreatorStorefrontPage extends StatelessWidget {
           SliverToBoxAdapter(
             child: Container(
               decoration: BoxDecoration(
-                color: AppColor.deepColor,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(AppRadius.homeHeader),
-                ),
+                color: Colors.white,
+                border: Border(bottom: BorderSide(color: AppColor.borderColor)),
               ),
               padding: EdgeInsets.fromLTRB(
                 AppSpacing.pageGutter,
@@ -57,7 +55,7 @@ class CreatorStorefrontPage extends StatelessWidget {
                       context,
                     ).backButtonTooltip,
                     icon: const BackButtonIcon(),
-                    color: Colors.white,
+                    color: AppColor.inkColor,
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -65,7 +63,7 @@ class CreatorStorefrontPage extends StatelessWidget {
                       CreatorAvatar(
                         creator: creator,
                         size: 72,
-                        ringColor: AppColor.limeColor,
+                        ringColor: AppColor.borderColor,
                       ),
                       const SizedBox(width: 14),
                       Expanded(
@@ -75,7 +73,7 @@ class CreatorStorefrontPage extends StatelessWidget {
                             Text(
                               creator.name,
                               style: TextStyleClass.semiHeadStyle(
-                                color: Colors.white,
+                                color: AppColor.inkColor,
                               ),
                             ),
                             const SizedBox(height: 3),
@@ -86,7 +84,7 @@ class CreatorStorefrontPage extends StatelessWidget {
                                   creator.niche!,
                               ].join(' · '),
                               style: TextStyleClass.smallStyle(
-                                color: const Color(0xFFD9C8EC),
+                                color: AppColor.mutedColor,
                               ),
                             ),
                           ],
@@ -99,7 +97,7 @@ class CreatorStorefrontPage extends StatelessWidget {
                     Text(
                       creator.bio,
                       style: TextStyleClass.smallStyle(
-                        color: const Color(0xFFF1E9F8),
+                        color: AppColor.mutedColor,
                       ).copyWith(height: 1.45),
                     ),
                   ],
@@ -113,8 +111,8 @@ class CreatorStorefrontPage extends StatelessWidget {
                           OutlinedButton(
                             onPressed: () => launchUrl(uri, mode: LaunchMode.externalApplication),
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              side: const BorderSide(color: Color(0x55FFFFFF)),
+                              foregroundColor: AppColor.inkColor,
+                              side: const BorderSide(color: Color(0xFF1A1A1A)),
                               visualDensity: VisualDensity.compact,
                             ),
                             child: Text(label),
@@ -129,12 +127,12 @@ class CreatorStorefrontPage extends StatelessWidget {
                       vertical: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.16),
+                      color: AppColor.softColor,
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                     ),
                     child: Text(
                       LanguageProvider.translate('creators', 'affiliate_note'),
-                      style: TextStyleClass.captionStyle(color: Colors.white),
+                      style: TextStyleClass.captionStyle(color: AppColor.inkColor),
                     ),
                   ),
                 ],
@@ -299,7 +297,7 @@ class _BrandValidatedBadge extends StatelessWidget {
       ),
       child: Text(
         '✓ ${LanguageProvider.translate('creators', 'brand_validated')}',
-        style: TextStyleClass.captionStyle(color: AppColor.deepColor),
+        style: TextStyleClass.captionStyle(color: AppColor.inkColor),
       ),
     );
   }

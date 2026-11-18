@@ -176,14 +176,14 @@ class _FilterChipButton extends StatelessWidget {
                   width: 16,
                   height: 16,
                   decoration: BoxDecoration(
-                    color: AppColor.limeColor,
+                    color: AppColor.inkColor,
                     borderRadius: BorderRadius.circular(99),
                   ),
                   alignment: Alignment.center,
                   child: Text(
                     badge!,
                     style: TextStyleClass.captionStyle(
-                      color: AppColor.deepColor,
+                      color: AppColor.inkColor,
                     ).copyWith(
                       fontWeight: FontWeight.w800,
                       fontSize: 9,
@@ -238,7 +238,7 @@ class SearchResultsBarWidget extends StatelessWidget {
               children: [
                 Text(
                   LanguageProvider.translate('search', 'sort_title'),
-                  style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                  style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w800, fontSize: 15),
                 ),
                 const SizedBox(height: 12),
@@ -286,7 +286,7 @@ class SearchResultsBarWidget extends StatelessWidget {
           Text(
             LanguageProvider.translate('search', 'results_count')
                 .replaceAll('*count*', '$count'),
-            style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+            style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                 .copyWith(fontWeight: FontWeight.w700, fontSize: 13),
           ),
           InkWell(
@@ -331,7 +331,7 @@ class _SortOption extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: Text(
         label,
-        style: TextStyleClass.smallStyle(color: AppColor.deepColor).copyWith(
+        style: TextStyleClass.smallStyle(color: AppColor.inkColor).copyWith(
           fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
         ),
       ),

@@ -60,7 +60,7 @@ class SelectDefaultAddressPage extends StatelessWidget {
                       ),
                       child: Text(
                         LanguageProvider.translate('on_boarding', 'skip'),
-                        style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                        style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                             .copyWith(fontWeight: FontWeight.w700),
                       ),
                     ),

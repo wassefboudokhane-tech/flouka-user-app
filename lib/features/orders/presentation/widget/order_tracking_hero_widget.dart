@@ -40,8 +40,9 @@ class OrderTrackingHeroWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColor.deepColor,
-        borderRadius: BorderRadius.circular(22),
+        color: Colors.white,
+        border: Border.all(color: AppColor.borderColor),
+        borderRadius: BorderRadius.circular(0),
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -54,7 +55,7 @@ class OrderTrackingHeroWidget extends StatelessWidget {
               height: 150,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.limeColor.withValues(alpha: 0.14),
+                color: AppColor.softColor,
               ),
             ),
           ),
@@ -67,7 +68,7 @@ class OrderTrackingHeroWidget extends StatelessWidget {
                     width: 7,
                     height: 7,
                     decoration: BoxDecoration(
-                      color: AppColor.limeColor,
+                      color: AppColor.inkColor,
                       borderRadius: BorderRadius.circular(99),
                     ),
                   ),
@@ -75,7 +76,7 @@ class OrderTrackingHeroWidget extends StatelessWidget {
                   Text(
                     LanguageProvider.translate('orders', status?.text ?? '')
                         .toUpperCase(),
-                    style: TextStyleClass.captionStyle(color: AppColor.limeColor)
+                    style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                         .copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: 11,
@@ -87,7 +88,7 @@ class OrderTrackingHeroWidget extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 _headline(status),
-                style: TextStyleClass.headStyle(color: Colors.white).copyWith(
+                style: TextStyleClass.headStyle(color: AppColor.inkColor).copyWith(
                   fontSize: 23,
                   fontWeight: FontWeight.w800,
                   height: 1.15,
@@ -101,7 +102,7 @@ class OrderTrackingHeroWidget extends StatelessWidget {
                     .replaceAll('*count*', '$itemCount')
                     .replaceAll('*payment*', payment),
                 style: TextStyleClass.smallStyle(
-                  color: Colors.white.withValues(alpha: 0.6),
+                  color: AppColor.inkColor.withValues(alpha: 0.6),
                 ).copyWith(fontSize: 12.5, height: 1.4),
               ),
               const SizedBox(height: 15),
@@ -114,8 +115,8 @@ class OrderTrackingHeroWidget extends StatelessWidget {
                       margin: EdgeInsetsDirectional.only(end: index == 3 ? 0 : 5),
                       decoration: BoxDecoration(
                         color: active
-                            ? AppColor.limeColor
-                            : Colors.white.withValues(alpha: 0.22),
+                            ? AppColor.inkColor
+                            : AppColor.inkColor.withValues(alpha: 0.22),
                         borderRadius: BorderRadius.circular(99),
                       ),
                     ),

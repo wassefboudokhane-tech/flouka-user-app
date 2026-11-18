@@ -62,7 +62,7 @@ class FloukaPrimaryButton extends StatelessWidget {
                     label,
                     textAlign: TextAlign.center,
                     style: TextStyleClass.buttonStyle(
-                      color: AppColor.deepColor,
+                      color: AppColor.inkColor,
                     ).copyWith(fontWeight: FontWeight.w800),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

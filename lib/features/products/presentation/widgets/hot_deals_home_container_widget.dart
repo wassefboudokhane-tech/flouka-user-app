@@ -245,7 +245,7 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                     width: AppSpacing.productAddBtnSize,
                     height: AppSpacing.productAddBtnSize,
                     decoration: BoxDecoration(
-                      color: AppColor.limeColor,
+                      color: AppColor.inkColor,
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,
@@ -253,7 +253,7 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                       '+',
                       style:
                           TextStyleClass.smallStyle(
-                            color: AppColor.deepColor,
+                            color: AppColor.inkColor,
                           ).copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,

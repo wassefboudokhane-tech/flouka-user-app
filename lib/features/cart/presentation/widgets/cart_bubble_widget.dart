@@ -92,7 +92,7 @@ class CartBubbleWidget extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: AppColor.limeColor,
+                      color: AppColor.inkColor,
                       shape: BoxShape.circle,
                     ),
                     alignment: Alignment.center,

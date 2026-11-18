@@ -48,7 +48,7 @@ class NotificationDetailsPage extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyleClass.smallStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(
                           fontWeight: FontWeight.w800,
                           fontSize: 15,

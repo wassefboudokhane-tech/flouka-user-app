@@ -27,7 +27,8 @@ class HomePromoBandWidget extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: AppColor.deepColor,
+                color: Colors.white,
+                border: Border.all(color: AppColor.inkColor),
                 borderRadius: BorderRadius.circular(AppRadius.promoBand),
               ),
               child: Row(
@@ -39,7 +40,7 @@ class HomePromoBandWidget extends StatelessWidget {
                         Text(
                           LanguageProvider.translate('home', 'promo_title'),
                           style: TextStyleClass.smallStyle(
-                            color: AppColor.backgroundColor,
+                            color: AppColor.inkColor,
                           ).copyWith(
                             fontSize: 15.5,
                             fontWeight: FontWeight.w800,
@@ -51,7 +52,7 @@ class HomePromoBandWidget extends StatelessWidget {
                         Text(
                           LanguageProvider.translate('home', 'promo_subtitle'),
                           style: TextStyleClass.captionStyle(
-                            color: AppColor.backgroundColor.withValues(alpha: 0.55),
+                            color: AppColor.inkColor.withValues(alpha: 0.55),
                           ).copyWith(
                             fontSize: 11,
                             height: 1.3,
@@ -62,7 +63,7 @@ class HomePromoBandWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   Material(
-                    color: AppColor.limeColor,
+                    color: AppColor.deepColor,
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     child: InkWell(
                       onTap: () {
@@ -80,7 +81,7 @@ class HomePromoBandWidget extends StatelessWidget {
                             child: Text(
                               LanguageProvider.translate('home', 'promo_cta'),
                               style: TextStyleClass.captionStyle(
-                                color: AppColor.deepColor,
+                                color: Colors.white,
                               ).copyWith(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 11.5,
@@ -102,7 +103,7 @@ class HomePromoBandWidget extends StatelessWidget {
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColor.limeColor.withValues(alpha: 0.15),
+                  color: AppColor.softColor,
                 ),
               ),
             ),

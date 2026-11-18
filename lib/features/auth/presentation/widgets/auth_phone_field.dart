@@ -40,7 +40,7 @@ class AuthPhoneField extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 defaultCountry,
-                style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                     .copyWith(fontWeight: FontWeight.w700),
               ),
               Container(

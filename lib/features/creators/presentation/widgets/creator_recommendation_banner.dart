@@ -40,7 +40,7 @@ class CreatorRecommendationBanner extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyleClass.smallStyle(
-                    color: AppColor.deepColor,
+                    color: AppColor.inkColor,
                   ).copyWith(fontWeight: FontWeight.w600),
                 ),
               ],
@@ -55,7 +55,7 @@ class CreatorRecommendationBanner extends StatelessWidget {
               ),
               child: Text(
                 niche,
-                style: TextStyleClass.captionStyle(color: AppColor.deepColor),
+                style: TextStyleClass.captionStyle(color: AppColor.inkColor),
               ),
             ),
         ],

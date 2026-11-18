@@ -182,7 +182,7 @@ class _TimelineDot extends StatelessWidget {
             width: 11,
             height: 11,
             decoration: BoxDecoration(
-              color: AppColor.limeColor,
+              color: AppColor.inkColor,
               borderRadius: BorderRadius.circular(99),
             ),
           ),
@@ -195,7 +195,7 @@ class _TimelineDot extends StatelessWidget {
         width: 34,
         height: 34,
         decoration: BoxDecoration(
-          color: AppColor.limeColor,
+          color: AppColor.inkColor,
           borderRadius: BorderRadius.circular(99),
         ),
         child: Center(
@@ -206,8 +206,8 @@ class _TimelineDot extends StatelessWidget {
               height: 7,
               decoration: BoxDecoration(
                 border: Border(
-                  left: BorderSide(color: AppColor.deepColor, width: 2),
-                  bottom: BorderSide(color: AppColor.deepColor, width: 2),
+                  left: BorderSide(color: AppColor.inkColor, width: 2),
+                  bottom: BorderSide(color: AppColor.inkColor, width: 2),
                 ),
               ),
             ),

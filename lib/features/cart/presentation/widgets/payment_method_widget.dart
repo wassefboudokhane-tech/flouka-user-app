@@ -60,7 +60,7 @@ class PaymentMthodItemWidget extends StatelessWidget {
                         paymentMethodEntity.paymentMethod,
                       ),
                       style: TextStyleClass.smallStyle(
-                        color: AppColor.deepColor,
+                        color: AppColor.inkColor,
                       ).copyWith(
                         fontWeight:
                             selected ? FontWeight.w700 : FontWeight.w500,
@@ -83,7 +83,7 @@ class PaymentMthodItemWidget extends StatelessWidget {
                           'recommended_badge',
                         ),
                         style: TextStyleClass.captionStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(
                           fontSize: 9,
                           fontWeight: FontWeight.w800,

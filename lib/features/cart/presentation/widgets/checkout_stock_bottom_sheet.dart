@@ -137,7 +137,7 @@ class CheckoutStockBottomSheet {
                           'continue_available',
                         ),
                         style: TextStyleClass.buttonStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w800),
                       ),
                     ),

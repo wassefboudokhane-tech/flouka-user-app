@@ -37,7 +37,7 @@ void showGuestDialog() {
                   color: AppColor.limeColor.withValues(alpha: 0.45),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.lock_outline, color: AppColor.deepColor, size: 28),
+                child: Icon(Icons.lock_outline, color: AppColor.inkColor, size: 28),
               ),
               SizedBox(height: 2.h),
               Text(
@@ -75,7 +75,7 @@ void showGuestDialog() {
                         child: Text(
                           LanguageProvider.translate('buttons', 'login'),
                           textAlign: TextAlign.center,
-                          style: TextStyleClass.normalStyle(color: AppColor.deepColor)
+                          style: TextStyleClass.normalStyle(color: AppColor.inkColor)
                               .copyWith(fontWeight: FontWeight.w800),
                         ),
                       ),
@@ -96,7 +96,7 @@ void showGuestDialog() {
                         child: Text(
                           LanguageProvider.translate('buttons', 'cancel'),
                           textAlign: TextAlign.center,
-                          style: TextStyleClass.normalStyle(color: AppColor.deepColor)
+                          style: TextStyleClass.normalStyle(color: AppColor.inkColor)
                               .copyWith(fontWeight: FontWeight.w700),
                         ),
                       ),

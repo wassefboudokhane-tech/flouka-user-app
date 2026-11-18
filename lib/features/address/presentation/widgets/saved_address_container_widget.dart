@@ -54,7 +54,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   label,
-                  style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                  style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w700, fontSize: 14),
                 ),
               ),
@@ -70,7 +70,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
                     LanguageProvider.translate('address', 'default_badge')
                         .toUpperCase(),
                     style: TextStyleClass.captionStyle(
-                      color: AppColor.deepColor,
+                      color: AppColor.inkColor,
                     ).copyWith(fontWeight: FontWeight.w800, fontSize: 10),
                   ),
                 ),

@@ -71,14 +71,14 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
                         width: 20,
                         height: 20,
                         decoration: BoxDecoration(
-                          color: AppColor.limeColor,
+                          color: AppColor.inkColor,
                           borderRadius: BorderRadius.circular(99),
                         ),
                         child: Center(
                           child: Text(
                             '+',
                             style: TextStyleClass.captionStyle(
-                              color: AppColor.deepColor,
+                              color: AppColor.inkColor,
                             ).copyWith(
                               fontWeight: FontWeight.w800,
                               fontSize: 13,
@@ -94,7 +94,7 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
               Text(
                 LanguageProvider.translate('recovery', 'cart_empty_title'),
                 textAlign: TextAlign.center,
-                style: TextStyleClass.headStyle(color: AppColor.deepColor)
+                style: TextStyleClass.headStyle(color: AppColor.inkColor)
                     .copyWith(fontSize: 22, height: 1.15),
               ),
               const SizedBox(height: 9),
@@ -123,7 +123,7 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
                           'cart_empty_explore',
                         ),
                         style: TextStyleClass.buttonStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w800, fontSize: 14.5),
                       ),
                     ),
@@ -189,7 +189,7 @@ class _CartIcon extends StatelessWidget {
               width: 34,
               height: 17,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColor.deepColor, width: 2.5),
+                border: Border.all(color: AppColor.inkColor, width: 2.5),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(9),
                   bottomRight: Radius.circular(9),
@@ -206,7 +206,7 @@ class _CartIcon extends StatelessWidget {
               width: 20,
               height: 12,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColor.deepColor, width: 2.5),
+                border: Border.all(color: AppColor.inkColor, width: 2.5),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
@@ -295,7 +295,7 @@ class _FavoriteRow extends StatelessWidget {
               child: SizedBox(
                 width: 36,
                 height: 36,
-                child: Icon(Icons.add, color: AppColor.deepColor, size: 18),
+                child: Icon(Icons.add, color: AppColor.inkColor, size: 18),
               ),
             ),
           ),

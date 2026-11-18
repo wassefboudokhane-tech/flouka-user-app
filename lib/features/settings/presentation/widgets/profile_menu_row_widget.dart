@@ -60,7 +60,7 @@ class ProfileMenuRowWidget extends StatelessWidget {
                 ),
                 child: Text(
                   badge!,
-                  style: TextStyleClass.captionStyle(color: AppColor.deepColor)
+                  style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w800, fontSize: 10),
                 ),
               ),

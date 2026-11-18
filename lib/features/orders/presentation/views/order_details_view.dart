@@ -68,7 +68,7 @@ class OrderDetailsView extends StatelessWidget {
                             Text(
                               '#FLK-${order.id}',
                               style: TextStyleClass.headStyle(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                               ).copyWith(
                                 fontSize: 19,
                                 fontWeight: FontWeight.w800,
@@ -185,7 +185,7 @@ class OrderDetailsView extends StatelessWidget {
                                 'file_complaint',
                               ),
                               style: TextStyleClass.smallStyle(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                               ).copyWith(fontWeight: FontWeight.w700),
                             ),
                           ),

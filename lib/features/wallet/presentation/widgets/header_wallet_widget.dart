@@ -43,8 +43,9 @@ class HeaderWalletWidget extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: AppColor.deepColor,
-            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            border: Border.all(color: AppColor.borderColor),
+            borderRadius: BorderRadius.circular(0),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,7 @@ class HeaderWalletWidget extends StatelessWidget {
               Text(
                 LanguageProvider.translate('global', 'your_credit'),
                 style: TextStyleClass.captionStyle(
-                  color: Colors.white.withValues(alpha: 0.7),
+                  color: AppColor.inkColor.withValues(alpha: 0.7),
                 ).copyWith(fontWeight: FontWeight.w500, fontSize: 12),
               ),
               const SizedBox(height: 10),
@@ -62,13 +63,13 @@ class HeaderWalletWidget extends StatelessWidget {
                 children: [
                   Text(
                     '${authProvider.userEntity?.wallet ?? 0}',
-                    style: TextStyleClass.headStyle(color: Colors.white)
+                    style: TextStyleClass.headStyle(color: AppColor.inkColor)
                         .copyWith(fontSize: 36, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(width: 8),
                   Text(
                     LanguageProvider.translate('global', 'currency'),
-                    style: TextStyleClass.smallStyle(color: AppColor.limeColor)
+                    style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                         .copyWith(fontWeight: FontWeight.w700, fontSize: 15),
                   ),
                 ],
@@ -78,7 +79,7 @@ class HeaderWalletWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Material(
-                      color: AppColor.limeColor,
+                      color: AppColor.inkColor,
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                       child: InkWell(
                         onTap: walletProvider.showChargeSheet,
@@ -89,7 +90,7 @@ class HeaderWalletWidget extends StatelessWidget {
                             child: Text(
                               LanguageProvider.translate('wallet', 'recharge'),
                               style: TextStyleClass.captionStyle(
-                                color: AppColor.deepColor,
+                                color: Colors.white,
                               ).copyWith(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 13.5,
@@ -121,14 +122,14 @@ class HeaderWalletWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(AppRadius.pill),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.35),
+                              color: AppColor.inkColor.withValues(alpha: 0.35),
                               width: 1.2,
                             ),
                           ),
                           child: Text(
                             LanguageProvider.translate('wallet', 'withdraw'),
                             style: TextStyleClass.captionStyle(
-                              color: Colors.white,
+                              color: AppColor.inkColor,
                             ).copyWith(
                               fontWeight: FontWeight.w700,
                               fontSize: 13.5,
@@ -201,7 +202,7 @@ class _WalletStatCard extends StatelessWidget {
         children: [
           Text(
             value,
-            style: TextStyleClass.semiHeadStyle(color: AppColor.deepColor)
+            style: TextStyleClass.semiHeadStyle(color: AppColor.inkColor)
                 .copyWith(fontSize: 20, fontWeight: FontWeight.w800, height: 1),
           ),
           const SizedBox(height: 5),

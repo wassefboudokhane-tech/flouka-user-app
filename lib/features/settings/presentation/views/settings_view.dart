@@ -112,8 +112,9 @@ class _SettingsViewState extends State<SettingsView> {
                 child: Container(
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
-                    color: AppColor.deepColor,
-                    borderRadius: BorderRadius.circular(22),
+                    color: Colors.white,
+                    border: Border.all(color: AppColor.borderColor),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   child: Row(
                     children: [
@@ -128,7 +129,7 @@ class _SettingsViewState extends State<SettingsView> {
                                 _initials(user?.name),
                                 style:
                                     TextStyleClass.semiHeadStyle(
-                                      color: AppColor.deepColor,
+                                      color: AppColor.inkColor,
                                     ).copyWith(
                                       fontWeight: FontWeight.w800,
                                       fontSize: 20,
@@ -149,7 +150,7 @@ class _SettingsViewState extends State<SettingsView> {
                                   ),
                               style:
                                   TextStyleClass.semiHeadStyle(
-                                    color: Colors.white,
+                                    color: AppColor.inkColor,
                                   ).copyWith(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 18,
@@ -161,7 +162,7 @@ class _SettingsViewState extends State<SettingsView> {
                               Text(
                                 user!.phone ?? '',
                                 style: TextStyleClass.captionStyle(
-                                  color: Colors.white.withValues(alpha: 0.55),
+                                  color: AppColor.inkColor.withValues(alpha: 0.55),
                                 ).copyWith(fontSize: 12),
                               ),
                             ],
@@ -179,8 +180,8 @@ class _SettingsViewState extends State<SettingsView> {
                           }
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.white.withValues(alpha: 0.13),
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColor.inkColor.withValues(alpha: 0.13),
+                          foregroundColor: AppColor.inkColor,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 13,
                             vertical: 7,
@@ -195,7 +196,7 @@ class _SettingsViewState extends State<SettingsView> {
                           LanguageProvider.translate('buttons', 'EDIT'),
                           style:
                               TextStyleClass.captionStyle(
-                                color: Colors.white,
+                                color: AppColor.inkColor,
                               ).copyWith(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 11.5,
@@ -360,7 +361,7 @@ class _StatCard extends StatelessWidget {
                   Text(
                     value,
                     style: TextStyleClass.headStyle(
-                      color: AppColor.deepColor,
+                      color: AppColor.inkColor,
                     ).copyWith(fontSize: 22, fontWeight: FontWeight.w800),
                   ),
                   if (showDot) ...[
@@ -369,7 +370,7 @@ class _StatCard extends StatelessWidget {
                       width: 7,
                       height: 7,
                       decoration: BoxDecoration(
-                        color: AppColor.limeColor,
+                        color: AppColor.inkColor,
                         borderRadius: BorderRadius.circular(99),
                       ),
                     ),

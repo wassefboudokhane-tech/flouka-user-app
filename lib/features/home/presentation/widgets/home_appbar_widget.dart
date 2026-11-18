@@ -1,5 +1,4 @@
 import 'package:flouka/core/config/app_color.dart';
-import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/widgets/flouka_search_pill.dart';
@@ -10,7 +9,7 @@ import 'package:flouka/features/products/presentation/providers/categories_produ
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Home header — flat deep band, search, 3 trust badges (mockup F4).
+/// Home header: white, search, and the three promises in one quiet line.
 class HomeAppbarWidget extends StatelessWidget {
   const HomeAppbarWidget({super.key});
 
@@ -32,10 +31,8 @@ class HomeAppbarWidget extends StatelessWidget {
         14,
       ),
       decoration: BoxDecoration(
-        color: AppColor.deepColor,
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(AppRadius.homeHeader),
-        ),
+        color: Colors.white,
+        border: Border(bottom: BorderSide(color: AppColor.borderColor)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,13 +64,7 @@ class HomeAppbarWidget extends StatelessWidget {
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColor.limeColor.withValues(alpha: 0.13),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: AppColor.limeColor.withValues(alpha: 0.3),
-              ),
-            ),
+            decoration: const BoxDecoration(),
             child: Row(
               children: [
                 for (var i = 0; i < badges.length; i++) ...[
@@ -87,7 +78,7 @@ class HomeAppbarWidget extends StatelessWidget {
                           height: 5,
                           margin: const EdgeInsets.only(top: 4),
                           decoration: BoxDecoration(
-                            color: AppColor.limeColor,
+                            color: AppColor.inkColor,
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -98,9 +89,9 @@ class HomeAppbarWidget extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyleClass.captionStyle(
-                              color: AppColor.backgroundColor,
+                              color: AppColor.mutedColor,
                             ).copyWith(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               fontSize: 10,
                               height: 1.25,
                             ),
@@ -127,8 +118,8 @@ class _NotificationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white.withValues(alpha: 0.1),
-      shape: const CircleBorder(),
+      color: Colors.transparent,
+      shape: CircleBorder(side: BorderSide(color: AppColor.borderColor)),
       child: InkWell(
         customBorder: const CircleBorder(),
         onTap: onTap,
@@ -141,7 +132,7 @@ class _NotificationButton extends StatelessWidget {
             children: [
               Icon(
                 Icons.notifications_none_rounded,
-                color: AppColor.backgroundColor,
+                color: AppColor.inkColor,
                 size: 20,
               ),
               PositionedDirectional(
@@ -151,10 +142,10 @@ class _NotificationButton extends StatelessWidget {
                   width: 7,
                   height: 7,
                   decoration: BoxDecoration(
-                    color: AppColor.limeColor,
+                    color: AppColor.inkColor,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColor.deepColor,
+                      color: Colors.white,
                       width: 1.5,
                     ),
                   ),

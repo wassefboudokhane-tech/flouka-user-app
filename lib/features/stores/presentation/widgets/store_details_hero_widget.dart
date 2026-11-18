@@ -32,10 +32,10 @@ class StoreDetailsHeroWidget extends StatelessWidget {
     final top = MediaQuery.paddingOf(context).top;
 
     return Container(
-      decoration: BoxDecoration(
-        color: AppColor.deepColor,
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(26),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(0),
         ),
       ),
       child: Stack(
@@ -49,7 +49,7 @@ class StoreDetailsHeroWidget extends StatelessWidget {
               height: 170,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.limeColor.withValues(alpha: 0.13),
+                color: AppColor.softColor,
               ),
             ),
           ),
@@ -68,19 +68,19 @@ class StoreDetailsHeroWidget extends StatelessWidget {
                   children: [
                     FloukaBackButton(
                       onTap: navPop,
-                      color: Colors.white,
-                      backgroundColor: Colors.white.withValues(alpha: 0.12),
+                      color: AppColor.inkColor,
+                      backgroundColor: AppColor.inkColor.withValues(alpha: 0.12),
                     ),
                     Material(
-                      color: Colors.white.withValues(alpha: 0.12),
+                      color: AppColor.inkColor.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(12),
                       child: InkWell(
                         onTap: () => _showMenu(context, provider),
                         borderRadius: BorderRadius.circular(12),
-                        child: const SizedBox(
+                        child: SizedBox(
                           width: 38,
                           height: 38,
-                          child: Icon(Icons.more_horiz, color: Colors.white),
+                          child: Icon(Icons.more_horiz, color: AppColor.inkColor),
                         ),
                       ),
                     ),
@@ -94,9 +94,9 @@ class StoreDetailsHeroWidget extends StatelessWidget {
                       width: 68,
                       height: 68,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(22),
+                        borderRadius: BorderRadius.circular(0),
                         border: Border.all(
-                          color: AppColor.limeColor,
+                          color: AppColor.inkColor,
                           width: 2.5,
                         ),
                         color: AppColor.softColor,
@@ -116,7 +116,7 @@ class StoreDetailsHeroWidget extends StatelessWidget {
                         children: [
                           Text(
                             store.name,
-                            style: TextStyleClass.headStyle(color: Colors.white)
+                            style: TextStyleClass.headStyle(color: AppColor.inkColor)
                                 .copyWith(
                               fontSize: 22,
                               fontWeight: FontWeight.w800,
@@ -130,7 +130,7 @@ class StoreDetailsHeroWidget extends StatelessWidget {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyleClass.captionStyle(
-                                color: Colors.white.withValues(alpha: 0.6),
+                                color: AppColor.inkColor.withValues(alpha: 0.6),
                               ).copyWith(fontSize: 12.5, height: 1.3),
                             ),
                         ],
@@ -210,7 +210,7 @@ class StoreDetailsHeroWidget extends StatelessWidget {
       context: context,
       backgroundColor: AppColor.backgroundColor,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
       ),
       builder: (ctx) {
         return SafeArea(
@@ -242,7 +242,7 @@ class StoreDetailsHeroWidget extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: SvgWidget(svg: AppImages.share, width: 22),
+                leading: const SvgWidget(svg: AppImages.share, width: 22),
                 title: Text(
                   LanguageProvider.translate('settings', 'share'),
                 ),
@@ -276,7 +276,7 @@ class _StoreCta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: filled ? AppColor.limeColor : Colors.transparent,
+      color: filled ? AppColor.inkColor : Colors.transparent,
       borderRadius: BorderRadius.circular(AppRadius.pill),
       child: InkWell(
         onTap: onTap,
@@ -289,14 +289,14 @@ class _StoreCta extends StatelessWidget {
             border: filled
                 ? null
                 : Border.all(
-                    color: Colors.white.withValues(alpha: 0.4),
+                    color: AppColor.inkColor.withValues(alpha: 0.4),
                     width: 1.2,
                   ),
           ),
           child: Text(
             label,
             style: TextStyleClass.smallStyle(
-              color: filled ? AppColor.deepColor : Colors.white,
+              color: filled ? Colors.white : AppColor.inkColor,
             ).copyWith(fontWeight: FontWeight.w800, fontSize: 14),
           ),
         ),

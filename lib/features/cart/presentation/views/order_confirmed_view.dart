@@ -99,7 +99,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
             .replaceAll('*amount*', formatPrice(widget.total));
 
     return Scaffold(
-      backgroundColor: AppColor.deepColor,
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Positioned(
@@ -110,7 +110,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
               height: 280,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColor.limeColor.withValues(alpha: 0.16),
+                color: AppColor.softColor,
               ),
             ),
           ),
@@ -129,7 +129,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                             width: 96,
                             height: 96,
                             decoration: BoxDecoration(
-                              color: AppColor.limeColor,
+                              color: AppColor.inkColor,
                               borderRadius: BorderRadius.circular(99),
                             ),
                             child: Center(
@@ -139,13 +139,13 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                   width: 34,
                                   height: 19,
                                   decoration: BoxDecoration(
-                                    border: Border(
-                                      left: BorderSide(
-                                        color: AppColor.deepColor,
+                                    border: const Border(
+                                      left: const BorderSide(
+                                        color: Colors.white,
                                         width: 5,
                                       ),
-                                      bottom: BorderSide(
-                                        color: AppColor.deepColor,
+                                      bottom: const BorderSide(
+                                        color: Colors.white,
                                         width: 5,
                                       ),
                                     ),
@@ -162,7 +162,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                               'title',
                             ),
                             style: TextStyleClass.screenTitleStyle(
-                              color: Colors.white,
+                              color: AppColor.inkColor,
                             ).copyWith(fontSize: 38, height: 1.04),
                           ),
                           const SizedBox(height: 13),
@@ -177,7 +177,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                 )
                                 .replaceAll('*payment*', paymentLine),
                             style: TextStyleClass.normalStyle(
-                              color: Colors.white.withValues(alpha: 0.62),
+                              color: AppColor.inkColor.withValues(alpha: 0.62),
                             ).copyWith(fontSize: 15.5, height: 1.5),
                           ),
                           const SizedBox(height: 28),
@@ -185,10 +185,10 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                             width: double.infinity,
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(20),
+                              color: AppColor.inkColor.withValues(alpha: 0.08),
+                              borderRadius: BorderRadius.circular(0),
                               border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.14),
+                                color: AppColor.inkColor.withValues(alpha: 0.14),
                               ),
                             ),
                             child: Column(
@@ -203,14 +203,14 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                         'order_number',
                                       ),
                                       style: TextStyleClass.smallStyle(
-                                        color: Colors.white
+                                        color: AppColor.inkColor
                                             .withValues(alpha: 0.55),
                                       ).copyWith(fontSize: 12.5),
                                     ),
                                     Text(
                                       '#FLK-${widget.orderId}',
                                       style: TextStyleClass.smallStyle(
-                                        color: Colors.white,
+                                        color: AppColor.inkColor,
                                       ).copyWith(
                                         fontWeight: FontWeight.w800,
                                         fontSize: 14,
@@ -222,7 +222,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                   Divider(
                                     height: 26,
                                     color:
-                                        Colors.white.withValues(alpha: 0.12),
+                                        AppColor.inkColor.withValues(alpha: 0.12),
                                   ),
                                   Row(
                                     children: [
@@ -240,7 +240,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                                 widget.vendorNames[i],
                                                 style: TextStyleClass
                                                     .captionStyle(
-                                                  color: Colors.white
+                                                  color: AppColor.inkColor
                                                       .withValues(alpha: 0.5),
                                                 ).copyWith(fontSize: 11),
                                               ),
@@ -253,8 +253,8 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                                 style:
                                                     TextStyleClass.smallStyle(
                                                   color: i == 0
-                                                      ? AppColor.limeColor
-                                                      : Colors.white,
+                                                      ? AppColor.inkColor
+                                                      : AppColor.inkColor,
                                                 ).copyWith(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 13,
@@ -288,7 +288,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                 'email_saved',
                               ),
                               style: TextStyleClass.captionStyle(
-                                color: AppColor.limeColor,
+                                color: AppColor.inkColor,
                               ).copyWith(fontWeight: FontWeight.w600),
                             ),
                           ],
@@ -296,10 +296,10 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                           Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.05),
-                              borderRadius: BorderRadius.circular(20),
+                              color: AppColor.inkColor.withValues(alpha: 0.05),
+                              borderRadius: BorderRadius.circular(0),
                               border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.1),
+                                color: AppColor.inkColor.withValues(alpha: 0.1),
                               ),
                             ),
                             child: Row(
@@ -308,7 +308,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                   width: 32,
                                   height: 32,
                                   decoration: BoxDecoration(
-                                    color: AppColor.limeColor
+                                    color: AppColor.inkColor
                                         .withValues(alpha: 0.18),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -319,7 +319,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: AppColor.limeColor,
+                                          color: AppColor.inkColor,
                                           width: 1.8,
                                         ),
                                       ),
@@ -334,7 +334,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                                       'change_tip',
                                     ),
                                     style: TextStyleClass.captionStyle(
-                                      color: Colors.white
+                                      color: AppColor.inkColor
                                           .withValues(alpha: 0.65),
                                     ).copyWith(fontSize: 12, height: 1.45),
                                   ),
@@ -347,7 +347,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                     ),
                   ),
                   Material(
-                    color: AppColor.limeColor,
+                    color: AppColor.deepColor,
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     child: InkWell(
                       onTap: () {
@@ -368,7 +368,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                               'track_order',
                             ),
                             style: TextStyleClass.buttonStyle(
-                              color: AppColor.deepColor,
+                              color: Colors.white,
                             ).copyWith(
                               fontWeight: FontWeight.w800,
                               fontSize: 15.5,
@@ -386,9 +386,9 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                           .changeIndex(0);
                     },
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColor.inkColor,
                       side: BorderSide(
-                        color: Colors.white.withValues(alpha: 0.3),
+                        color: AppColor.inkColor.withValues(alpha: 0.3),
                         width: 1.2,
                       ),
                       minimumSize: const Size.fromHeight(52),
@@ -401,7 +401,7 @@ class _OrderConfirmedViewState extends State<OrderConfirmedView> {
                         'order_confirmed',
                         'continue_shopping',
                       ),
-                      style: TextStyleClass.buttonStyle(color: Colors.white)
+                      style: TextStyleClass.buttonStyle(color: AppColor.inkColor)
                           .copyWith(fontWeight: FontWeight.w700, fontSize: 14.5),
                     ),
                   ),
@@ -432,16 +432,16 @@ class _EmailInvoiceCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+        color: AppColor.inkColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(0),
+        border: Border.all(color: AppColor.inkColor.withValues(alpha: 0.16)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             LanguageProvider.translate('order_confirmed', 'email_title'),
-            style: TextStyleClass.smallStyle(color: Colors.white).copyWith(
+            style: TextStyleClass.smallStyle(color: AppColor.inkColor).copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 14,
             ),
@@ -450,13 +450,13 @@ class _EmailInvoiceCard extends StatelessWidget {
           Text(
             LanguageProvider.translate('order_confirmed', 'email_subtitle'),
             style: TextStyleClass.captionStyle(
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColor.inkColor.withValues(alpha: 0.6),
             ).copyWith(height: 1.4, fontSize: 12.5),
           ),
           const SizedBox(height: 12),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.inkColor,
               borderRadius: BorderRadius.circular(14),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -485,7 +485,7 @@ class _EmailInvoiceCard extends StatelessWidget {
             width: double.infinity,
             height: 44,
             child: Material(
-              color: AppColor.limeColor,
+              color: AppColor.deepColor,
               borderRadius: BorderRadius.circular(AppRadius.pill),
               child: InkWell(
                 onTap: saving ? null : onSave,
@@ -496,7 +496,7 @@ class _EmailInvoiceCard extends StatelessWidget {
                       'order_confirmed',
                       'email_cta',
                     ),
-                    style: TextStyleClass.buttonStyle(color: AppColor.deepColor)
+                    style: TextStyleClass.buttonStyle(color: Colors.white)
                         .copyWith(fontWeight: FontWeight.w800, fontSize: 14),
                   ),
                 ),

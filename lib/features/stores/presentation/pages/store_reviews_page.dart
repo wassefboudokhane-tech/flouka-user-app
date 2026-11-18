@@ -94,7 +94,7 @@ class _WriteReviewSection extends StatelessWidget {
         children: [
           Text(
             LanguageProvider.translate('global', 'write_a_review'),
-            style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+            style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                 .copyWith(fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 10),

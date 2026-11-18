@@ -176,7 +176,7 @@ class _Segment extends StatelessWidget {
                   child: Text(
                     LanguageProvider.translate('navbar', 'reels_new'),
                     style: TextStyleClass.captionStyle(
-                      color: AppColor.deepColor,
+                      color: AppColor.inkColor,
                     ).copyWith(
                       fontWeight: FontWeight.w800,
                       fontSize: 9,

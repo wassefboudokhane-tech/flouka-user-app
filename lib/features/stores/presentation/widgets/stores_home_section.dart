@@ -46,7 +46,7 @@ class StoresHomeSection extends StatelessWidget {
               Expanded(
                 child: Text(
                   LanguageProvider.translate('home', 'retail_stores'),
-                  style: TextStyleClass.normalStyle(color: AppColor.deepColor)
+                  style: TextStyleClass.normalStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w800, fontSize: 16.sp),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

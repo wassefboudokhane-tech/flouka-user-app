@@ -86,7 +86,7 @@ class NotificationWidget extends StatelessWidget {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyleClass.smallStyle(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                               ).copyWith(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13.5,

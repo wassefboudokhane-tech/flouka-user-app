@@ -69,7 +69,7 @@ class ProductAttributesWidget extends StatelessWidget {
                         Text(
                           selectedLabel,
                           style: TextStyleClass.smallStyle(
-                            color: AppColor.deepColor,
+                            color: AppColor.inkColor,
                           ).copyWith(fontWeight: FontWeight.w600, fontSize: 12),
                         ),
                     ],

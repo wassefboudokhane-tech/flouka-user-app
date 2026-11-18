@@ -94,7 +94,7 @@ class ProductDetailsBuyFooterWidget extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyleClass.buttonStyle(
-                        color: AppColor.deepColor,
+                        color: AppColor.inkColor,
                       ).copyWith(fontWeight: FontWeight.w800, fontSize: 14),
                     ),
                   ),

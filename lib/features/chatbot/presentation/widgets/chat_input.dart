@@ -27,7 +27,7 @@ class ChatInput extends StatelessWidget {
               decoration: BoxDecoration(
                 // color: AppColor.primaryColor,
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: AppColor.primaryColor),
+                border: Border.all(color: AppColor.inkColor),
               ),
               child: TextField(
                 controller: controller,

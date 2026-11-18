@@ -86,7 +86,7 @@ class FilterPage extends StatelessWidget {
                                   text['title'],
                                 ),
                                 style: TextStyleClass.smallStyle(
-                                  color: AppColor.deepColor,
+                                  color: AppColor.inkColor,
                                 ).copyWith(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 13.5,
@@ -143,7 +143,7 @@ class FilterPage extends StatelessWidget {
                       child: Text(
                         LanguageProvider.translate('buttons', 'reset'),
                         style: TextStyleClass.smallStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w700),
                       ),
                     ),

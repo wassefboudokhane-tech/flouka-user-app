@@ -406,13 +406,13 @@ class _ChatVendorButton extends StatelessWidget {
       },
       icon: Icon(
         Icons.chat_bubble_outline,
-        color: AppColor.deepColor,
+        color: AppColor.inkColor,
         size: 18,
       ),
       label: Text(
         LanguageProvider.translate('global', 'chat_vendor'),
         style: TextStyleClass.smallStyle(
-          color: AppColor.deepColor,
+          color: AppColor.inkColor,
         ).copyWith(fontWeight: FontWeight.w700),
       ),
       style: OutlinedButton.styleFrom(

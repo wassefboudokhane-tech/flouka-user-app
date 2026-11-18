@@ -148,7 +148,7 @@ class _CategoriesTabContentState extends State<CategoriesTabContent> {
                               child: Text(
                                 selectedCategory.name,
                                 style: TextStyleClass.captionStyle(
-                                  color: AppColor.deepColor,
+                                  color: AppColor.inkColor,
                                 ).copyWith(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 11.5,
@@ -349,7 +349,7 @@ class _SubcategoryTile extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Text(
           subcategory.name,
-          style: TextStyleClass.captionStyle(color: AppColor.deepColor)
+          style: TextStyleClass.captionStyle(color: AppColor.inkColor)
               .copyWith(fontWeight: FontWeight.w700, fontSize: 11.5),
         ),
       ),

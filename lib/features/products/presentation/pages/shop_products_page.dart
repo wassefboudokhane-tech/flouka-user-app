@@ -45,7 +45,7 @@ class ShopProductsPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.btn),
                         color: AppColor.limeColor,
                         border: Border.all(
-                          color: AppColor.deepColor.withValues(alpha: 0.15),
+                          color: AppColor.inkColor.withValues(alpha: 0.15),
                         ),
                       ),
                       child: Center(

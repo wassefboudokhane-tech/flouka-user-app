@@ -32,7 +32,7 @@ class CustomCartButtonWidget extends StatelessWidget {
         Text(
           value,
           style: valueStyle ??
-              TextStyleClass.smallStyle(color: AppColor.deepColor)
+              TextStyleClass.smallStyle(color: AppColor.inkColor)
                   .copyWith(fontWeight: FontWeight.w600),
         ),
       ],

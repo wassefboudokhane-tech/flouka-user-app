@@ -66,7 +66,7 @@ class DeliveryZoneRecoveryWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColor.primaryColor.withValues(alpha: 0.45),
+                        color: AppColor.inkColor.withValues(alpha: 0.45),
                         width: 2,
                       ),
                       color: AppColor.primaryColor.withValues(alpha: 0.07),
@@ -181,7 +181,7 @@ class DeliveryZoneRecoveryWidget extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyleClass.captionStyle(
-                            color: AppColor.deepColor,
+                            color: AppColor.inkColor,
                           ),
                         ),
                       ),
@@ -237,7 +237,7 @@ class _RecoveryOption extends StatelessWidget {
                 child: Icon(
                   highlighted ? Icons.home_outlined : Icons.inventory_2_outlined,
                   size: 14,
-                  color: AppColor.deepColor,
+                  color: AppColor.inkColor,
                 ),
               ),
               const SizedBox(width: 11),
