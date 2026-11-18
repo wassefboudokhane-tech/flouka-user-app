@@ -29,7 +29,10 @@ void main() {
       parseCreatorRef(Uri.parse('https://flouka.tn/product?id=12&ref=@mehdi')),
       'mehdi',
     );
-    expect(parseCreatorRef(Uri.parse('https://flouka.tn/product?id=12')), isNull);
+    expect(
+      parseCreatorRef(Uri.parse('https://flouka.tn/product?id=12')),
+      isNull,
+    );
   });
 
   test('rejects refs that are not a plain handle', () {
@@ -92,5 +95,24 @@ void main() {
 
     CreatorAttributionStore.clear();
     expect(saved.last, isNull);
+  });
+
+  test('a creator link becomes a click with its product', () {
+    expect(
+      creatorClickPayload(
+        Uri.parse('https://flouka.tn/product?id=12&creator=Yasmine'),
+        productId: 12,
+      ),
+      {'creator_ref': 'yasmine', 'product_id': 12, 'source': 'app'},
+    );
+    expect(creatorClickPayload(Uri.parse('https://flouka.tn/?ref=mehdi')), {
+      'creator_ref': 'mehdi',
+      'source': 'app',
+    });
+    expect(
+      creatorClickPayload(Uri.parse('https://flouka.tn/product?id=12')),
+      isNull,
+    );
+    expect(creatorClickPayload(null), isNull);
   });
 }

@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
 import '../creator_attribution.dart';
+import '../helper_function/api.dart';
 import '../helper_function/convert.dart';
+import '../../injection_container.dart';
 
 enum DeepLinkKind { store, product }
 
@@ -42,6 +44,14 @@ class DeepLinkService {
     // A shared creator link credits that creator for the next order.
     CreatorAttributionStore.capture(parseCreatorRef(uri));
     final target = parseDeepLink(uri);
+    // ...and counts as a click on that creator's link. Best effort.
+    final click = creatorClickPayload(
+      uri,
+      productId: target?.kind == DeepLinkKind.product ? target!.id : null,
+    );
+    if (click != null) {
+      sl<ApiHandel>().post('track_click', click).then((_) {}, onError: (_) {});
+    }
     if (target == null) return;
     if (target.kind == DeepLinkKind.store) {
       Provider.of<StoreDetailsProvider>(

@@ -84,3 +84,15 @@ class CreatorAttributionStore {
     );
   }
 }
+
+/// What the app sends to the API's `track_click` when a creator link opens
+/// it, or null when the link carries no usable creator ref.
+Map<String, dynamic>? creatorClickPayload(Uri? uri, {int? productId}) {
+  final ref = parseCreatorRef(uri);
+  if (ref == null) return null;
+  return {
+    'creator_ref': ref,
+    if (productId != null && productId > 0) 'product_id': productId,
+    'source': 'app',
+  };
+}
