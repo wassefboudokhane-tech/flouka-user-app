@@ -4,7 +4,9 @@
     "follow_title": "صنّاع محتوى للمتابعة",
     "picks_title": "توصياته",
     "affiliate_note": "روابط تسويقية · صانع المحتوى يحصل على عمولة",
-    "empty_picks": "لا توجد توصيات حالياً"
+    "empty_picks": "لا توجد توصيات حالياً",
+    "brand_validated": "معتمد من العلامة",
+    "posts_title": "منشورات"
   },
   "on_boarding": {
     "Welcome!": "مرحبًا!",
@@ -497,7 +499,7 @@
     "rate_product": "قيم المنتج",
     "show_details": "عرض التفاصيل",
     "chat": "دردشة",
-    "login" : "تسجيل الدخول",
+    "login": "تسجيل الدخول",
     "confirm": "تأكيد",
     "skip": "تخطي",
     "start_chat": "ابدأ الدردشة",

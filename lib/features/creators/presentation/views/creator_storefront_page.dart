@@ -7,7 +7,10 @@ import 'package:flouka/features/creators/presentation/widgets/creator_avatar.dar
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
 import 'package:flouka/features/products/presentation/widgets/hot_deals_home_container_widget.dart';
+import 'package:flouka/core/creator_social.dart';
+import 'package:flouka/features/creators/domain/entity/creator_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 
 /// A creator's shop: who they are, then the products they recommend.
@@ -100,6 +103,25 @@ class CreatorStorefrontPage extends StatelessWidget {
                       ).copyWith(height: 1.45),
                     ),
                   ],
+                  if (_socials(creator).isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final (label, uri) in _socials(creator))
+                          OutlinedButton(
+                            onPressed: () => launchUrl(uri, mode: LaunchMode.externalApplication),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(color: Color(0x55FFFFFF)),
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            child: Text(label),
+                          ),
+                      ],
+                    ),
+                  ],
                   const SizedBox(height: 12),
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -119,6 +141,57 @@ class CreatorStorefrontPage extends StatelessWidget {
               ),
             ),
           ),
+          if (_posts(creator).isNotEmpty) ...[
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.pageGutter, 18, AppSpacing.pageGutter, 10),
+              sliver: SliverToBoxAdapter(
+                child: Text(
+                  LanguageProvider.translate('creators', 'posts_title'),
+                  style: TextStyleClass.railTitleStyle(color: AppColor.inkColor),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 64,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter),
+                  itemCount: _posts(creator).length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 10),
+                  itemBuilder: (context, i) {
+                    final (post, uri) = _posts(creator)[i];
+                    return InkWell(
+                      onTap: () => launchUrl(uri, mode: LaunchMode.externalApplication),
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 220),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFEAEAEE)),
+                          borderRadius: BorderRadius.circular(AppRadius.pill),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('▶ ${platformLabel(post.platform)}',
+                                style: TextStyleClass.smallStyle(color: AppColor.inkColor)),
+                            Text(
+                              [post.brandName, post.productTitle].whereType<String>().join(' · '),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyleClass.captionStyle(color: AppColor.mutedColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(
               AppSpacing.pageGutter,
@@ -173,9 +246,21 @@ class CreatorStorefrontPage extends StatelessWidget {
                           HotDealsHomeContainerWidget.estimatedHeight(cardW),
                     ),
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) => HotDealsHomeContainerWidget(
-                        product: products[index],
-                        creator: creator,
+                      (context, index) => Stack(
+                        children: [
+                          Positioned.fill(
+                            child: HotDealsHomeContainerWidget(
+                              product: products[index],
+                              creator: creator,
+                            ),
+                          ),
+                          if (creator.validatedProductIds.contains(products[index].id))
+                            PositionedDirectional(
+                              top: 8,
+                              start: 8,
+                              child: _BrandValidatedBadge(),
+                            ),
+                        ],
                       ),
                       childCount: products.length,
                     ),
@@ -184,6 +269,37 @@ class CreatorStorefrontPage extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+List<(String, Uri)> _socials(CreatorEntity creator) => [
+      for (final (label, network, user) in [
+        ('Instagram', 'instagram', creator.instagram),
+        ('TikTok', 'tiktok', creator.tiktok),
+      ])
+        if (safeExternalUri(creatorSocialUrl(network, user)) case final uri?) ('$label @$user', uri),
+    ];
+
+List<(CreatorPostEntity, Uri)> _posts(CreatorEntity creator) => [
+      for (final post in creator.posts)
+        if (safeExternalUri(post.videoUrl) case final uri?) (post, uri),
+    ];
+
+class _BrandValidatedBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        boxShadow: const [BoxShadow(color: Color(0x22000000), blurRadius: 6)],
+      ),
+      child: Text(
+        '✓ ${LanguageProvider.translate('creators', 'brand_validated')}',
+        style: TextStyleClass.captionStyle(color: AppColor.deepColor),
       ),
     );
   }

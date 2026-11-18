@@ -4,7 +4,9 @@
     "follow_title": "Créateurs à suivre",
     "picks_title": "Ses recommandations",
     "affiliate_note": "Liens affiliés · le créateur touche une commission",
-    "empty_picks": "Aucune recommandation pour le moment"
+    "empty_picks": "Aucune recommandation pour le moment",
+    "brand_validated": "Validé par la marque",
+    "posts_title": "Publications"
   },
   "on_boarding": {
     "Welcome!": "Bienvenue !",
