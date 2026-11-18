@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constants.dart';
+import '../../../../core/helper_function/location.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
 /// Home catalogue rail — same `get_products` contract as web featured listing.
@@ -28,10 +29,9 @@ class HomeProductsProvider with ChangeNotifier {
     };
     final AuthProvider authProvider =
         Provider.of(Constants.globalContext(), listen: false);
-    if (authProvider.currentLocation != null) {
-      dataToUse['lat'] = authProvider.currentLocation?.latitude;
-      dataToUse['lng'] = authProvider.currentLocation?.longitude;
-    }
+    final place = cataloguePlace(authProvider.currentLocation);
+    dataToUse['lat'] = place.latitude;
+    dataToUse['lng'] = place.longitude;
 
     final Either<DioException, List<ProductEntity>> response =
         await productUseCase.getProducts(dataToUse);

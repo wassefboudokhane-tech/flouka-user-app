@@ -8,6 +8,7 @@ import 'package:flouka/features/products/domain/user_case/product_use_case.dart'
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constants.dart';
+import '../../../../core/helper_function/location.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../pages/recommended_products_page.dart';
 
@@ -53,10 +54,9 @@ class RecommendProductsProvider extends ChangeNotifier
       'page': pageIndex,
     };
     AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false);
-    if(authProvider.currentLocation !=null){
-      dataToUse['lat'] = authProvider.currentLocation?.latitude;
-      dataToUse['lng'] = authProvider.currentLocation?.longitude;
-    }
+    final place = cataloguePlace(authProvider.currentLocation);
+    dataToUse['lat'] = place.latitude;
+    dataToUse['lng'] = place.longitude;
     final result;
     if(inputs!=null){
       dataToUse.addAll(inputs! as Map<String,dynamic>);
@@ -89,10 +89,9 @@ class RecommendProductsProvider extends ChangeNotifier
       dataToUse.addAll(inputs! as Map<String,dynamic>);
     }
     AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false);
-    if(authProvider.currentLocation !=null){
-      dataToUse['lat'] = authProvider.currentLocation?.latitude;
-      dataToUse['lng'] = authProvider.currentLocation?.longitude;
-    }
+    final place = cataloguePlace(authProvider.currentLocation);
+    dataToUse['lat'] = place.latitude;
+    dataToUse['lng'] = place.longitude;
 
     final result = await productUseCase.getRecommended(dataToUse);
     result.fold((l) => showToast(l.message ?? "Error loading products"), (r) {

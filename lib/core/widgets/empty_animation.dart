@@ -20,7 +20,10 @@ class EmptyAnimation extends StatelessWidget {
   final bool? aboveText;
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (aboveText != null && aboveText!)
@@ -40,6 +43,7 @@ class EmptyAnimation extends StatelessWidget {
             style: TextStyleClass.normalStyle(),
           ),
       ],
+      ),
     );
   }
 }

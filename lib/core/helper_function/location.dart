@@ -10,6 +10,11 @@ import '../../features/language/presentation/provider/language_provider.dart';
 // Position? globalPosition;
 String? currentLocationAddress;
 
+/// Tunis, used until the phone shares a position. The catalogue is ordered by distance.
+const LatLng tunis = LatLng(36.8065, 10.1815);
+
+LatLng cataloguePlace(LatLng? known) => known ?? tunis;
+
 Future<LatLng?> determinePosition({bool showMessage = true}) async {
   try {
     // 1- Check Location Service
