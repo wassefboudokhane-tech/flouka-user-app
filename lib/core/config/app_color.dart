@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 /// Brand tokens aligned with flouka-web (`globals.css` / Tailwind `flouka.*`).
-/// Épuré: white, black ink, grey hairlines; deep purple only for the main action.
+/// Logo: paper boat in black, waves #5FA8C2, spark #F2B33D.
+/// The wave blue is the one primary action.
 /// `limeColor` is kept as a name for the light grey fill that replaced the lime.
 abstract class AppColor {
-  static Color primaryColor = const Color(0xff35035C);
-  static Color deepColor = const Color(0xff35035C);
-  static Color secondaryColor = const Color(0xff35035C);
+  static Color primaryColor = const Color(0xff5FA8C2);
+  static Color deepColor = const Color(0xff5FA8C2);
+  static Color secondaryColor = const Color(0xff5FA8C2);
+  static Color sparkColor = const Color(0xffF2B33D);
   static Color limeColor = const Color(0xffF1F1F4);
   static Color backgroundColor = const Color(0xffFFFFFF);
   static Color canvasColor = const Color(0xffFFFFFF);
