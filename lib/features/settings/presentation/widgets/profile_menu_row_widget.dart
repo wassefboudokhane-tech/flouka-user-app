@@ -27,21 +27,11 @@ class ProfileMenuRowWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
         child: Row(
           children: [
-            Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: AppColor.softColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(Icons.circle, size: 8, color: AppColor.inkColor),
-            ),
-            const SizedBox(width: 12),
             Expanded(
               child: Text(
                 title,
                 style: TextStyleClass.smallStyle(color: AppColor.inkColor)
-                    .copyWith(fontWeight: FontWeight.w600, fontSize: 13.5),
+                    .copyWith(fontWeight: FontWeight.w400, fontSize: 14),
               ),
             ),
             if (trailing != null)

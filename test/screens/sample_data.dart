@@ -1,3 +1,10 @@
+import 'package:flouka/features/auth/presentation/views/login_view.dart';
+import 'package:flouka/features/favorite/presentation/views/favorite_view.dart';
+import 'package:flouka/features/navbar/presentation/views/explore_view.dart';
+import 'package:flouka/features/orders/presentation/views/orders_view.dart';
+import 'package:flouka/features/products/presentation/pages/shop_products_page.dart';
+import 'package:flouka/features/products/presentation/providers/categories_product_search_provider.dart';
+import 'package:flouka/features/settings/presentation/views/settings_view.dart';
 import 'package:flouka/features/cart/domain/entity/cart_entity.dart';
 import 'package:flouka/features/cart/presentation/providers/cart_provider.dart';
 import 'package:flouka/features/cart/presentation/views/cart_view.dart';
@@ -107,4 +114,12 @@ final sampleScreens = <SampleScreen>[
       CartEntity(id: 2, quantity: 2, product: sampleProducts[2], unitPrice: 12, storeId: 3, stock: 5),
     ];
   }),
+  SampleScreen('explore', () => const ExploreView()),
+  SampleScreen('shop', () => const ShopProductsPage(), (c) {
+    Provider.of<CategoriesProductSearchProvider>(c, listen: false).data = sampleProducts;
+  }),
+  SampleScreen('orders', () => const OrdersView()),
+  SampleScreen('favorites', () => const FavoriteView()),
+  SampleScreen('settings', () => const SettingsView()),
+  SampleScreen('login', () => const LoginView()),
 ];

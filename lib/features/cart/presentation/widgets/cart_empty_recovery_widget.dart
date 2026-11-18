@@ -78,7 +78,7 @@ class _CartEmptyRecoveryWidgetState extends State<CartEmptyRecoveryWidget> {
                           child: Text(
                             '+',
                             style: TextStyleClass.captionStyle(
-                              color: AppColor.inkColor,
+                              color: Colors.white,
                             ).copyWith(
                               fontWeight: FontWeight.w800,
                               fontSize: 13,

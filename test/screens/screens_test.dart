@@ -18,6 +18,7 @@ import 'package:flouka/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -124,6 +125,22 @@ void main() {
     await startSharedPref();
     await initializeDependencies();
     await _loadFonts();
+    // The phone field reads country formats a native plugin loads at start-up.
+    await CountryManager().loadCountries(phoneCodesMap: {
+      'TN': CountryWithPhoneCode(
+        phoneCode: '216',
+        countryCode: 'TN',
+        exampleNumberMobileNational: '20 123 456',
+        exampleNumberFixedLineNational: '71 234 567',
+        phoneMaskMobileNational: '00 000 000',
+        phoneMaskFixedLineNational: '00 000 000',
+        exampleNumberMobileInternational: '+216 20 123 456',
+        exampleNumberFixedLineInternational: '+216 71 234 567',
+        phoneMaskMobileInternational: '+000 00 000 000',
+        phoneMaskFixedLineInternational: '+000 00 000 000',
+        countryName: 'Tunisia',
+      ),
+    });
   });
 
   Future<void> render(WidgetTester tester, String name, Widget screen, [void Function(BuildContext)? seed]) async {

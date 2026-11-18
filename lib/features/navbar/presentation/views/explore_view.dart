@@ -99,12 +99,9 @@ class _ExploreSegmentedTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44,
-      padding: const EdgeInsets.all(4),
+      height: 40,
       decoration: BoxDecoration(
-        color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        border: Border.all(color: AppColor.borderColor),
+        border: Border(bottom: BorderSide(color: AppColor.borderColor)),
       ),
       child: Row(
         children: [
@@ -144,12 +141,17 @@ class _Segment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: selected ? AppColor.deepColor : Colors.transparent,
-      borderRadius: BorderRadius.circular(AppRadius.pill),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: selected ? AppColor.inkColor : Colors.transparent,
+              width: 2,
+            ),
+          ),
+        ),
         child: Center(
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -157,11 +159,9 @@ class _Segment extends StatelessWidget {
               Text(
                 label,
                 style: TextStyleClass.smallStyle(
-                  color: selected
-                      ? AppColor.backgroundColor
-                      : AppColor.mutedColor,
+                  color: selected ? AppColor.inkColor : AppColor.mutedColor,
                 ).copyWith(
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                  fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
                   fontSize: 13.5,
                 ),
               ),

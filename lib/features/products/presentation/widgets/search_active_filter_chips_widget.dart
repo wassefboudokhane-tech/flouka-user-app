@@ -183,7 +183,7 @@ class _FilterChipButton extends StatelessWidget {
                   child: Text(
                     badge!,
                     style: TextStyleClass.captionStyle(
-                      color: AppColor.inkColor,
+                      color: Colors.white,
                     ).copyWith(
                       fontWeight: FontWeight.w800,
                       fontSize: 9,

@@ -49,7 +49,7 @@ class FloukaScreenHeader extends StatelessWidget {
               ),
               child: Text(
                 badge!,
-                style: TextStyleClass.captionStyle(color: AppColor.inkColor)
+                style: TextStyleClass.captionStyle(color: Colors.white)
                     .copyWith(fontWeight: FontWeight.w800, fontSize: 11),
               ),
             ),
