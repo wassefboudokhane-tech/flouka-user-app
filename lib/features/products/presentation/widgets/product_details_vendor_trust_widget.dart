@@ -28,7 +28,7 @@ class ProductDetailsVendorTrustWidget extends StatelessWidget {
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
         color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColor.borderColor),
       ),
       child: Column(
@@ -36,7 +36,7 @@ class ProductDetailsVendorTrustWidget extends StatelessWidget {
           Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(4),
                 child: Container(
                   width: 38,
                   height: 38,
@@ -86,7 +86,7 @@ class ProductDetailsVendorTrustWidget extends StatelessWidget {
                 },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColor.deepColor,
-                  side: BorderSide(color: AppColor.deepColor, width: 1.2),
+                  side: BorderSide(color: AppColor.inkColor, width: 1.2),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 14,
                     vertical: 7,
@@ -99,7 +99,7 @@ class ProductDetailsVendorTrustWidget extends StatelessWidget {
                 ),
                 child: Text(
                   LanguageProvider.translate('buttons', 'follow'),
-                  style: TextStyleClass.captionStyle(color: AppColor.deepColor)
+                  style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w700, fontSize: 11.5),
                 ),
               ),
@@ -154,7 +154,7 @@ class _TrustBullet extends StatelessWidget {
           height: 6,
           margin: const EdgeInsets.only(top: 4),
           decoration: BoxDecoration(
-            color: AppColor.limeColor,
+            color: AppColor.inkColor,
             borderRadius: BorderRadius.circular(99),
           ),
         ),

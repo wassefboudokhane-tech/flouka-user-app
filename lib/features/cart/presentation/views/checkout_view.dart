@@ -56,11 +56,11 @@ class CheckoutView extends StatelessWidget {
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
-                                    color: AppColor.deepColor,
+                                    color: AppColor.inkColor,
                                     width: 2,
                                   ),
                                   bottom: BorderSide(
-                                    color: AppColor.deepColor,
+                                    color: AppColor.inkColor,
                                     width: 2,
                                   ),
                                 ),
@@ -76,7 +76,7 @@ class CheckoutView extends StatelessWidget {
                     child: Text(
                       LanguageProvider.translate('cart', 'validate_order'),
                       style: TextStyleClass.semiHeadStyle(
-                        color: AppColor.deepColor,
+                        color: AppColor.inkColor,
                       ).copyWith(
                         fontWeight: FontWeight.w800,
                         fontSize: 22,
@@ -166,7 +166,7 @@ class _CheckoutSectionCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+            style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                 .copyWith(fontWeight: FontWeight.w800, fontSize: 13),
           ),
           const SizedBox(height: 10),

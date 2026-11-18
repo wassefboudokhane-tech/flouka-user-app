@@ -30,7 +30,7 @@ class OrderTrackingTimelineWidget extends StatelessWidget {
       ),
       _TimelineStep(
         title: LanguageProvider.translate('orders', 'delivery_in_progress'),
-        date: LanguageProvider.translate('orders', 'today'),
+        date: LanguageProvider.translate('time', 'today'),
         state: level >= 7
             ? _StepState.active
             : level >= 4
@@ -53,93 +53,64 @@ class OrderTrackingTimelineWidget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColor.borderColor),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          Column(
-            children: [
-              for (var i = 0; i < steps.length; i++) ...[
-                _TimelineDot(state: steps[i].state),
-                if (i < steps.length - 1)
-                  Container(
-                    width: 2,
-                    height: steps[i].subtitle != null ? 60 : 34,
-                    color: steps[i].state == _StepState.done ||
-                            steps[i].state == _StepState.active
-                        ? AppColor.limeColor
-                        : AppColor.borderColor,
-                  ),
-              ],
-            ],
-          ),
-          const SizedBox(width: 13),
-          Expanded(
-            child: Column(
+          for (var i = 0; i < steps.length; i++)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (final step in steps) ...[
-                  SizedBox(
-                    height: step.subtitle != null ? 94 : 34,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  step.title,
-                                  style: TextStyleClass.smallStyle(
-                                    color: step.state == _StepState.upcoming
-                                        ? AppColor.mutedColor
-                                        : step.state == _StepState.active
-                                            ? AppColor.deepColor
-                                            : AppColor.inkColor,
-                                  ).copyWith(
-                                    fontWeight: step.state == _StepState.active
-                                        ? FontWeight.w800
-                                        : FontWeight.w700,
-                                    fontSize: 13.5,
-                                    height: 1.2,
-                                  ),
-                                ),
+                Column(
+                  children: [
+                    _TimelineDot(state: steps[i].state),
+                    if (i < steps.length - 1)
+                      Container(
+                        width: 1,
+                        height: 22,
+                        color: steps[i].state == _StepState.done || steps[i].state == _StepState.active
+                            ? AppColor.inkColor
+                            : AppColor.borderColor,
+                      ),
+                  ],
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                steps[i].title,
+                                style: TextStyleClass.smallStyle(
+                                  color: steps[i].state == _StepState.upcoming ? AppColor.mutedColor : AppColor.inkColor,
+                                ).copyWith(fontWeight: FontWeight.w600),
                               ),
-                              Text(
-                                step.date,
-                                style: TextStyleClass.captionStyle(
-                                  color: step.state == _StepState.active
-                                      ? AppColor.deepColor
-                                      : AppColor.mutedColor,
-                                ).copyWith(
-                                  fontWeight: step.state == _StepState.active
-                                      ? FontWeight.w700
-                                      : FontWeight.w500,
-                                  fontSize: 11,
-                                ),
-                              ),
-                            ],
-                          ),
-                          if (step.subtitle != null) ...[
-                            const SizedBox(height: 6),
+                            ),
                             Text(
-                              step.subtitle!,
-                              style: TextStyleClass.captionStyle(
-                                color: AppColor.mutedColor,
-                              ).copyWith(fontSize: 11.5, height: 1.4),
+                              steps[i].date,
+                              style: TextStyleClass.captionStyle(color: AppColor.mutedColor),
                             ),
                           ],
+                        ),
+                        if (steps[i].subtitle != null) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            steps[i].subtitle!,
+                            style: TextStyleClass.captionStyle(color: AppColor.mutedColor),
+                          ),
                         ],
-                      ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ],
             ),
-          ),
         ],
       ),
     );
@@ -169,60 +140,14 @@ class _TimelineDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (state == _StepState.active) {
-      return Container(
-        width: 34,
-        height: 34,
-        decoration: BoxDecoration(
-          color: AppColor.deepColor,
-          borderRadius: BorderRadius.circular(99),
-        ),
-        child: Center(
-          child: Container(
-            width: 11,
-            height: 11,
-            decoration: BoxDecoration(
-              color: AppColor.limeColor,
-              borderRadius: BorderRadius.circular(99),
-            ),
-          ),
-        ),
-      );
-    }
-
-    if (state == _StepState.done) {
-      return Container(
-        width: 34,
-        height: 34,
-        decoration: BoxDecoration(
-          color: AppColor.limeColor,
-          borderRadius: BorderRadius.circular(99),
-        ),
-        child: Center(
-          child: Transform.rotate(
-            angle: -0.785398,
-            child: Container(
-              width: 12,
-              height: 7,
-              decoration: BoxDecoration(
-                border: Border(
-                  left: BorderSide(color: AppColor.deepColor, width: 2),
-                  bottom: BorderSide(color: AppColor.deepColor, width: 2),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
+    final done = state == _StepState.done || state == _StepState.active;
     return Container(
-      width: 34,
-      height: 34,
+      width: 16,
+      height: 16,
       decoration: BoxDecoration(
-        color: AppColor.canvasColor,
-        borderRadius: BorderRadius.circular(99),
-        border: Border.all(color: AppColor.borderColor),
+        color: done ? AppColor.inkColor : AppColor.canvasColor,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: done ? AppColor.inkColor : AppColor.borderColor),
       ),
     );
   }

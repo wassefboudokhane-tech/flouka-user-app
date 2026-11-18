@@ -14,7 +14,7 @@ class ItemOutOfStockWidget extends StatelessWidget {
     return Material(
       elevation: 5,
       shadowColor: Colors.redAccent,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(4),
       child: InkWell(
         onTap: () => provider.goToOutOfStockItemsPage(id: id),
         child: Container(
@@ -22,7 +22,7 @@ class ItemOutOfStockWidget extends StatelessWidget {
           width: 100.w,
           decoration: BoxDecoration(
             color: const Color(0xff950526),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(4),
           ),
           child: Row(
             children: [

@@ -287,7 +287,7 @@ class TicketSendMessageWidget extends StatelessWidget {
     //                   },
     //                   child: Icon(
     //                     Icons.send,
-    //                     color: AppColor.primaryColor,
+    //                     color: AppColor.inkColor,
     //                     size: 20.sp,
     //                   ),
     //                 ),

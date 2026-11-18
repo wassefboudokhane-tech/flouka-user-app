@@ -68,7 +68,7 @@ class OrderDetailsView extends StatelessWidget {
                             Text(
                               '#FLK-${order.id}',
                               style: TextStyleClass.headStyle(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                               ).copyWith(
                                 fontSize: 19,
                                 fontWeight: FontWeight.w800,
@@ -133,7 +133,7 @@ class OrderDetailsView extends StatelessWidget {
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: AppColor.backgroundColor,
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(4),
                               border: Border.all(color: AppColor.borderColor),
                             ),
                             child: ShareYourExperienceWidget(
@@ -171,12 +171,12 @@ class OrderDetailsView extends StatelessWidget {
                                   .goToAddTicketPage();
                             },
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColor.deepColor,
-                              backgroundColor: AppColor.backgroundColor,
+                              foregroundColor: AppColor.inkColor,
+                              backgroundColor: AppColor.canvasColor,
                               side: BorderSide(color: AppColor.borderColor),
-                              minimumSize: const Size.fromHeight(50),
+                              minimumSize: const Size.fromHeight(48),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
                             child: Text(
@@ -185,7 +185,7 @@ class OrderDetailsView extends StatelessWidget {
                                 'file_complaint',
                               ),
                               style: TextStyleClass.smallStyle(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                               ).copyWith(fontWeight: FontWeight.w700),
                             ),
                           ),
@@ -202,9 +202,9 @@ class OrderDetailsView extends StatelessWidget {
                             style: FilledButton.styleFrom(
                               backgroundColor: AppColor.deepColor,
                               foregroundColor: Colors.white,
-                              minimumSize: const Size.fromHeight(50),
+                              minimumSize: const Size.fromHeight(48),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
                             child: Text(

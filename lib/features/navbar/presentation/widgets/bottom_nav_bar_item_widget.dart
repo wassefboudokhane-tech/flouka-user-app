@@ -28,17 +28,17 @@ class BottomNavBarItemWidget extends StatelessWidget {
     Color? pillColor;
 
     if (frosted) {
-      pillColor = active ? AppColor.limeColor : Colors.transparent;
+      pillColor = active ? Colors.white : Colors.transparent;
       iconColor = active
-          ? AppColor.deepColor
+          ? AppColor.inkColor
           : Colors.white.withValues(alpha: 0.55);
       labelColor = active
           ? Colors.white
           : Colors.white.withValues(alpha: 0.55);
     } else {
-      pillColor = active ? AppColor.deepColor : Colors.transparent;
-      iconColor = active ? AppColor.limeColor : AppColor.mutedColor;
-      labelColor = active ? AppColor.deepColor : AppColor.mutedColor;
+      pillColor = Colors.transparent;
+      iconColor = active ? AppColor.inkColor : AppColor.mutedColor;
+      labelColor = active ? AppColor.inkColor : AppColor.mutedColor;
     }
 
     return InkWell(

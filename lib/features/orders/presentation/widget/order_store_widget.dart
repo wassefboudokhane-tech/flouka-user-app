@@ -17,12 +17,12 @@ class OrderStoreWidget extends StatelessWidget {
     return Material(
       elevation: 5,
       shadowColor: AppColor.primaryColor,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(4),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
           children: [

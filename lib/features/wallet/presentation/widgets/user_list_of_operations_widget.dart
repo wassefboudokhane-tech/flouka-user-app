@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import '../../../../core/config/app_color.dart';
 import '../../../../core/config/app_styles.dart';
 import '../../../../core/widgets/animation/fade_transition_widget.dart';
 import '../../../../core/widgets/shimmer_widget.dart';
@@ -19,8 +20,9 @@ class ListOfTransactionWidgets extends StatelessWidget {
       width: 100.w,
       margin: EdgeInsets.symmetric(horizontal: 5.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color(0xffF0F2F5),
+        borderRadius: BorderRadius.circular(4),
+        color: AppColor.canvasColor,
+        border: Border.all(color: AppColor.borderColor),
       ),
       child: FadeTransitionWidget(
         child: Column(

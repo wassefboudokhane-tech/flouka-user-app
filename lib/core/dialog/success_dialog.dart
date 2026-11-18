@@ -58,7 +58,7 @@ void _showSuccessSheet({
     isScrollControlled: true,
     backgroundColor: AppColor.backgroundColor,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
     ),
     builder: (context) {
       final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
@@ -105,7 +105,7 @@ void _showSuccessSheet({
                       child: Text(
                         LanguageProvider.translate('cart', 'validate_order'),
                         style: TextStyleClass.buttonStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w800),
                       ),
                     ),
@@ -143,7 +143,7 @@ void _showSuccessSheet({
                       child: Text(
                         LanguageProvider.translate('buttons', 'confirm'),
                         style: TextStyleClass.buttonStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(fontWeight: FontWeight.w800),
                       ),
                     ),

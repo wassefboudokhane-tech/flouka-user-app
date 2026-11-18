@@ -49,10 +49,10 @@ class ReviewContainerWidget extends StatelessWidget {
                         itemCount: 5,
                         itemSize: 16,
                         ratingWidget: RatingWidget(
-                          full: const Icon(Icons.star, color: Colors.amber),
-                          half: const Icon(
+                          full: Icon(Icons.star, color: AppColor.inkColor),
+                          half: Icon(
                             Icons.star_half,
-                            color: Colors.amber,
+                            color: AppColor.inkColor,
                           ),
                           empty: const Icon(Icons.star, color: Colors.grey),
                         ),
@@ -89,7 +89,7 @@ class ReviewContainerWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
-                color: AppColor.primaryColor,
+                color: AppColor.inkColor,
               ),
             ),
           ),

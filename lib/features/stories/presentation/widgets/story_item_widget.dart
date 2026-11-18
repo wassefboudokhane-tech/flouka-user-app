@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/features/stories/domain/entity/story_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -26,7 +26,7 @@ class StoryItemWidget extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: CachedNetworkImageProvider(storyEntity.logo),
+                image: floukaImageProvider(storyEntity.logo),
                 fit: BoxFit.cover,
               ),
               border: Border.all(color: const Color(0xff696DF3), width: 2),

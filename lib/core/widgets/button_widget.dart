@@ -48,19 +48,13 @@ class ButtonWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: directionBorderRadius ??
               BorderRadius.circular(borderRadius ?? AppRadius.btn),
-          color: color ?? AppColor.limeColor,
+          color: color ?? AppColor.deepColor,
 
           border: borderColor == null || color == null
               ? null
               : Border.all(color: borderColor!),
           boxShadow: [
-            if (withShadow)
-              BoxShadow(
-                color: const Color(0xffFC6011).withAlpha((0.32 * 255).round()),
-                blurRadius: 6,
-                offset: const Offset(0, 3),
-                spreadRadius: 0,
-              ),
+
           ],
         ),
         child: Padding(
@@ -77,10 +71,10 @@ class ButtonWidget extends StatelessWidget {
                 style:
                     textStyle ??
                     TextStyleClass.buttonStyle(
-                      color: (color == null || color == AppColor.limeColor)
-                          ? AppColor.deepColor
+                      color: color == AppColor.limeColor
+                          ? AppColor.inkColor
                           : Colors.white,
-                    ).copyWith(fontWeight: FontWeight.w700),
+                    ).copyWith(fontWeight: FontWeight.w500),
               ),
               if (isSpaceBetween == true) const SizedBox(),
               if (widgetAfterText) widget ?? const SizedBox(),

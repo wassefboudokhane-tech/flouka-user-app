@@ -92,7 +92,7 @@ class _SearchQueryField extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           decoration: BoxDecoration(
             color: AppColor.backgroundColor,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(
               color: hasText ? AppColor.deepColor : AppColor.borderColor,
               width: hasText ? 1.5 : 1,

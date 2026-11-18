@@ -11,6 +11,11 @@ class CartEntity {
   /// Present on guest lines — used to sync `store_product_stock_id` after login.
   int? storeProductStockId;
 
+  /// Other shops that stock this product, and how the cart could be grouped.
+  final List<CartAlsoAt> alsoAt;
+  final int parcelsNow;
+  final int parcelsGrouped;
+
   num get subTotal => (quantity??0) * (unitPrice??0);
 
   bool get isGuestLine => id != null && id! < 0;
@@ -24,6 +29,23 @@ class CartEntity {
     required this.storeId,
     this.stock,
     this.storeProductStockId,
+    this.alsoAt = const [],
+    this.parcelsNow = 1,
+    this.parcelsGrouped = 1,
+  });
+}
+
+class CartAlsoAt {
+  final int storeId;
+  final String name;
+  final num price;
+  final num deliverySaving;
+
+  const CartAlsoAt({
+    required this.storeId,
+    required this.name,
+    required this.price,
+    required this.deliverySaving,
   });
 }
 

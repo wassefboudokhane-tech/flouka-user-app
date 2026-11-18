@@ -24,7 +24,7 @@ class MyAddressWidget extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: AppColor.secondaryColor),
             color: AppColor.secondaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(4),
           ),
           child: Column(
             spacing: 1.h,

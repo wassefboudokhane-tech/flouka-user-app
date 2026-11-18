@@ -29,7 +29,7 @@ class OrderItemWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(4),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +44,7 @@ class OrderItemWidget extends StatelessWidget {
               Text(
                 orderEntity.id.toString(),
                 style: TextStyleClass.normalStyle(
-                  color: AppColor.primaryColor,
+                  color: AppColor.inkColor,
                 ).copyWith(fontWeight: FontWeight.bold, fontSize: 15.sp),
               ),
             ],
@@ -118,7 +118,7 @@ class OrderItemWidget extends StatelessWidget {
                           child: Row(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(4),
                                 child: CachedNetworkImage(
                                   imageUrl: orderItem.product?.image ?? " ",width: 15.w,height: 10.w,fit: BoxFit.cover,
                                   errorWidget: (context, url, error) => const Icon(Icons.error),

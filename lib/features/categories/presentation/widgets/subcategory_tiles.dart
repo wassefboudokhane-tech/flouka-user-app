@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/features/categories/domain/entity/category_entity.dart';
 import 'package:flouka/features/categories/presentation/providers/subcategory_provider.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
@@ -26,7 +26,7 @@ class SubcategoryTile extends StatelessWidget {
       height: 6.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: const Color(0xffF0F1F5),
+        color: const Color(0xffF5F5F7),
       ),
       child: Row(
         children: [
@@ -39,11 +39,11 @@ class SubcategoryTile extends StatelessWidget {
               child: Row(
                 children: [
                   SizedBox(width: 1.w),
-                  CachedNetworkImage(
-                    imageUrl: subcategory!.image??"",
+                  FloukaNetworkImage(
+                    url: subcategory!.image??"",
                     width: 12.w,
                     height: 5.h,
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    error: const Icon(Icons.error),
                   ),
                   SizedBox(width: 2.w),
                   Text(

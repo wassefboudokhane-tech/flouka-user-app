@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/features/categories/domain/entity/popular_categories_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -17,17 +17,15 @@ class PopularCategoryContainerWidget extends StatelessWidget {
       width: 49.w,
       height: 12.h,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(4),
         child: Stack(
           fit: StackFit.expand,
           children: [
             // Background image
-            CachedNetworkImage(
+            FloukaNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: category.image,
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              placeholder: (context, url) =>
-                  const Center(child: CircularProgressIndicator()),
+              url: category.image,
+              error: const Icon(Icons.error),
             ),
             // Gradient overlay
             Container(

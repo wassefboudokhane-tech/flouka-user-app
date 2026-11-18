@@ -35,7 +35,7 @@ class _DraggableImageButtonState extends State<DraggableImageButton> {
             height: 6.h,
             decoration: BoxDecoration(
               color: completed ? Colors.green : const Color(0xffB4B4B4),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
               LanguageProvider.translate("global", "PAY NOW"),

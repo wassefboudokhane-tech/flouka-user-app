@@ -3,6 +3,7 @@ import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/widgets/see_all_button.dart';
+import 'package:flouka/features/creators/domain/entity/creator_entity.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
 import 'package:flouka/features/products/presentation/widgets/hot_deals_home_container_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class MarketplaceProductRail extends StatelessWidget {
     this.onSeeAll,
     this.cardWidth,
     this.isSimilar = false,
+    this.creator,
   });
 
   final String title;
@@ -23,6 +25,9 @@ class MarketplaceProductRail extends StatelessWidget {
   final VoidCallback? onSeeAll;
   final double? cardWidth;
   final bool isSimilar;
+
+  /// When set, opening or adding a card keeps this creator's credit.
+  final CreatorEntity? creator;
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +47,6 @@ class MarketplaceProductRail extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Container(
-                  width: AppSpacing.railAccentW,
-                  height: AppSpacing.railAccentH,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColor.limeColor, AppColor.primaryColor],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 9),
                 Expanded(
                   child: Text(
                     title,
@@ -83,6 +75,7 @@ class MarketplaceProductRail extends StatelessWidget {
                   product: products[index],
                   width: width,
                   isSimilar: isSimilar,
+                  creator: creator,
                 );
               },
             ),

@@ -1,5 +1,4 @@
 import 'package:flouka/core/config/app_color.dart';
-import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
@@ -34,10 +33,9 @@ class SavedAddressContainerWidget extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: isDefault ? AppColor.primaryColor : AppColor.borderColor,
-          width: isDefault ? 1.6 : 1,
+          color: isDefault ? AppColor.inkColor : AppColor.borderColor,
         ),
       ),
       child: Column(
@@ -48,13 +46,13 @@ class SavedAddressContainerWidget extends StatelessWidget {
               Icon(
                 Icons.location_on_rounded,
                 size: 18,
-                color: AppColor.primaryColor,
+                color: AppColor.inkColor,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   label,
-                  style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                  style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                       .copyWith(fontWeight: FontWeight.w700, fontSize: 14),
                 ),
               ),
@@ -63,14 +61,14 @@ class SavedAddressContainerWidget extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColor.limeColor,
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    color: AppColor.softColor,
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     LanguageProvider.translate('address', 'default_badge')
                         .toUpperCase(),
                     style: TextStyleClass.captionStyle(
-                      color: AppColor.deepColor,
+                      color: AppColor.inkColor,
                     ).copyWith(fontWeight: FontWeight.w800, fontSize: 10),
                   ),
                 ),
@@ -94,8 +92,8 @@ class SavedAddressContainerWidget extends StatelessWidget {
                 width: 7,
                 height: 7,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2F9E44),
-                  borderRadius: BorderRadius.circular(99),
+                  color: AppColor.inkColor,
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
               const SizedBox(width: 7),
@@ -103,7 +101,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
                 child: Text(
                   LanguageProvider.translate('address', 'deliverable'),
                   style: TextStyleClass.captionStyle(
-                    color: const Color(0xFF2F9E44),
+                    color: AppColor.mutedColor,
                   ).copyWith(fontWeight: FontWeight.w600, fontSize: 12),
                 ),
               ),
@@ -116,7 +114,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
             children: [
               _ActionLink(
                 label: LanguageProvider.translate('address', 'edit'),
-                color: AppColor.primaryColor,
+                color: AppColor.inkColor,
                 onTap: () {
                   context
                       .read<AddressDetailsProvider>()
@@ -126,7 +124,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
               if (!isDefault)
                 _ActionLink(
                   label: LanguageProvider.translate('address', 'delete'),
-                  color: AppColor.DealColor,
+                  color: AppColor.mutedColor,
                   onTap: () =>
                       addressProvider.showDeleteLocation(address.id!),
                 ),
@@ -136,7 +134,7 @@ class SavedAddressContainerWidget extends StatelessWidget {
                     'address',
                     'set_as_default',
                   ),
-                  color: AppColor.deepColor,
+                  color: AppColor.inkColor,
                   bold: true,
                   onTap: () => addressProvider.setAsDefault(address),
                 ),
@@ -165,7 +163,7 @@ class _ActionLink extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(6),
+      borderRadius: BorderRadius.circular(4),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 2),
         child: Text(

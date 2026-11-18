@@ -226,9 +226,7 @@ class CategoriesProductSearchProvider extends ChangeNotifier
      dataToUse['lat'] = authProvider.currentLocation?.latitude;
      dataToUse['lng'] = authProvider.currentLocation?.longitude;
    }
-   if(searchController.text.isNotEmpty){
-     dataToUse['search'] = searchController.text;
-   }
+   applySearchTerm(dataToUse, searchController.text);
    final result = await productUseCase.getProducts(dataToUse);
    log("${dataToUse}");
    result.fold((l) {
@@ -389,4 +387,12 @@ class CategoriesProductSearchProvider extends ChangeNotifier
    "Cat Litter",
  ];
 
+}
+
+/// Copies a non-empty shopper query onto the product request.
+void applySearchTerm(Map<String, dynamic> data, String term) {
+  final query = term.trim();
+  if (query.isNotEmpty) {
+    data['search'] = query;
+  }
 }

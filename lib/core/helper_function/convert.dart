@@ -407,6 +407,10 @@ String formatPrice(num price) {
   }
 }
 
+/// A price with its currency, as shown to buyers: "40 TND".
+String formatPriceWithCurrency(num price) =>
+    '${formatPrice(price)} ${LanguageProvider.translate('global', 'currency')}';
+
 Color convertHexToColor(String hexColor) {
   final buffer = StringBuffer();
   if (hexColor.length == 6 || hexColor.length == 7) {

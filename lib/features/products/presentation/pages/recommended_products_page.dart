@@ -123,7 +123,7 @@ class _CategoryEmptyRecovery extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         decoration: BoxDecoration(
           color: AppColor.backgroundColor,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(color: AppColor.borderColor),
         ),
         child: Column(
@@ -134,7 +134,7 @@ class _CategoryEmptyRecovery extends StatelessWidget {
               height: 76,
               decoration: BoxDecoration(
                 color: AppColor.softColor,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(4),
                 border: Border.all(color: AppColor.borderColor),
               ),
               child: Center(
@@ -143,7 +143,7 @@ class _CategoryEmptyRecovery extends StatelessWidget {
                   height: 26,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColor.deepColor, width: 2.5),
+                    border: Border.all(color: AppColor.inkColor, width: 2.5),
                   ),
                 ),
               ),
@@ -151,7 +151,7 @@ class _CategoryEmptyRecovery extends StatelessWidget {
             const SizedBox(height: 18),
             Text(
               LanguageProvider.translate('recovery', 'category_empty_title'),
-              style: TextStyleClass.headStyle(color: AppColor.deepColor)
+              style: TextStyleClass.headStyle(color: AppColor.inkColor)
                   .copyWith(fontSize: 21, height: 1.15),
             ),
             const SizedBox(height: 9),
@@ -178,7 +178,7 @@ class _CategoryEmptyRecovery extends StatelessWidget {
                         'category_empty_action',
                       ),
                       style: TextStyleClass.buttonStyle(
-                        color: AppColor.deepColor,
+                        color: AppColor.inkColor,
                       ).copyWith(fontWeight: FontWeight.w800, fontSize: 14),
                     ),
                   ),

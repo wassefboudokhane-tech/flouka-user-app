@@ -1,5 +1,4 @@
 import 'package:flouka/core/config/app_color.dart';
-import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/widgets/checkbox_widget.dart';
@@ -112,7 +111,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
                             'skip_for_now',
                           ),
                           style: TextStyleClass.captionStyle(
-                            color: AppColor.primaryColor,
+                            color: AppColor.inkColor,
                           ).copyWith(fontWeight: FontWeight.w700, fontSize: 12),
                         ),
                       )
@@ -322,8 +321,8 @@ class _AddressFormPageState extends State<AddressFormPage> {
                               width: 7,
                               height: 7,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF2F9E44),
-                                borderRadius: BorderRadius.circular(99),
+                                color: AppColor.inkColor,
+                                borderRadius: BorderRadius.circular(2),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -334,7 +333,7 @@ class _AddressFormPageState extends State<AddressFormPage> {
                                   'zone_covered',
                                 ),
                                 style: TextStyleClass.captionStyle(
-                                  color: const Color(0xFF2F9E44),
+                                  color: AppColor.mutedColor,
                                 ).copyWith(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 12.5,
@@ -393,23 +392,23 @@ class _LabelChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: selected ? AppColor.deepColor : AppColor.backgroundColor,
-      borderRadius: BorderRadius.circular(AppRadius.pill),
+      color: selected ? AppColor.inkColor : AppColor.backgroundColor,
+      borderRadius: BorderRadius.circular(4),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
+        borderRadius: BorderRadius.circular(4),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.pill),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(
-              color: selected ? AppColor.deepColor : AppColor.borderColor,
+              color: selected ? AppColor.inkColor : AppColor.borderColor,
             ),
           ),
           child: Text(
             label,
             style: TextStyleClass.captionStyle(
-              color: selected ? Colors.white : AppColor.deepColor,
+              color: selected ? Colors.white : AppColor.inkColor,
             ).copyWith(fontWeight: FontWeight.w700, fontSize: 12.5),
           ),
         ),
@@ -485,7 +484,7 @@ class _AddressTextField extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: AppColor.backgroundColor,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(color: AppColor.borderColor),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 14),

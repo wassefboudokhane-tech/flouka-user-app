@@ -19,7 +19,7 @@ class CartPromoLinkWidget extends StatelessWidget {
             isScrollControlled: true,
             backgroundColor: AppColor.backgroundColor,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
             ),
             builder: (ctx) {
               return Padding(
@@ -39,11 +39,11 @@ class CartPromoLinkWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
             children: [
-              Icon(Icons.add, size: 18, color: AppColor.primaryColor),
+              Icon(Icons.add, size: 18, color: AppColor.inkColor),
               const SizedBox(width: 6),
               Text(
                 LanguageProvider.translate('global', 'coupon_code'),
-                style: TextStyleClass.smallStyle(color: AppColor.primaryColor)
+                style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                     .copyWith(fontWeight: FontWeight.w700, fontSize: 13.5),
               ),
             ],

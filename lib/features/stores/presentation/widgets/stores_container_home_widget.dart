@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/widgets/custom_star_rating_widget.dart';
@@ -27,13 +27,6 @@ class StoresContainerHomeWidget extends StatelessWidget {
           color: Colors.white,
           border: Border.all(color: AppColor.borderColor),
           borderRadius: BorderRadius.circular(AppRadius.card),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: Row(
           children: [
@@ -42,9 +35,9 @@ class StoresContainerHomeWidget extends StatelessWidget {
               height: 56,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColor.limeColor, width: 2),
+                border: Border.all(color: AppColor.inkColor, width: 2),
                 image: DecorationImage(
-                  image: CachedNetworkImageProvider(store.vendor.logo),
+                  image: floukaImageProvider(store.vendor.logo),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -57,7 +50,7 @@ class StoresContainerHomeWidget extends StatelessWidget {
                 children: [
                   Text(
                     store.name,
-                    style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                    style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                         .copyWith(fontWeight: FontWeight.w700, fontSize: 15),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -82,7 +75,7 @@ class StoresContainerHomeWidget extends StatelessWidget {
                       Text(
                         store.rate.toStringAsFixed(1),
                         style: TextStyleClass.captionStyle(
-                          color: AppColor.primaryColor,
+                          color: AppColor.inkColor,
                         ),
                       ),
                     ],

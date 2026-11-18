@@ -1,3 +1,5 @@
+import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flouka/core/widgets/flouka_primary_button.dart';
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
@@ -19,6 +21,10 @@ class OrdersView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ordersProvider = Provider.of<OrderProvider>(context);
     ordersProvider.pagination();
+    if (ordersProvider.needsLogin && ordersProvider.hasSession()) {
+      // Back from the login page with a session: load the orders now.
+      WidgetsBinding.instance.addPostFrameCallback((_) => ordersProvider.refresh());
+    }
 
     return Scaffold(
       backgroundColor: AppColor.canvasColor,
@@ -44,6 +50,15 @@ class OrdersView extends StatelessWidget {
                 onRefresh: () async => ordersProvider.refresh(),
                 child: Builder(
                   builder: (context) {
+                    if (ordersProvider.needsLogin) {
+                      return const _SignInPrompt();
+                    }
+                    if (ordersProvider.loadError != null) {
+                      return _LoadFailed(
+                        message: ordersProvider.loadError!,
+                        onRetry: ordersProvider.refresh,
+                      );
+                    }
                     if (ordersProvider.data == null) {
                       return const Center(
                         child: LoadingAnimationWidget(gif: Lotties.loading),
@@ -90,6 +105,67 @@ class OrdersView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SignInPrompt extends StatelessWidget {
+  const _SignInPrompt();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.pageGutter, 64, AppSpacing.pageGutter, 24),
+      children: [
+        Text(
+          LanguageProvider.translate('orders', 'login_title'),
+          style: TextStyleClass.semiHeadStyle(),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          LanguageProvider.translate('orders', 'login_hint'),
+          style: TextStyleClass.smallStyle(color: AppColor.mutedColor),
+        ),
+        const SizedBox(height: 24),
+        FloukaPrimaryButton(
+          text: LanguageProvider.translate('orders', 'login_cta'),
+          translateKey: false,
+          onTap: () => Provider.of<AuthProvider>(context, listen: false)
+              .goToLoginView(replace: false),
+        ),
+      ],
+    );
+  }
+}
+
+class _LoadFailed extends StatelessWidget {
+  const _LoadFailed({required this.message, required this.onRetry});
+
+  final String message;
+  final Future Function() onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.pageGutter, 64, AppSpacing.pageGutter, 24),
+      children: [
+        Text(message, style: TextStyleClass.normalStyle()),
+        const SizedBox(height: 16),
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: OutlinedButton(
+            onPressed: onRetry,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColor.inkColor,
+              side: BorderSide(color: AppColor.inkColor),
+              shape: const RoundedRectangleBorder(),
+            ),
+            child: Text(LanguageProvider.translate('orders', 'retry')),
+          ),
+        ),
+      ],
     );
   }
 }

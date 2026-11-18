@@ -21,17 +21,17 @@ class OrderDriverCardWidget extends StatelessWidget {
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
         color: AppColor.backgroundColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: AppColor.borderColor),
       ),
       child: Row(
         children: [
           Container(
-            width: 42,
-            height: 42,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               color: AppColor.softColor,
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(4),
               border: Border.all(color: AppColor.borderColor),
             ),
           ),
@@ -54,21 +54,19 @@ class OrderDriverCardWidget extends StatelessWidget {
               ],
             ),
           ),
-          Material(
-            color: AppColor.limeColor,
-            shape: const CircleBorder(),
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              onTap: () {
-                Provider.of<MessageProvider>(context, listen: false)
-                    .goToMessagePage(orderId: 0, storeId: storeId);
-              },
-              child: const SizedBox(
-                width: 40,
-                height: 40,
-                child: Icon(Icons.phone_in_talk_outlined, size: 18),
-              ),
+          OutlinedButton(
+            onPressed: () {
+              Provider.of<MessageProvider>(context, listen: false)
+                  .goToMessagePage(orderId: 0, storeId: storeId);
+            },
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColor.inkColor,
+              side: BorderSide(color: AppColor.borderColor),
+              minimumSize: const Size(40, 36),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
             ),
+            child: Icon(Icons.chat_bubble_outline, size: 16, color: AppColor.inkColor),
           ),
         ],
       ),

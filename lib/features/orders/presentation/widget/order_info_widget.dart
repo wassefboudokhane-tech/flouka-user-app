@@ -14,13 +14,13 @@ class OrderInfoItemWidget extends StatelessWidget {
     return Material(
       elevation: 3,
       shadowColor: AppColor.primaryColor,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(4),
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
           spacing: 1.w,
@@ -29,7 +29,7 @@ class OrderInfoItemWidget extends StatelessWidget {
             Text(
               info,
               style: TextStyleClass.normalStyle(
-                color: AppColor.primaryColor,
+                color: AppColor.inkColor,
               ).copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp),
             ),
           ],

@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/stories/domain/entity/story_entity.dart';
@@ -96,7 +96,7 @@ class _HomeStoryItem extends StatelessWidget {
                   color: AppColor.softColor,
                   border: Border.all(color: AppColor.canvasColor, width: 2),
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(story.logo),
+                    image: floukaImageProvider(story.logo),
                     fit: BoxFit.cover,
                   ),
                 ),

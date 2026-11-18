@@ -22,7 +22,7 @@ class DeliveryAddressCheckout extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
           border: addressProvider.isSelected(addressEntity)
               ? Border.all(color: Colors.black)
               : null,

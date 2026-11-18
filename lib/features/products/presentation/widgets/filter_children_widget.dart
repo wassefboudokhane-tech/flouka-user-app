@@ -76,16 +76,16 @@ class _FilterChildrenWidgetState extends State<FilterChildrenWidget> {
               fillColor: AppColor.softColor,
               contentPadding: const EdgeInsets.symmetric(vertical: 10),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(4),
                 borderSide: BorderSide(color: AppColor.borderColor),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(4),
                 borderSide: BorderSide(color: AppColor.borderColor),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: AppColor.primaryColor),
+                borderRadius: BorderRadius.circular(4),
+                borderSide: BorderSide(color: AppColor.inkColor),
               ),
             ),
           ),

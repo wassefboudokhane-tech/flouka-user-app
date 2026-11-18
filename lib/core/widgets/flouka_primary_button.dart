@@ -37,33 +37,31 @@ class FloukaPrimaryButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: enabled ? onTap : null,
-          borderRadius: BorderRadius.circular(AppRadius.pill),
+          borderRadius: BorderRadius.circular(AppRadius.btn),
           child: Container(
             width: width ?? double.infinity,
             height: height ?? AppSpacing.ctaHeight,
             decoration: BoxDecoration(
-              color: AppColor.limeColor,
-              borderRadius: BorderRadius.circular(AppRadius.pill),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColor.primaryColor.withValues(alpha: 0.22),
-                  blurRadius: 14,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+              color: AppColor.deepColor,
+              borderRadius: BorderRadius.circular(AppRadius.btn),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (widget != null) ...[widget!, const SizedBox(width: 8)],
+                if (widget != null) ...[
+                  IconTheme(
+                    data: const IconThemeData(color: Colors.white),
+                    child: widget!,
+                  ),
+                  const SizedBox(width: 8),
+                ],
                 Flexible(
                   child: Text(
                     label,
                     textAlign: TextAlign.center,
-                    style: TextStyleClass.buttonStyle(
-                      color: AppColor.deepColor,
-                    ).copyWith(fontWeight: FontWeight.w800),
+                    style: TextStyleClass.buttonStyle(color: Colors.white)
+                        .copyWith(fontWeight: FontWeight.w500),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

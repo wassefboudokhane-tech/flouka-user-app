@@ -37,7 +37,7 @@ class CommonQuestionWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 3.w),
-                Icon(Icons.arrow_forward_ios, color: AppColor.primaryColor),
+                Icon(Icons.arrow_forward_ios, color: AppColor.inkColor),
               ],
             ),
           ),

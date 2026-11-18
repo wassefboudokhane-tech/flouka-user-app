@@ -61,7 +61,7 @@ class FrequentlyItemWidget extends StatelessWidget {
           //   height: 4.w,
           //   decoration: BoxDecoration(
           //     borderRadius: BorderRadius.circular(4),
-          //     color: AppColor.primaryColor,
+          //     color: AppColor.inkColor,
           //   ),
           //   child: const Icon(Icons.check, color: Colors.white, size: 15),
           // ),

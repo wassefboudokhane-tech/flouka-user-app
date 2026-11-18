@@ -101,13 +101,13 @@ class FloatingChatBubbleState extends State<FloatingChatBubble>
               },
               child: Material(
                 elevation: 8,
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(4),
                 child: Container(
                   width: 75.w,
                   height: 60.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   child: Column(
                     children: [
@@ -116,7 +116,7 @@ class FloatingChatBubbleState extends State<FloatingChatBubble>
                         decoration: const BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(16),
+                            top: Radius.circular(4),
                           ),
                         ),
                         child: Row(

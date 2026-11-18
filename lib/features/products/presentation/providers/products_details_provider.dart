@@ -1,3 +1,4 @@
+import 'package:flouka/features/creators/domain/entity/creator_entity.dart';
 import 'dart:developer';
 
 import 'package:carousel_slider_plus/carousel_controller.dart';
@@ -143,8 +144,13 @@ class ProductDetailsProvider extends ChangeNotifier
     }
   }
 
+  /// The creator whose shop this product was opened from, if any.
+  CreatorEntity? recommendedBy;
+
   void init([Map<String, dynamic>? inputs]) {
     this.inputs = inputs;
+    final creator = inputs?['creator'];
+    recommendedBy = creator is CreatorEntity ? creator : null;
     imageIndex = 0;
     variants = {};
     Provider.of<ProductQuantityProvider>(
@@ -212,10 +218,14 @@ class ProductDetailsProvider extends ChangeNotifier
     });
   }
 
-  void addToCart(ProductEntity product) {
+  void addToCart(ProductEntity product, {CreatorEntity? creator}) {
     // Variant / incomplete listing → open PDP to choose options.
     if (product.haveVariant || product.stock == null || product.store == null) {
-      goToPage({'product_id': product.id, 'is_similar': false});
+      goToPage({
+        'product_id': product.id,
+        'is_similar': false,
+        if (creator != null) 'creator': creator,
+      });
       return;
     }
     final cartProvider = Provider.of<CartProvider>(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import '../../../../core/config/app_color.dart';
 import '../../../../core/config/app_styles.dart';
 import '../../../../core/constants/app_images.dart';
 
@@ -17,7 +18,7 @@ class OperationWidgets extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(4),
       ),
       margin: EdgeInsets.only(bottom: 1.h),
       child: Row(
@@ -51,7 +52,7 @@ class OperationWidgets extends StatelessWidget {
           // Spacer(),
           Text(
             "${myOperation.price} ${LanguageProvider.translate("global", "currency")}",
-            style: TextStyleClass.normalStyle(color: myOperation.isUp?Colors.green:Colors.red),
+            style: TextStyleClass.normalStyle(color: AppColor.inkColor),
           ),
           Padding(
             padding: EdgeInsets.only(top: 1.h),

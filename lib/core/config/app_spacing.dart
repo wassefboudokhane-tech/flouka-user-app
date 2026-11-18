@@ -27,10 +27,13 @@ abstract class AppSpacing {
 
   /// Hi-fi product card (158×122 image + meta).
   static const double productCardWidth = 158;
-  static const double productCardImageHeight = 122;
+  static const double productCardImageHeight = 170;
 
   /// Floating cart bubble height.
   static const double cartBubbleHeight = 46;
+
+  /// Right clearance so the cart total stays left of the chat bubble.
+  static const double chatBubbleClearance = 76;
 
   /// Bottom nav active pill (hi-fi).
   static const double navActivePillW = 44;

@@ -16,7 +16,7 @@ class UpdateOrderItemWidget extends StatelessWidget {
     return Material(
       elevation: 5,
       shadowColor: AppColor.primaryColor,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 1.h,
@@ -25,7 +25,7 @@ class UpdateOrderItemWidget extends StatelessWidget {
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(4),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

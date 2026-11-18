@@ -1,8 +1,9 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_styles.dart';
+import 'package:flouka/core/helper_function/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import '../../../../core/config/app_styles.dart';
-import '../../../../core/helper_function/convert.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 import '../../domain/entities/ticket_entity.dart';
 import '../provider/ticket_message_provider.dart';
@@ -10,90 +11,58 @@ import '../provider/ticket_message_provider.dart';
 class TicketWidget extends StatelessWidget {
   const TicketWidget({super.key, required this.ticket});
   final TicketEntity ticket;
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Provider.of<TicketMessageProvider>(
-          context,
-          listen: false,
-        ).goToMessagePage(id: ticket.id);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 4.w),
-        margin: EdgeInsets.symmetric(vertical: 0.8.h, horizontal: 6.w),
-        decoration: BoxDecoration(
-          color: const Color(0xffF4F1F1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    LanguageProvider.translate(
-                      "ticket",
-                      "ticket_number",
-                    ).replaceFirst("*id*", "${ticket.id}"),
-                    maxLines: 1,
-                    style: TextStyleClass.smallStyle(),
-                  ),
-                  SizedBox(height: 0.5.h),
-                  Text(
-                    LanguageProvider.translate(
-                      "ticket",
-                      "ticket_category",
-                    ).replaceFirst("*cat*", ticket.ticketCategory?.name ?? ""),
-                    maxLines: 1,
-                    style: TextStyleClass.smallStyle().copyWith(
-                      color: const Color(0xff727272),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.pageGutter, 0, AppSpacing.pageGutter, 10),
+      child: InkWell(
+        onTap: () {
+          context.read<TicketMessageProvider>().goToMessagePage(id: ticket.id);
+        },
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppColor.canvasColor,
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: AppColor.borderColor),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      LanguageProvider.translate('ticket', 'ticket_number').replaceFirst('*id*', '${ticket.id}'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyleClass.smallStyle(color: AppColor.inkColor).copyWith(fontWeight: FontWeight.w700),
                     ),
-                  ),
-                  SizedBox(height: 0.5.h),
-                  Text(
-                    LanguageProvider.translate(
-                      "ticket",
-                      "ticket_date",
-                    ).replaceFirst(
-                      "*date*",
-                      convertDateTimeToStringDMY(ticket.createdAt),
+                    const SizedBox(height: 4),
+                    Text(
+                      LanguageProvider.translate('ticket', 'ticket_category').replaceFirst('*cat*', ticket.ticketCategory?.name ?? ''),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyleClass.captionStyle(color: AppColor.mutedColor),
                     ),
-                    maxLines: 1,
-                    style: TextStyleClass.smallStyle().copyWith(
-                      color: const Color(0xff727272),
+                    const SizedBox(height: 2),
+                    Text(
+                      LanguageProvider.translate('ticket', 'ticket_date').replaceFirst('*date*', convertDateTimeToStringDMY(ticket.createdAt)),
+                      maxLines: 1,
+                      style: TextStyleClass.captionStyle(color: AppColor.mutedColor),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: const Color(
-                      0xffFF5F00,
-                    ).withAlpha((0.39 * 255).round()),
-                  ),
-                  child: Text(
-                    LanguageProvider.translate("ticket", ticket.status),
-                    maxLines: 1,
-                    style: TextStyleClass.smallStyle().copyWith().copyWith(
-                      height: 1,
-                    ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(width: 8),
+              Text(
+                LanguageProvider.translate('ticket', ticket.status),
+                style: TextStyleClass.captionStyle(color: AppColor.inkColor),
+              ),
+            ],
+          ),
         ),
       ),
     );

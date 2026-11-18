@@ -47,7 +47,7 @@ class ProductDetailsBuyFooterWidget extends StatelessWidget {
             height: AppSpacing.pdpBuyBarHeight,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(4),
               border: Border.all(color: AppColor.borderColor),
             ),
             child: Row(
@@ -94,7 +94,7 @@ class ProductDetailsBuyFooterWidget extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyleClass.buttonStyle(
-                        color: AppColor.deepColor,
+                        color: AppColor.inkColor,
                       ).copyWith(fontWeight: FontWeight.w800, fontSize: 14),
                     ),
                   ),

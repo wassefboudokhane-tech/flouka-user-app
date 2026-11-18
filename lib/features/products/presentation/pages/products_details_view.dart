@@ -1,3 +1,5 @@
+import 'package:flouka/features/products/presentation/widgets/product_creator_videos_widget.dart';
+import 'package:flouka/features/creators/presentation/widgets/creator_recommendation_banner.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/constants/app_lotties.dart';
@@ -7,6 +9,7 @@ import 'package:flouka/features/products/presentation/widgets/product_details_bu
 import 'package:flouka/features/products/presentation/widgets/product_details_header_widget.dart';
 import 'package:flouka/features/products/presentation/widgets/product_details_vendor_trust_widget.dart';
 import 'package:flouka/features/products/presentation/widgets/review_widget.dart';
+import 'package:flouka/core/helper_function/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/config/app_color.dart';
@@ -102,6 +105,18 @@ class ProductsDetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ProductDetailsHeaderWidget(productEntity: product),
+                  if (productDetailsProvider.recommendedBy != null)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.pageGutter,
+                        14,
+                        AppSpacing.pageGutter,
+                        0,
+                      ),
+                      child: CreatorRecommendationBanner(
+                        creator: productDetailsProvider.recommendedBy!,
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
                       AppSpacing.pageGutter,
@@ -161,7 +176,7 @@ class ProductsDetailsView extends StatelessWidget {
                           textBaseline: TextBaseline.alphabetic,
                           children: [
                             Text(
-                              '${displayPrice ?? 0}',
+                              formatPrice(displayPrice ?? 0),
                               style: TextStyleClass.pdpPriceStyle(),
                             ),
                             const SizedBox(width: 9),
@@ -215,6 +230,10 @@ class ProductsDetailsView extends StatelessWidget {
                             ],
                           ],
                         ),
+                        if (product.creatorVideos.isNotEmpty) ...[
+                          const SizedBox(height: 18),
+                          ProductCreatorVideosWidget(videos: product.creatorVideos),
+                        ],
                         const SizedBox(height: 13),
                         if (product.store != null)
                           ProductDetailsVendorTrustWidget(
@@ -281,7 +300,7 @@ class ProductsDetailsView extends StatelessWidget {
                                     'see_all',
                                   ),
                                   style: TextStyleClass.normalStyle(
-                                    color: AppColor.primaryColor,
+                                    color: AppColor.inkColor,
                                   ),
                                 ),
                               ),
@@ -359,7 +378,10 @@ class ProductsDetailsView extends StatelessWidget {
                     ),
                   ],
                   if (product.recommended.isNotEmpty)
-                    HotDealsWidget(products: product.recommended),
+                    HotDealsWidget(
+                      products: product.recommended,
+                      creator: productDetailsProvider.recommendedBy,
+                    ),
                 ],
               ),
             );
@@ -390,13 +412,13 @@ class _ChatVendorButton extends StatelessWidget {
       },
       icon: Icon(
         Icons.chat_bubble_outline,
-        color: AppColor.deepColor,
+        color: AppColor.inkColor,
         size: 18,
       ),
       label: Text(
         LanguageProvider.translate('global', 'chat_vendor'),
         style: TextStyleClass.smallStyle(
-          color: AppColor.deepColor,
+          color: AppColor.inkColor,
         ).copyWith(fontWeight: FontWeight.w700),
       ),
       style: OutlinedButton.styleFrom(

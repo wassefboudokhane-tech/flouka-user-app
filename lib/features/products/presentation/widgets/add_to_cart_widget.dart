@@ -108,7 +108,7 @@ class AddToCartWidget extends StatelessWidget {
           text: 'add_to_cart',
           widget: Icon(
             Icons.add_shopping_cart,
-            color: AppColor.deepColor,
+            color: AppColor.inkColor,
             size: 20,
           ),
         ),

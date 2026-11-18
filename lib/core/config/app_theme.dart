@@ -24,8 +24,8 @@ ThemeData defaultTheme = ThemeData(
   splashColor: Colors.transparent,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColor.limeColor,
-      foregroundColor: AppColor.deepColor,
+      backgroundColor: AppColor.deepColor,
+      foregroundColor: Colors.white,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.btn),
@@ -35,15 +35,16 @@ ThemeData defaultTheme = ThemeData(
 );
 
 AppBarTheme appBarTheme = AppBarTheme(
-  backgroundColor: AppColor.deepColor,
+  backgroundColor: Colors.white,
   toolbarHeight: 56,
   centerTitle: true,
-  foregroundColor: Colors.white,
+  foregroundColor: AppColor.inkColor,
   elevation: 0,
-  iconTheme: const IconThemeData(color: Colors.white),
-  systemOverlayStyle: lightBarColor(),
-  titleTextStyle: TextStyleClass.semiHeadStyle(color: Colors.white).copyWith(
-    fontWeight: FontWeight.w700,
+  shape: Border(bottom: BorderSide(color: AppColor.borderColor)),
+  iconTheme: IconThemeData(color: AppColor.inkColor),
+  systemOverlayStyle: barColor(),
+  titleTextStyle: TextStyleClass.semiHeadStyle(color: AppColor.inkColor).copyWith(
+    fontWeight: FontWeight.w600,
     fontSize: 16,
   ),
 );
@@ -53,8 +54,8 @@ EdgeInsets globalPadding = AppSpacing.pagePaddingWith(top: 8, bottom: 8);
 CheckboxThemeData checkboxThemeData = CheckboxThemeData(
   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
   side: BorderSide(width: 1.5, color: AppColor.borderColor),
-  fillColor: WidgetStateProperty.all(AppColor.limeColor),
-  checkColor: WidgetStateProperty.all(AppColor.deepColor),
+  fillColor: WidgetStateProperty.all(AppColor.inkColor),
+  checkColor: WidgetStateProperty.all(Colors.white),
   overlayColor: WidgetStateProperty.all(
     AppColor.primaryColor.withValues(alpha: 0.1),
   ),
@@ -67,7 +68,7 @@ RadioThemeData radioThemeData = RadioThemeData(
 );
 
 TabBarTheme tabBarTheme = TabBarTheme(
-  labelColor: AppColor.deepColor,
+  labelColor: AppColor.inkColor,
   indicatorSize: TabBarIndicatorSize.label,
   unselectedLabelColor: AppColor.mutedColor,
 );

@@ -10,6 +10,9 @@ class SettingsEntity {
   final num deliveryPrice;
   final num minFreeDelivery;
   String? packageName, appId;
+
+  /// True once the backend accepts creator links on orders.
+  final bool creatorsEnabled;
   SettingsEntity({
     required this.id,
     required this.tax,
@@ -25,6 +28,7 @@ class SettingsEntity {
     required this.mustUpdate,
     required this.packageName,
     required this.appId,
+    this.creatorsEnabled = false,
   });
 
 }

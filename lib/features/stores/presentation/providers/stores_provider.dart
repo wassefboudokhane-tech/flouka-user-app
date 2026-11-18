@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constants.dart';
+import '../../../../core/helper_function/location.dart';
 import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/helper_function/navigation.dart';
 import '../../../../core/models/pagination_class.dart';
@@ -48,10 +49,9 @@ class StoresProvider with ChangeNotifier
       'page': pageIndex,
     };
     AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false);
-    if(authProvider.currentLocation !=null){
-      dataToUse['lat'] = authProvider.currentLocation?.latitude;
-      dataToUse['lng'] = authProvider.currentLocation?.longitude;
-    }
+    final place = cataloguePlace(authProvider.currentLocation);
+    dataToUse['lat'] = place.latitude;
+    dataToUse['lng'] = place.longitude;
     print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa${dataToUse}');
 
     final result = await storeUseCase.getStores(dataToUse);
@@ -74,10 +74,9 @@ class StoresProvider with ChangeNotifier
       'skip': 3,
     };
     AuthProvider authProvider = Provider.of(Constants.globalContext(), listen: false);
-    if(authProvider.currentLocation !=null){
-      dataToUse['lat'] = authProvider.currentLocation?.latitude;
-      dataToUse['lng'] = authProvider.currentLocation?.longitude;
-    }
+    final place = cataloguePlace(authProvider.currentLocation);
+    dataToUse['lat'] = place.latitude;
+    dataToUse['lng'] = place.longitude;
 
 
     final result = await storeUseCase.getStores(dataToUse);

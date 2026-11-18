@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'flouka_boat_loader.dart';
 import 'package:sizer/sizer.dart';
+import '../config/app_color.dart';
 import '../config/app_styles.dart';
 import '../../features/language/presentation/provider/language_provider.dart';
 
@@ -23,16 +24,13 @@ class LoadingAnimationWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(height: topPadding ?? 12.h),
-        Lottie.asset(
-          gif,
-          fit: BoxFit.cover,
-          width: width,
-          height: height,
-        ),
+        // The logo's paper boat folds and unfolds. [gif] is kept for the
+        // callers but no longer drawn.
+        FloukaBoatLoader(size: width ?? 120),
         SizedBox(height: 5.h),
         Text(
           LanguageProvider.translate("global", "loading"),
-          style: TextStyleClass.normalStyle(),
+          style: TextStyleClass.smallStyle(color: AppColor.mutedColor),
         ),
       ],
     );

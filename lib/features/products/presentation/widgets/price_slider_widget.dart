@@ -74,7 +74,7 @@ class _PriceChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyleClass.captionStyle(color: AppColor.deepColor)
+        style: TextStyleClass.captionStyle(color: AppColor.inkColor)
             .copyWith(fontWeight: FontWeight.w700),
       ),
     );

@@ -39,7 +39,7 @@ class NotificationDetailsPage extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: AppColor.backgroundColor,
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(4),
                     border: Border.all(color: AppColor.borderColor),
                   ),
                   child: Column(
@@ -48,7 +48,7 @@ class NotificationDetailsPage extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyleClass.smallStyle(
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ).copyWith(
                           fontWeight: FontWeight.w800,
                           fontSize: 15,

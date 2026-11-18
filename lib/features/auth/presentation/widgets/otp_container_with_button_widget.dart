@@ -43,7 +43,7 @@ class OtpContainerWithButton extends StatelessWidget {
               ),
               TextSpan(
                 text: phone.isEmpty ? '—' : phone,
-                style: TextStyleClass.normalStyle(color: AppColor.deepColor)
+                style: TextStyleClass.normalStyle(color: AppColor.inkColor)
                     .copyWith(fontWeight: FontWeight.w700, fontSize: 14),
               ),
             ],

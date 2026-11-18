@@ -42,16 +42,14 @@ class ShopProductsPage extends StatelessWidget {
                       width: AppSpacing.searchHeight,
                       height: AppSpacing.searchHeight,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppRadius.btn),
-                        color: AppColor.limeColor,
-                        border: Border.all(
-                          color: AppColor.deepColor.withValues(alpha: 0.15),
-                        ),
+                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                        color: Colors.white,
+                        border: Border.all(color: AppColor.inkColor),
                       ),
                       child: Center(
                         child: SvgWidget(
                           svg: AppImages.filter,
-                          color: AppColor.deepColor,
+                          color: AppColor.inkColor,
                         ),
                       ),
                     ),

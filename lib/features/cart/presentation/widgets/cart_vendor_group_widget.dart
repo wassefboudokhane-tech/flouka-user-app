@@ -57,7 +57,7 @@ class CartVendorGroupWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     storeName,
-                    style: TextStyleClass.smallStyle(color: AppColor.deepColor)
+                    style: TextStyleClass.smallStyle(color: AppColor.inkColor)
                         .copyWith(fontWeight: FontWeight.w700),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

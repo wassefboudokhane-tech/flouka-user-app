@@ -38,91 +38,48 @@ class OrderTrackingHeroWidget extends StatelessWidget {
         : order.paymentMethod ?? '';
 
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.deepColor,
-        borderRadius: BorderRadius.circular(22),
+        color: AppColor.canvasColor,
+        border: Border.all(color: AppColor.borderColor),
+        borderRadius: BorderRadius.circular(4),
       ),
-      child: Stack(
-        clipBehavior: Clip.none,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Positioned(
-            top: -50,
-            right: -40,
-            child: Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.limeColor.withValues(alpha: 0.14),
-              ),
+          Text(
+            LanguageProvider.translate('orders', status?.text ?? ''),
+            style: TextStyleClass.captionStyle(color: AppColor.mutedColor),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _headline(status),
+            style: TextStyleClass.headStyle(color: AppColor.inkColor).copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              height: 1.15,
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 7,
-                    height: 7,
-                    decoration: BoxDecoration(
-                      color: AppColor.limeColor,
-                      borderRadius: BorderRadius.circular(99),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    LanguageProvider.translate('orders', status?.text ?? '')
-                        .toUpperCase(),
-                    style: TextStyleClass.captionStyle(color: AppColor.limeColor)
-                        .copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 11,
-                      letterSpacing: 0.06,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text(
-                _headline(status),
-                style: TextStyleClass.headStyle(color: Colors.white).copyWith(
-                  fontSize: 23,
-                  fontWeight: FontWeight.w800,
-                  height: 1.15,
-                  letterSpacing: -0.02,
+          const SizedBox(height: 6),
+          Text(
+            LanguageProvider.translate('orders', 'tracking_subline')
+                .replaceAll('*vendor*', vendor)
+                .replaceAll('*count*', '$itemCount')
+                .replaceAll('*payment*', payment),
+            style: TextStyleClass.smallStyle(color: AppColor.mutedColor),
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: List.generate(4, (index) {
+              final active = index < _progressSteps(status);
+              return Expanded(
+                child: Container(
+                  height: 3,
+                  margin: EdgeInsetsDirectional.only(end: index == 3 ? 0 : 4),
+                  color: active ? AppColor.inkColor : AppColor.borderColor,
                 ),
-              ),
-              const SizedBox(height: 7),
-              Text(
-                LanguageProvider.translate('orders', 'tracking_subline')
-                    .replaceAll('*vendor*', vendor)
-                    .replaceAll('*count*', '$itemCount')
-                    .replaceAll('*payment*', payment),
-                style: TextStyleClass.smallStyle(
-                  color: Colors.white.withValues(alpha: 0.6),
-                ).copyWith(fontSize: 12.5, height: 1.4),
-              ),
-              const SizedBox(height: 15),
-              Row(
-                children: List.generate(4, (index) {
-                  final active = index < _progressSteps(status);
-                  return Expanded(
-                    child: Container(
-                      height: 5,
-                      margin: EdgeInsetsDirectional.only(end: index == 3 ? 0 : 5),
-                      decoration: BoxDecoration(
-                        color: active
-                            ? AppColor.limeColor
-                            : Colors.white.withValues(alpha: 0.22),
-                        borderRadius: BorderRadius.circular(99),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ],
+              );
+            }),
           ),
         ],
       ),

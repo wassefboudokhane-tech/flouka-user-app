@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flouka/features/language/domain/language_copy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -30,13 +31,22 @@ class AppLocalizations {
     return true;
   }
 
+  Map<String, dynamic> get bundledStrings => _localizedStrings;
+
   // This method will be called from every widget which needs a localized text
-  String translate(String parentKey, String nestedKey) {
-    if (_localizedStrings.containsKey(parentKey) &&
-        _localizedStrings[parentKey].containsKey(nestedKey)) {
-      return _localizedStrings[parentKey][nestedKey];
-    }
-    return nestedKey;
+  String translate(
+    String parentKey,
+    String nestedKey, {
+    Map remoteLanguages = const {},
+    String? languageCode,
+  }) {
+    return languageCopy(
+      remoteLanguages: remoteLanguages,
+      languageCode: languageCode ?? locale.languageCode,
+      bundled: _localizedStrings,
+      parent: parentKey,
+      key: nestedKey,
+    );
   }
 }
 

@@ -1,4 +1,17 @@
 {
+  "creators": {
+    "recommended_by": "Recommandé par",
+    "follow_title": "Créateurs à suivre",
+    "picks_title": "Ses recommandations",
+    "affiliate_note": "Liens affiliés · le créateur touche une commission",
+    "empty_picks": "Aucune recommandation pour le moment",
+    "brand_validated": "Validé par la marque",
+    "posts_title": "Publications",
+    "follow": "Suivre",
+    "following": "Abonné",
+    "share": "Partager",
+    "followers": "*num* abonnés"
+  },
   "on_boarding": {
     "Welcome!": "Bienvenue !",
     "Irrelevant results again?": "Des résultats non pertinents encore ?",
@@ -7,9 +20,9 @@
     "on_boarding_2": "Plus besoin de chercher parmi des articles non pertinents, nous nous occupons de tout. Habitual vous envoie les articles adaptés en fonction de vos habitudes et de vos intérêts.",
     "on_boarding_3": "Dites-nous ce que vous aimez. Vraiment, cela nous aide beaucoup lorsque nous vous proposons de bons produits. Continuez simplement à faire ce que vous aimez.",
     "skip": "Passer",
-    "1_title1": "Payez comme",
-    "1_title2": "vous voulez.",
-    "1_description": "Carte, portefeuille Flouka, ou paiement à la livraison —\net des coupons qui vous font économiser sur chaque commande.",
+    "1_title1": "Payez à",
+    "1_title2": "la livraison.",
+    "1_description": "Espèces à la réception du colis.\nLivré en 24–48 h, retour sous 10 jours.",
     "2_title1": "Des artisans de notre pays,",
     "2_title2": "au monde.",
     "2_description": "Soutenez l'artisanat tunisien — chaque achat fait voyager un produit local\nplus loin.",
@@ -41,7 +54,23 @@
     "store_details": "Détails du magasin",
     "best_selling": "Meilleures ventes",
     "under_50": "Moins de 50 TND",
-    "trust_line": "Paiement à la livraison · 24–48 h · Retour 7 j",
+    "trust_line": "Paiement à la livraison · 24–48 h · Retour 10 jours",
+    "claim_1": "Choisi par des passionnés,",
+    "claim_em": "pas par un algorithme",
+    "claim_2": ".",
+    "claim_sub": "Les coups de cœur des créateurs tunisiens, chez les marques d'ici. Vous payez à la livraison.",
+    "by_creator": "Acheter par créateur",
+    "by_creator_text": "Ce que vos créateurs préférés aiment vraiment, et rachètent.",
+    "most_recommended": "Les plus recommandés",
+    "share_claim": "Les meilleures choses se partagent.",
+    "share_text": "Recommandez ce que vous aimez et suivez ce que cela vous rapporte.",
+    "become_creator": "Devenir créateur",
+    "become_intro": "Choisissez un identifiant et un nom. Nous vérifions votre profil avant de le publier.",
+    "become_handle": "Identifiant",
+    "become_name": "Nom affiché",
+    "become_sent": "Demande envoyée. Nous vérifions votre profil.",
+    "by_category": "Acheter par catégorie",
+    "by_store": "Acheter par boutique",
     "promo_title": "Tout l'artisanat sous 50 dinars",
     "promo_subtitle": "142 articles · livraison gratuite dès 90 TND",
     "promo_cta": "Voir"
@@ -73,6 +102,10 @@
     "subtotal": "Sous-total",
     "delivery_vendors": "Livraison · *num* vendeurs",
     "vendor_delivery": "24–48 h",
+    "parcels_now": "Aujourd'hui, *num* colis",
+    "parcels_grouped": "Regroupé, *num* colis",
+    "also_at": "Aussi chez *shop* à *price* TND",
+    "also_free": "Aussi chez *shop* à *price* TND, sans livraison en plus",
     "page_subtitle": "*items* articles · *vendors* vendeurs",
     "validate_order": "Valider la commande",
     "continue_shopping": "Continuer mes achats"
@@ -242,10 +275,11 @@
     "products_count": "Produits",
     "seller": "Vendeur",
     "app_name": "Flouka",
+    "search": "Rechercher...",
     "currency": "TND",
     "cod_badge": "Paiement à la livraison",
     "delivery_24_48": "Livré en 24–48 h",
-    "return_7_days": "Retour sous 7 jours",
+    "return_7_days": "Retour sous 10 jours ouvrables",
     "product_card_rating": "★ *rate* · *num* avis",
     "shared_image_hint": "Même photo pour toutes les couleurs — choisissez couleur et taille pour commander.",
     "chat_vendor": "Contacter le vendeur",
@@ -361,13 +395,15 @@
     "available": "Disponible",
     "out_of_stock": "Rupture de stock",
     "product": "Produit",
-    "this_item_unavailable": "Cet article n'est actuellement pas disponible"
+    "this_item_unavailable": "Cet article n'est actuellement pas disponible",
+    "promo_code": "Code promo"
   },
   "orders": {
     "cancel_entire_order": "Annuler toute la commande",
     "continue_available": "Continuer avec les articles disponibles",
     "pending_payment": "En attente de paiement",
     "delivered": "Livré",
+    "shipped": "Expédié",
     "paid": "Paiement reçu",
     "payment_failed": "Échec du paiement",
     "processing": "Traitement de la commande",
@@ -388,7 +424,7 @@
     "empty_search": "Recherchez d'abord pour trouver des produits qui vous conviennent",
     "order_accepted": "Votre commande a été acceptée",
     "order_shipped": "Votre commande a été expédiée",
-    "order_shipped_desc": "Votre colis a été envoyé au centre de distribution final. Nous vous informerons lorsqu'il sera prêt pour la livraison. Une fois votre colis prêt pour la livraison et que nous sommes sur le point d'arriver, nous vous afficherons le numéro de téléphone de la société de transport.",
+    "order_shipped_desc": "Le colis est en route.",
     "expected_delivery": "Date de livraison prévue",
     "date_oct_14": "14 octobre",
     "date_oct_17": "17 octobre",
@@ -413,7 +449,12 @@
     "driver_default": "Votre livreur",
     "driver_calls_before": "Vous appelle 30 min avant",
     "file_complaint": "Déposer une réclamation",
-    "contact_vendor": "Contacter le vendeur"
+    "contact_vendor": "Contacter le vendeur",
+    "login_title": "Connectez-vous pour voir vos commandes",
+    "login_hint": "Vos commandes et leur suivi apparaissent ici une fois connecté.",
+    "login_cta": "Se connecter",
+    "load_failed": "Impossible de charger vos commandes.",
+    "retry": "Réessayer"
   },
   "wallet": {
     "enter_value": "Entrez une valeur",
@@ -665,5 +706,9 @@
   "success": {
     "success": "Opération effectuée avec succès.",
     "added_to_cart": "Ajouté au panier."
+  },
+  "products": {
+    "creator_videos_title": "Ils l'ont filmé",
+    "creator_videos_count": "*num* vidéos de créateurs"
   }
 }

@@ -1,4 +1,17 @@
 {
+  "creators": {
+    "recommended_by": "Recommended by",
+    "follow_title": "Creators to follow",
+    "picks_title": "Their picks",
+    "affiliate_note": "Affiliate links · the creator earns a commission",
+    "empty_picks": "No picks yet",
+    "brand_validated": "Validated by the brand",
+    "posts_title": "Posts",
+    "follow": "Follow",
+    "following": "Following",
+    "share": "Share",
+    "followers": "*num* followers"
+  },
   "on_boarding": {
     "Welcome!": "Welcome!",
     "Irrelevant results again?": "Irrelevant results again?",
@@ -7,9 +20,9 @@
     "on_boarding_2": "No need to search through irrelevant items anymore, we've got you covered. Habitual sends you the right items based on your habits and interests.",
     "on_boarding_3": "Tell us what you love. Really, it helps us a lot when we offer you great products. Just keep doing what you love.",
     "skip": "Skip",
-    "1_title1": "Pay how",
-    "1_title2": "you like.",
-    "1_description": "Card, Flouka wallet, or cash on delivery —\nand coupons that save you on every order.",
+    "1_title1": "Pay on",
+    "1_title2": "delivery.",
+    "1_description": "Cash when the parcel arrives.\nDelivered in 24–48 h, returns within 10 days.",
     "2_title1": "From our country's artisans,",
     "2_title2": "to the world.",
     "2_description": "Support Tunisian craftsmanship — every purchase takes a local product\nfurther.",
@@ -41,7 +54,23 @@
     "store_details": "Store details",
     "best_selling": "Best sellers",
     "under_50": "Under 50 TND",
-    "trust_line": "Cash on delivery · 24–48 h · 7-day returns",
+    "trust_line": "Cash on delivery · 24–48 h · 10-day returns",
+    "claim_1": "Picked by people who care,",
+    "claim_em": "not by an algorithm",
+    "claim_2": ".",
+    "claim_sub": "Tunisian creators' favourites, from local brands. Pay on delivery.",
+    "by_creator": "Shop by creator",
+    "by_creator_text": "What your favourite creators truly love, and buy again.",
+    "most_recommended": "Most recommended",
+    "share_claim": "The best things are worth sharing.",
+    "share_text": "Recommend what you love and follow what it earns you.",
+    "become_creator": "Become a creator",
+    "become_intro": "Choose a handle and a name. We review your profile before it goes public.",
+    "become_handle": "Handle",
+    "become_name": "Display name",
+    "become_sent": "Request sent. We are reviewing your profile.",
+    "by_category": "Shop by category",
+    "by_store": "Shop by store",
     "promo_title": "All crafts under 50 dinars",
     "promo_subtitle": "142 items · free delivery from 90 TND",
     "promo_cta": "View"
@@ -73,6 +102,10 @@
     "subtotal": "Subtotal",
     "delivery_vendors": "Delivery · *num* vendors",
     "vendor_delivery": "24–48 h",
+    "parcels_now": "Today, *num* parcels",
+    "parcels_grouped": "Grouped, *num* parcels",
+    "also_at": "Also at *shop* for *price* TND",
+    "also_free": "Also at *shop* for *price* TND, no extra delivery",
     "page_subtitle": "*items* items · *vendors* vendors",
     "validate_order": "Place order",
     "continue_shopping": "Continue shopping"
@@ -242,10 +275,11 @@
     "products_count": "Products",
     "seller": "Seller",
     "app_name": "Flouka",
+    "search": "Search...",
     "currency": "TND",
     "cod_badge": "Cash on delivery",
     "delivery_24_48": "Delivered in 24–48 h",
-    "return_7_days": "7-day returns",
+    "return_7_days": "Returns within 10 working days",
     "product_card_rating": "★ *rate* · *num* reviews",
     "shared_image_hint": "Same photo for every color — pick color and size to order.",
     "chat_vendor": "Chat with seller",
@@ -361,13 +395,15 @@
     "available": "Available",
     "out_of_stock": "Out of stock",
     "product": "Product",
-    "this_item_unavailable": "This item is currently unavailable"
+    "this_item_unavailable": "This item is currently unavailable",
+    "promo_code": "Promo code"
   },
   "orders": {
     "cancel_entire_order": "Cancel entire order",
     "continue_available": "Continue with available items",
     "pending_payment": "Pending payment",
     "delivered": "Delivered",
+    "shipped": "Shipped",
     "paid": "Payment received",
     "payment_failed": "Payment failed",
     "processing": "Processing order",
@@ -388,7 +424,7 @@
     "empty_search": "Search first to find products that suit you",
     "order_accepted": "Your order has been accepted",
     "order_shipped": "Your order has been shipped",
-    "order_shipped_desc": "Your shipment has been sent to the final hub. We'll notify you when it's ready for delivery. Once your shipment is ready for delivery and we're about to arrive, we'll show you the shipping company's phone number.",
+    "order_shipped_desc": "The parcel is on its way.",
     "expected_delivery": "Expected delivery date",
     "date_oct_14": "October 14",
     "date_oct_17": "October 17",
@@ -413,7 +449,12 @@
     "driver_default": "Your driver",
     "driver_calls_before": "Calls you 30 min before",
     "file_complaint": "File a complaint",
-    "contact_vendor": "Contact vendor"
+    "contact_vendor": "Contact vendor",
+    "login_title": "Sign in to see your orders",
+    "login_hint": "Your orders and their tracking show here once you are signed in.",
+    "login_cta": "Sign in",
+    "load_failed": "Your orders could not be loaded.",
+    "retry": "Try again"
   },
   "wallet": {
     "enter_value": "Enter value",
@@ -663,5 +704,9 @@
   "success": {
     "success": "Operation completed successfully.",
     "added_to_cart": "Added to cart."
+  },
+  "products": {
+    "creator_videos_title": "Filmed by creators",
+    "creator_videos_count": "*num* creator videos"
   }
 }

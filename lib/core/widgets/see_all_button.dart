@@ -1,5 +1,6 @@
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -17,10 +18,8 @@ class SeeAllButton extends StatelessWidget {
       },
       child: Text(
         LanguageProvider.translate('home', 'see_all'),
-        style: TextStyle(
-          fontSize: 15.sp,
-          fontWeight: FontWeight.w600,
-          color: AppColor.tertiaryColor,
+        style: TextStyleClass.smallStyle(color: AppColor.inkColor).copyWith(
+          fontWeight: FontWeight.w500,
           decoration: TextDecoration.underline,
         ),
       ),

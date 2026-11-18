@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constants.dart';
+import '../../../../core/helper_function/location.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
 class OfferSectionProvider extends ChangeNotifier {
@@ -14,8 +15,9 @@ class OfferSectionProvider extends ChangeNotifier {
   Future<void> getData() async {
     AuthProvider authProvider = Provider.of<AuthProvider>(Constants.globalContext(), listen: false);
     Map<String,dynamic>dataToApi = {};
-    dataToApi['lat'] = authProvider.currentLocation?.latitude;
-    dataToApi['lng'] = authProvider.currentLocation?.longitude;
+    final place = cataloguePlace(authProvider.currentLocation);
+    dataToApi['lat'] = place.latitude;
+    dataToApi['lng'] = place.longitude;
     var response = await offerSectionUseCase.getOfferSections(dataToApi);
     response.fold((l) {
       data = [];

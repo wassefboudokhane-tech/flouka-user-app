@@ -19,7 +19,7 @@ class ShopByContainerWidget extends StatelessWidget {
           height: 6.h,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: AppColor.primaryColor, width: 0.6),
+            border: Border.all(color: AppColor.inkColor, width: 0.6),
           ),
         ),
         SizedBox(width: 2.w),

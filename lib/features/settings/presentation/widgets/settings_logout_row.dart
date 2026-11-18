@@ -14,12 +14,12 @@ class SettingsLogoutRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: provider.showLogoutDialog,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(4),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
         decoration: BoxDecoration(
           color: Colors.red.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
           children: [

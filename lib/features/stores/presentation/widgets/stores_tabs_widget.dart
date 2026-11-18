@@ -36,7 +36,7 @@ class StoresTabsWidget extends StatelessWidget {
                         LanguageProvider.translate('global', titles[index]),
                         style: TextStyleClass.smallStyle(
                           color: selected
-                              ? AppColor.deepColor
+                              ? AppColor.inkColor
                               : AppColor.mutedColor,
                         ).copyWith(
                           fontWeight:
@@ -50,7 +50,7 @@ class StoresTabsWidget extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: selected
-                              ? AppColor.deepColor
+                              ? AppColor.inkColor
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(9),
                         ),
@@ -85,7 +85,7 @@ class StoresTabsWidget extends StatelessWidget {
                   child: Text(
                     LanguageProvider.translate('global', 'see_all'),
                     style: TextStyleClass.captionStyle(
-                      color: AppColor.primaryColor,
+                      color: AppColor.inkColor,
                     ).copyWith(fontWeight: FontWeight.w700),
                   ),
                 ),

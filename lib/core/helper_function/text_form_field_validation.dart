@@ -14,6 +14,11 @@ bool validEnglish(String value) {
   return (regex.hasMatch(value));
 }
 
+/// Login field for Tunisia: 8 digits, no leading zero.
+bool isTunisiaLoginNumber(String digits) {
+  return RegExp(r'^[1-9]\d{7}$').hasMatch(digits.trim());
+}
+
 String? validatePhone(String? value) {
   if (value!.isEmpty) {
     return LanguageProvider.translate("validation", "phone_required");
@@ -28,8 +33,20 @@ String? validatePhone(String? value) {
   if(!country.startsWith('+')){
     defaultCountry = '+'+defaultCountry;
   }
+  final digits = value.trim();
+  // The login field asks for 8 digits without a leading 0. Tunisia (+216)
+  // matches that shape; phone_numbers_parser rejects some of those numbers
+  // (for example 12345678) even though the form accepts them.
+  final dial = defaultCountry.replaceAll('+', '');
+  if (dial == '216') {
+    if (isTunisiaLoginNumber(digits)) {
+      return null;
+    }
+    return LanguageProvider.translate("validation", "phone_invalid");
+  }
+
   final phone = PhoneNumber.parse(
-    defaultCountry+value,
+    defaultCountry+digits,
   );
 
   final isValid = phone.isValid();

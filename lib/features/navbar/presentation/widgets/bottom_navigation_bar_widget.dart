@@ -21,13 +21,16 @@ class CustomBottomNavBarWidget extends StatelessWidget {
         return SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: AppSpacing.dockMarginH,
-              end: AppSpacing.dockMarginH,
-              bottom: AppSpacing.dockMarginBottom,
-            ),
+            // Over videos the dock floats; elsewhere it is a flat bar under a hairline.
+            padding: frosted
+                ? const EdgeInsetsDirectional.only(
+                    start: AppSpacing.dockMarginH,
+                    end: AppSpacing.dockMarginH,
+                    bottom: AppSpacing.dockMarginBottom,
+                  )
+                : EdgeInsets.zero,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadius.pill),
+              borderRadius: BorderRadius.circular(frosted ? AppRadius.pill : 0),
               child: BackdropFilter(
                 filter: ImageFilter.blur(
                   sigmaX: frosted ? 14 : 0,
@@ -39,12 +42,10 @@ class CustomBottomNavBarWidget extends StatelessWidget {
                     color: frosted
                         ? Colors.white.withValues(alpha: 0.12)
                         : AppColor.backgroundColor,
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                    border: Border.all(
-                      color: frosted
-                          ? Colors.white.withValues(alpha: 0.18)
-                          : AppColor.borderColor,
-                    ),
+                    borderRadius: BorderRadius.circular(frosted ? AppRadius.pill : 0),
+                    border: frosted
+                        ? Border.all(color: Colors.white.withValues(alpha: 0.18))
+                        : Border(top: BorderSide(color: AppColor.borderColor)),
                     boxShadow: frosted ? null : AppShadow.dock,
                   ),
                   child: Row(

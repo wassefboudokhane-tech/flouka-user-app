@@ -1,3 +1,4 @@
+import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class CouponsWidget extends StatelessWidget {
                           color: !value.couponsFields[index].isApplied ? AppColor.primaryColor : AppColor.redSoft,
                         ),
                       ),
-                      hintText:  "    X X X X X X X X X X   ",),
+                      hintText: LanguageProvider.translate("global", "promo_code"),),
                   )
 
                 ],

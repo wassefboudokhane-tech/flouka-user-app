@@ -22,7 +22,7 @@ class CheckoutItemWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 1.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(4),
           border: Border.all(color: Colors.grey.shade300,width: 1.2)
         ),
         child: Column(
@@ -46,7 +46,7 @@ class CheckoutItemWidget extends StatelessWidget {
 //         padding: EdgeInsets.only(left: 2.w, right: 2.w, top: 2.h, bottom: 4.h),
 //         decoration: BoxDecoration(
 //           color: Colors.white,
-//           borderRadius: BorderRadius.circular(12),
+//           borderRadius: BorderRadius.circular(4),
 //         ),
 //         child: Column(
 //           spacing: 3.h,
@@ -62,7 +62,7 @@ class CheckoutItemWidget extends StatelessWidget {
 //               padding: const EdgeInsets.all(8),
 //               decoration: BoxDecoration(
 //                 color: const Color(0xffeffbff),
-//                 borderRadius: BorderRadius.circular(12),
+//                 borderRadius: BorderRadius.circular(4),
 //               ),
 //               child: Row(
 //                 crossAxisAlignment: CrossAxisAlignment.center,

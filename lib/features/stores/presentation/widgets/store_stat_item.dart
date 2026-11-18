@@ -25,21 +25,21 @@ class StoreStatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isGlass = variant == StoreStatVariant.glass;
     final valueColor = isGlass
-        ? (accentValue ? AppColor.limeColor : Colors.white)
+        ? (accentValue ? AppColor.inkColor : AppColor.inkColor)
         : AppColor.deepColor;
     final labelColor =
-        isGlass ? Colors.white.withValues(alpha: 0.55) : AppColor.mutedColor;
+        isGlass ? AppColor.inkColor.withValues(alpha: 0.55) : AppColor.mutedColor;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(4),
         color: isGlass
-            ? Colors.white.withValues(alpha: 0.08)
+            ? AppColor.inkColor.withValues(alpha: 0.08)
             : AppColor.softColor,
         border: Border.all(
           color: isGlass
-              ? Colors.white.withValues(alpha: 0.12)
+              ? AppColor.inkColor.withValues(alpha: 0.12)
               : AppColor.borderColor,
         ),
       ),

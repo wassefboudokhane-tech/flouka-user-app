@@ -14,6 +14,7 @@ import 'features/chatbot/presentation/widgets/floating_chat_bubble.dart';
 import 'features/language/domain/entities/app_localizations.dart';
 import 'features/language/presentation/provider/language_provider.dart';
 import 'features/navbar/presentation/provider/nav_bar_provider.dart';
+import 'features/sanity/presentation/buyer_sanity_page.dart';
 import 'features/splash/views/splash_view.dart';
 
 class MainApp extends StatelessWidget {
@@ -43,7 +44,9 @@ class MainApp extends StatelessWidget {
                     GlobalCupertinoLocalizations.delegate,
                   ],
                   theme: defaultTheme,
-                  home: const SplashView(),
+                  home: openBuyerSanityPage()
+                      ? const BuyerSanityPage()
+                      : const SplashView(),
                   builder: (context, child) {
                     return Stack(
                       children: [

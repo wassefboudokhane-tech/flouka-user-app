@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import '../../../../core/config/app_color.dart';
 import '../../../../core/config/app_styles.dart';
 import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/helper_function/navigation.dart';
@@ -15,9 +16,9 @@ class ChargeWalletWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     WalletProvider walletProvider = Provider.of(context);
     return Material(
-      borderRadius: BorderRadius.circular(36),
+      borderRadius: BorderRadius.circular(4),
       color: Colors.white,
-      elevation: 5,
+      elevation: 0,
       child: Padding(
         padding: EdgeInsets.all(
           4.w,
@@ -90,8 +91,8 @@ class ChargeWalletWidget extends StatelessWidget {
                   width: 60.w,
                   height: 6.h,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(58.8),
-                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(4),
+                    color: AppColor.deepColor,
                   ),
                   child: Stack(
                     alignment: AlignmentDirectional.bottomEnd,
@@ -99,7 +100,7 @@ class ChargeWalletWidget extends StatelessWidget {
                       Center(
                         child: Text(
                           LanguageProvider.translate("buttons", "pay"),
-                          style: TextStyleClass.normalStyle(),
+                          style: TextStyleClass.normalStyle(color: Colors.white),
                         ),
                       ),
                     ],

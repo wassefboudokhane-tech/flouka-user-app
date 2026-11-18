@@ -51,7 +51,7 @@ class VendorCancelledRecoveryWidget extends StatelessWidget {
             Text(
               LanguageProvider.translate('recovery', 'vendor_cancel_refund')
                   .replaceAll('*amount*', refundAmount!),
-              style: TextStyleClass.captionStyle(color: AppColor.primaryColor)
+              style: TextStyleClass.captionStyle(color: AppColor.inkColor)
                   .copyWith(fontWeight: FontWeight.w700),
             ),
           ],

@@ -35,7 +35,7 @@ class _MessageWidgetState extends State<TicketMessageWidget> {
                   constraints: BoxConstraints(maxWidth: 65.w, minWidth: 20.w),
                   // width: 65.w,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(4),
                     // gradient: (widget.messageEntity.fromMe())?  null:AppColor.gradient ,
                     color: !(widget.messageEntity.fromMe())
                         ? Colors.grey.shade200

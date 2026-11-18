@@ -36,7 +36,7 @@ class DeliveryDropdownWidget extends StatelessWidget {
                 Text(
                   LanguageProvider.translate('home', 'deliver_to'),
                   style: TextStyleClass.captionStyle(
-                    color: AppColor.backgroundColor.withValues(alpha: 0.5),
+                    color: AppColor.mutedColor,
                   ).copyWith(
                     fontWeight: FontWeight.w500,
                     fontSize: 11,
@@ -51,7 +51,7 @@ class DeliveryDropdownWidget extends StatelessWidget {
                       child: Text(
                         label,
                         style: TextStyleClass.smallStyle(
-                          color: AppColor.backgroundColor,
+                          color: AppColor.inkColor,
                         ).copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 15,
@@ -84,7 +84,7 @@ class _LimeChevronPainter extends CustomPainter {
       ..lineTo(size.width, 0)
       ..lineTo(size.width / 2, size.height)
       ..close();
-    canvas.drawPath(path, Paint()..color = AppColor.limeColor);
+    canvas.drawPath(path, Paint()..color = AppColor.inkColor);
   }
 
   @override

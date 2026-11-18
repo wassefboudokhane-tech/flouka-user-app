@@ -6,6 +6,9 @@ import '../../../../core/dialog/snack_bar.dart';
 import '../../../../core/helper_function/navigation.dart';
 import '../../../../core/models/pagination_class.dart';
 import '../../../../core/models/provider_structure_model.dart';
+import '../../../../core/helper_function/api.dart';
+import '../../../../core/helper_function/prefs.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 import '../../domain/entity/order_entity.dart';
 import '../../domain/use_case/order_use_case.dart';
@@ -35,10 +38,19 @@ class OrderProvider extends ChangeNotifier
 
   ScrollController controller = ScrollController();
 
+  /// No session, or the server refused it: the page asks to sign in
+  /// instead of loading forever.
+  bool needsLogin = false;
+
+  /// Any other failure: shown with a retry button.
+  String? loadError;
+
   TextEditingController searchController = TextEditingController();
 
   void clear() {
     data = null;
+    needsLogin = false;
+    loadError = null;
     inputs = null;
     pageIndex = 1;
     paginationFinished = false;
@@ -48,10 +60,29 @@ class OrderProvider extends ChangeNotifier
 
     @override
   Future getData() async {
+    if (!hasSession()) {
+      needsLogin = true;
+      paginationStarted = false;
+      notifyListeners();
+      return;
+    }
     Map<String, dynamic> dataToUse = {'page': pageIndex};
     final result = await orderUseCase.getUserOrders(dataToUse);
 
-    result.fold((l) => showToast(l.message ?? "Failed to load orders"), (r) {
+    result.fold((l) {
+      if (isAuthFailure(l)) {
+        // A stale or refused token: forget it and ask to sign in again.
+        forgetSession();
+        needsLogin = true;
+      } else if (data == null) {
+        loadError = l.response?.data is Map && l.response?.data['message'] is String
+            ? l.response!.data['message'] as String
+            : (l.message ?? LanguageProvider.translate('orders', 'load_failed'));
+      } else {
+        showToast(l.message ?? "Failed to load orders");
+      }
+      notifyListeners();
+    }, (r) {
       pageIndex++;
       data ??= [];
       data!.addAll(r);
@@ -100,6 +131,23 @@ class OrderProvider extends ChangeNotifier
     notifyListeners();
   }
 
+
+  /// Overridable in tests; the app reads the saved token.
+  bool Function() hasSession = AuthProvider.isLogin;
+
+  void Function() forgetSession = () {
+    sharedPreferences.remove('token');
+    ApiHandel.getInstance.updateHeader('');
+  };
+
+  /// 401/403, or the API's "invalid credentials" answer on a protected route.
+  static bool isAuthFailure(DioException e) {
+    final code = e.response?.statusCode;
+    if (code == 401 || code == 403) return true;
+    final body = e.response?.data;
+    final text = '${body is Map ? body['message'] : ''} ${e.message ?? ''}'.toLowerCase();
+    return text.contains('credential') || text.contains('unauthenticated') || text.contains('token');
+  }
 
   @override
   void goToPage([Map<String, dynamic>? inputs]) {

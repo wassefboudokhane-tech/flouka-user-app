@@ -1,3 +1,4 @@
+import 'package:flouka/core/creator_attribution.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -56,6 +57,22 @@ void main() async {
   }
 
   await startSharedPref();
+  CreatorAttributionStore.restore(
+    sharedPreferences.getString('creator_ref'),
+    sharedPreferences.getInt('creator_ref_at'),
+  );
+  CreatorAttributionStore.onChanged = (value) {
+    if (value == null) {
+      sharedPreferences.remove('creator_ref');
+      sharedPreferences.remove('creator_ref_at');
+    } else {
+      sharedPreferences.setString('creator_ref', value.ref);
+      sharedPreferences.setInt(
+        'creator_ref_at',
+        value.capturedAt.millisecondsSinceEpoch,
+      );
+    }
+  };
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 

@@ -40,7 +40,7 @@ class NotificationWidget extends StatelessWidget {
       ),
       child: Material(
         color: AppColor.softColor,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(4),
         child: InkWell(
           onTap: () {
             navP(
@@ -50,7 +50,7 @@ class NotificationWidget extends StatelessWidget {
               ),
             );
           },
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(4),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
             child: Row(
@@ -66,8 +66,8 @@ class NotificationWidget extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: AppColor.primaryColor,
-                        shape: BoxShape.circle,
+                        color: AppColor.inkColor,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
                   )
@@ -86,7 +86,7 @@ class NotificationWidget extends StatelessWidget {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyleClass.smallStyle(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                               ).copyWith(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13.5,
