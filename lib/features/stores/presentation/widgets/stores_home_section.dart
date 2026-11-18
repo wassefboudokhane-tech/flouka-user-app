@@ -1,113 +1,91 @@
 import 'package:flouka/core/config/app_color.dart';
-import 'package:flouka/core/widgets/flouka_network_image.dart';
+import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
-import 'package:flouka/core/widgets/see_all_button.dart';
+import 'package:flouka/core/widgets/flouka_network_image.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
+import 'package:flouka/features/stores/domain/entity/store_entity.dart';
 import 'package:flouka/features/stores/presentation/providers/store_details_provider.dart';
 import 'package:flouka/features/stores/presentation/providers/stores_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 
-/// Featured shops rail — mirrors web `FeaturedShopsRail`.
+/// Shops as logos, not circular photos.
 class StoresHomeSection extends StatelessWidget {
   const StoresHomeSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<StoresProvider>();
-    final stores = provider.homeStores;
+    final stores = context.watch<StoresProvider>().homeStores;
     if (stores.isEmpty) return const SizedBox.shrink();
 
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: const Color(0xffE6DDF2)),
-      ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.pageGutter, 18, AppSpacing.pageGutter, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                width: 4,
-                height: 22,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(99),
-                  gradient: LinearGradient(
-                    colors: [AppColor.inkColor, AppColor.inkColor],
-                  ),
-                ),
-              ),
-              SizedBox(width: 2.w),
-              Expanded(
-                child: Text(
-                  LanguageProvider.translate('home', 'retail_stores'),
-                  style: TextStyleClass.normalStyle(color: AppColor.inkColor)
-                      .copyWith(fontWeight: FontWeight.w800, fontSize: 16.sp),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              SeeAllButton(
-                onPressed: () => context.read<StoresProvider>().goToPage(),
-              ),
-            ],
+          Text(
+            LanguageProvider.translate('home', 'by_store'),
+            style: TextStyleClass.railTitleStyle(color: AppColor.inkColor),
           ),
-          SizedBox(height: 1.2.h),
-          SizedBox(
-            height: 16.h,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: stores.length,
-              separatorBuilder: (_, __) => SizedBox(width: 3.w),
-              itemBuilder: (context, index) {
-                final store = stores[index];
-                return InkWell(
-                  onTap: () {
-                    Provider.of<StoreDetailsProvider>(context, listen: false)
-                        .goToStoreDetailsPage(store.id);
-                  },
-                  child: SizedBox(
-                    width: (MediaQuery.sizeOf(context).width * 0.22)
-                        .clamp(72.0, 120.0)
-                        .toDouble(),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 56,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColor.limeColor.withValues(alpha: 0.75),
-                              width: 2.5,
-                            ),
-                            image: DecorationImage(
-                              image: floukaImageProvider(store.vendor.logo),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 0.8.h),
-                        Text(
-                          store.name,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyleClass.smallStyle(
-                            color: AppColor.inkColor,
-                          ).copyWith(fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+          const SizedBox(height: 12),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: stores.length.clamp(0, 6),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 0.78,
             ),
+            itemBuilder: (context, index) => _Logo(store: stores[index]),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Logo extends StatelessWidget {
+  const _Logo({required this.store});
+  final StoreEntity store;
+
+  @override
+  Widget build(BuildContext context) {
+    final logo = store.logo.isNotEmpty ? store.logo : store.vendor.logo;
+    final initial = store.name.isEmpty ? '' : store.name.characters.first;
+    return InkWell(
+      onTap: () {
+        context.read<StoreDetailsProvider>().goToStoreDetailsPage(store.id);
+      },
+      child: Column(
+        children: [
+          AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: AppColor.borderColor),
+              ),
+              padding: const EdgeInsets.all(12),
+              child: logo.isEmpty
+                  ? Text(
+                      initial,
+                      style: TextStyleClass.semiHeadStyle(color: AppColor.inkColor).copyWith(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 28,
+                      ),
+                    )
+                  : FloukaNetworkImage(url: logo, fit: BoxFit.contain),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            store.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyleClass.captionStyle(color: AppColor.inkColor),
           ),
         ],
       ),

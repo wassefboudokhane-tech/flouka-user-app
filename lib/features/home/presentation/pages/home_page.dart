@@ -1,15 +1,12 @@
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_spacing.dart';
-import 'package:flouka/core/config/app_styles.dart';
-import 'package:flouka/features/categories/presentation/widgets/popular_categories_Section.dart';
 import 'package:flouka/features/creators/presentation/widgets/home_creators_row_widget.dart';
 import 'package:flouka/features/home/presentation/widgets/far_away_container_widget.dart';
 import 'package:flouka/features/home/presentation/widgets/home_appbar_widget.dart';
-import 'package:flouka/features/home/presentation/widgets/home_promo_band_widget.dart';
-import 'package:flouka/features/home/presentation/widgets/home_stories_row_widget.dart';
-import 'package:flouka/features/home/presentation/widgets/home_under_fifty_rail.dart';
+import 'package:flouka/features/home/presentation/widgets/home_category_tiles.dart';
+import 'package:flouka/features/home/presentation/widgets/home_claim_widget.dart';
+import 'package:flouka/features/home/presentation/widgets/home_share_banner.dart';
 import 'package:flouka/features/home/presentation/widgets/marketplace_product_rail.dart';
-import 'package:flouka/features/home/presentation/widgets/recommended_section.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/presentation/providers/categories_product_search_provider.dart';
 import 'package:flouka/features/products/presentation/providers/home_products_provider.dart';
@@ -18,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
-/// Home layout aligned with refonte: stories → promo → rails.
+/// Home in the same order as the site: promise, creators, one rail, share, categories, shops.
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -51,13 +48,12 @@ class HomePage extends StatelessWidget {
                           children: [
                             if (authProvider.isAwayFromHome())
                               const FarAwayContainerWidget(),
-                            const HomeStoriesRowWidget(),
+                            const HomeClaimWidget(),
                             const HomeCreatorsRowWidget(),
-                            const HomePromoBandWidget(),
                             MarketplaceProductRail(
                               title: LanguageProvider.translate(
                                 'home',
-                                'best_selling',
+                                'most_recommended',
                               ),
                               products: homeProducts.productsList,
                               onSeeAll: () {
@@ -67,29 +63,9 @@ class HomePage extends StatelessWidget {
                                 ).goToPage({'best_selling': 1});
                               },
                             ),
-                            if (homeProducts.productsList.isEmpty)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.pageGutter,
-                                  vertical: 16,
-                                ),
-                                child: Text(
-                                  LanguageProvider.translate(
-                                    'orders',
-                                    'empty_search',
-                                  ),
-                                  style: TextStyleClass.smallStyle(
-                                    color: AppColor.mutedColor,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                            const HomeShareBanner(),
+                            const HomeCategoryTiles(),
                             const StoresHomeSection(),
-                            HomeUnderFiftyRail(
-                              products: homeProducts.productsList,
-                            ),
-                            const RecommendedSection(),
-                            const PopularCategoriesSection(),
                             const SizedBox(height: AppSpacing.section),
                           ],
                         ),

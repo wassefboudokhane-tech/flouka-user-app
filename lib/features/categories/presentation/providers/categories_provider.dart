@@ -19,6 +19,11 @@ class CategoryProvider extends ChangeNotifier {
   String? _error;
 
   List<CategoryEntity> get categories => _categories;
+
+  /// Replaces the loaded list. The home screen test uses this before the first build.
+  void setCategories(List<CategoryEntity> items) {
+    _categories = items;
+  }
   CategoryEntity? get selectedCategory => _selectedCategory;
   bool get isLoading => _isLoading;
   String? get error => _error;

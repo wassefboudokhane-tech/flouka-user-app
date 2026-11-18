@@ -7,7 +7,7 @@ import 'package:flouka/features/language/presentation/provider/language_provider
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// "Creators to follow" row on home. Hidden when there are no creators.
+/// "Acheter par créateur": large vertical portraits.
 class HomeCreatorsRowWidget extends StatelessWidget {
   const HomeCreatorsRowWidget({super.key});
 
@@ -17,29 +17,35 @@ class HomeCreatorsRowWidget extends StatelessWidget {
     final creators = provider.creators;
     if (creators.isEmpty) return const SizedBox.shrink();
 
-    const width = 132.0;
+    const width = 156.0;
     return Padding(
-      padding: const EdgeInsets.only(top: 14, bottom: 4),
+      padding: const EdgeInsets.only(top: 22, bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.pageGutter,
-            ),
-            child: Text(
-              LanguageProvider.translate('creators', 'follow_title'),
-              style: TextStyleClass.railTitleStyle(color: AppColor.inkColor),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  LanguageProvider.translate('home', 'by_creator'),
+                  style: TextStyleClass.railTitleStyle(color: AppColor.inkColor),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  LanguageProvider.translate('home', 'by_creator_text'),
+                  style: TextStyleClass.smallStyle(color: AppColor.mutedColor),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           SizedBox(
-            height: width * 4 / 3 + 28,
+            height: width * 4 / 3 + 26,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.pageGutter,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.pageGutter),
               itemCount: creators.length,
               separatorBuilder: (_, __) => const SizedBox(width: 12),
               itemBuilder: (context, index) {
@@ -48,22 +54,19 @@ class HomeCreatorsRowWidget extends StatelessWidget {
                   button: true,
                   label: creator.name,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(4),
                     onTap: () => provider.openStorefront(creator),
                     child: SizedBox(
                       width: width,
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CreatorPortrait(creator: creator, width: width),
                           const SizedBox(height: 6),
                           Text(
-                            creator.name.split(' ').first,
+                            creator.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyleClass.captionStyle(
-                              color: AppColor.inkColor,
-                            ).copyWith(fontWeight: FontWeight.w500),
+                            style: TextStyleClass.smallStyle(color: AppColor.inkColor),
                           ),
                         ],
                       ),

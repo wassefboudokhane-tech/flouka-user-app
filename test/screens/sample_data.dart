@@ -1,4 +1,9 @@
+import 'package:flouka/features/categories/domain/entity/category_entity.dart';
+import 'package:flouka/features/categories/presentation/providers/categories_provider.dart';
 import 'package:flouka/features/stores/domain/entity/store_details_entity.dart';
+import 'package:flouka/features/reels/domain/entity/reel_entity.dart';
+import 'package:flouka/features/stores/domain/entity/store_entity.dart' as shops;
+import 'package:flouka/features/stores/presentation/providers/stores_provider.dart';
 import 'package:flouka/features/stores/presentation/providers/store_details_provider.dart';
 import 'package:flouka/features/cart/presentation/views/checkout_view.dart';
 import 'package:flouka/features/stores/presentation/pages/store_details_page.dart';
@@ -100,7 +105,45 @@ final sampleCreator = CreatorEntity(
 final sampleScreens = <SampleScreen>[
   SampleScreen('home', () => const HomePage(), (c) {
     Provider.of<HomeProductsProvider>(c, listen: false).productsList = sampleProducts;
-    Provider.of<CreatorsProvider>(c, listen: false).creators = [sampleCreator];
+    Provider.of<CreatorsProvider>(c, listen: false).creators = [
+      sampleCreator,
+      const CreatorEntity(
+        id: 8,
+        handle: 'salma',
+        name: 'Salma K.',
+        avatar: null,
+        bio: '',
+        niche: 'Maison',
+      ),
+    ];
+    Provider.of<CategoryProvider>(c, listen: false).setCategories([
+      CategoryEntity(id: 1, image: null, icon: null, name: 'Beauté', parentId: null),
+      CategoryEntity(id: 2, image: null, icon: null, name: 'Maison', parentId: null),
+    ]);
+    Provider.of<StoresProvider>(c, listen: false).homeStores = [
+      shops.StoreEntity(
+        id: 1,
+        name: 'Atelier Zitouna',
+        vendor: VendorEntity(
+          id: 1,
+          name: 'Atelier Zitouna',
+          logo: '',
+          cover: '',
+          bio: '',
+          isFavorite: false,
+          isFollow: false,
+        ),
+        lat: 36.8,
+        lng: 10.18,
+        address: 'Tunis',
+        createdAt: DateTime(2026, 1, 1),
+        distance: 2,
+        logo: '',
+        productsCount: 12,
+        customersCount: 40,
+        rate: 4.8,
+      ),
+    ];
   }),
   SampleScreen('creator', () => const CreatorStorefrontPage(), (c) {
     Provider.of<CreatorsProvider>(c, listen: false).current = sampleCreator;
