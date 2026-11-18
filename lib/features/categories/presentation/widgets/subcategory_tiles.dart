@@ -26,7 +26,7 @@ class SubcategoryTile extends StatelessWidget {
       height: 6.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: const Color(0xffF0F1F5),
+        color: const Color(0xffF5F5F7),
       ),
       child: Row(
         children: [

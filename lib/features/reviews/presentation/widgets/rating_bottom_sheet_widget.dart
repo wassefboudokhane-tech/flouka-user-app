@@ -12,10 +12,10 @@ class RatingBottomSheetWidget extends StatelessWidget {
     return Container(
       height: 35.h,
       decoration: const BoxDecoration(
-        color: Colors.black,
+        color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(41),
-          topRight: Radius.circular(41),
+          topLeft: Radius.circular(4),
+          topRight: Radius.circular(4),
         ),
       ),
       child: Container(
@@ -23,7 +23,7 @@ class RatingBottomSheetWidget extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 5.h),
-            ReviewItemWidget(textColor: Colors.white,review: review,onlyOne: true,),
+            ReviewItemWidget(textColor: const Color(0xFF1A1A1A), review: review, onlyOne: true),
           ],
         ),
       ),

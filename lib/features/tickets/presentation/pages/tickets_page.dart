@@ -1,5 +1,4 @@
 import 'package:flouka/core/config/app_color.dart';
-import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/core/constants/app_lotties.dart';
@@ -32,13 +31,13 @@ class TicketsPage extends StatelessWidget {
               title: LanguageProvider.translate('ticket', 'support_ticket'),
               trailing: Material(
                 color: AppColor.deepColor,
-                borderRadius: BorderRadius.circular(AppRadius.pill),
+                borderRadius: BorderRadius.circular(4),
                 child: InkWell(
                   onTap: () => Provider.of<AddTicketProvider>(
                     context,
                     listen: false,
                   ).goToAddTicketPage(),
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                  borderRadius: BorderRadius.circular(4),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -47,7 +46,7 @@ class TicketsPage extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.add, color: AppColor.limeColor, size: 16),
+                        const Icon(Icons.add, color: Colors.white, size: 16),
                         const SizedBox(width: 4),
                         Text(
                           LanguageProvider.translate('ticket', 'add_ticket'),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/config/app_color.dart';
-import '../../../../core/config/app_radius.dart';
 import '../../../../core/config/app_spacing.dart';
 import '../../../../core/config/app_styles.dart';
 import '../../../../core/dialog/snack_bar.dart';
@@ -45,7 +44,7 @@ class HeaderWalletWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: AppColor.borderColor),
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(4),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,11 +78,11 @@ class HeaderWalletWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Material(
-                      color: AppColor.inkColor,
-                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      color: AppColor.deepColor,
+                      borderRadius: BorderRadius.circular(4),
                       child: InkWell(
                         onTap: walletProvider.showChargeSheet,
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                        borderRadius: BorderRadius.circular(4),
                         child: SizedBox(
                           height: 44,
                           child: Center(
@@ -105,7 +104,7 @@ class HeaderWalletWidget extends StatelessWidget {
                   Expanded(
                     child: Material(
                       color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      borderRadius: BorderRadius.circular(4),
                       child: InkWell(
                         onTap: () {
                           showToast(
@@ -115,16 +114,13 @@ class HeaderWalletWidget extends StatelessWidget {
                             ),
                           );
                         },
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                        borderRadius: BorderRadius.circular(4),
                         child: Container(
                           height: 44,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(AppRadius.pill),
-                            border: Border.all(
-                              color: AppColor.inkColor.withValues(alpha: 0.35),
-                              width: 1.2,
-                            ),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: AppColor.borderColor),
                           ),
                           child: Text(
                             LanguageProvider.translate('wallet', 'withdraw'),

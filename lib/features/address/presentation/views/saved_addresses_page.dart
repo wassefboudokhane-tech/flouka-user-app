@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
@@ -103,31 +102,15 @@ class SavedAddressesPage extends StatelessWidget {
                 AppSpacing.pageGutter,
                 16,
               ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: mapProvider.goToMapPage,
-                  borderRadius: BorderRadius.circular(4),
-                  child: DottedBorder(
-                    options: RoundedRectDottedBorderOptions(
-                      radius: const Radius.circular(4),
-                      color: AppColor.primaryColor,
-                      dashPattern: const [6, 4],
-                      strokeWidth: 1.4,
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Container(
-                      height: AppSpacing.ctaHeight,
-                      alignment: Alignment.center,
-                      child: Text(
-                        '+ ${LanguageProvider.translate('address', 'add_address')}',
-                        style: TextStyleClass.buttonStyle(
-                          color: AppColor.inkColor,
-                        ).copyWith(fontWeight: FontWeight.w800, fontSize: 14),
-                      ),
-                    ),
-                  ),
+              child: FilledButton(
+                onPressed: mapProvider.goToMapPage,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColor.deepColor,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(48),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                 ),
+                child: Text(LanguageProvider.translate('address', 'add_address')),
               ),
             ),
           ],

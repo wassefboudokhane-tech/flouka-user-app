@@ -69,7 +69,7 @@ class WalletProvider extends ChangeNotifier implements PaginationClass {
       context: Constants.globalContext(),
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(4)),
       ),
       builder: (context) {
         return const ChargeWalletWidget();

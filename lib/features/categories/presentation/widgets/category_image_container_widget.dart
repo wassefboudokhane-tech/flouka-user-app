@@ -17,7 +17,7 @@ class CategoryImageContainerWidget extends StatelessWidget {
           height: 15.h,
           padding: EdgeInsets.symmetric(horizontal: 2.w,vertical: 0.h),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(4),
             child: FloukaNetworkImage(
               url: category.image??"",
               fit: BoxFit.cover,

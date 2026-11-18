@@ -129,18 +129,11 @@ class _CategoriesTabContentState extends State<CategoriesTabContent> {
                             ),
                             child: Container(
                               height: AppSpacing.exploreSubcategoryTileHeight,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    AppColor.softColor,
-                                    AppColor.backgroundColor,
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                  AppRadius.exploreSubcategory,
-                                ),
+        decoration: BoxDecoration(
+          color: AppColor.softColor,
+          borderRadius: BorderRadius.circular(
+            AppRadius.exploreSubcategory,
+          ),
                                 border: Border.all(color: AppColor.borderColor),
                               ),
                               alignment: AlignmentDirectional.bottomStart,
@@ -212,7 +205,7 @@ class _CategoryRailTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: selected ? AppColor.deepColor : AppColor.backgroundColor,
+      color: selected ? AppColor.inkColor : AppColor.backgroundColor,
       borderRadius: BorderRadius.circular(AppRadius.btn),
       child: InkWell(
         onTap: onTap,
@@ -278,15 +271,15 @@ class _FilterChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: selected ? AppColor.deepColor : AppColor.backgroundColor,
-      borderRadius: BorderRadius.circular(AppRadius.pill),
+      color: selected ? AppColor.inkColor : AppColor.backgroundColor,
+      borderRadius: BorderRadius.circular(4),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
+        borderRadius: BorderRadius.circular(4),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.pill),
+            borderRadius: BorderRadius.circular(4),
             border: selected
                 ? null
                 : Border.all(color: AppColor.borderColor),
@@ -327,11 +320,7 @@ class _SubcategoryTile extends StatelessWidget {
       child: Container(
         height: AppSpacing.exploreSubcategoryTileHeight,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [AppColor.softColor, AppColor.backgroundColor],
-          ),
+          color: AppColor.softColor,
           borderRadius: BorderRadius.circular(AppRadius.exploreSubcategory),
           border: Border.all(color: AppColor.borderColor),
           image: subcategory.image != null && subcategory.image!.isNotEmpty

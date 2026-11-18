@@ -1,4 +1,24 @@
+import 'package:flouka/features/address/domain/entities/address_entity.dart';
+import 'package:flouka/features/address/domain/entities/area_entity.dart';
+import 'package:flouka/features/address/domain/entities/city_entity.dart';
+import 'package:flouka/features/address/domain/entities/neighborhood_entity.dart';
+import 'package:flouka/features/address/presentation/providers/address_provider.dart';
+import 'package:flouka/features/address/presentation/views/saved_addresses_page.dart';
+import 'package:flouka/features/auth/domain/entities/user_entity.dart';
+import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flouka/features/categories/domain/entity/category_entity.dart';
+import 'package:flouka/features/categories/presentation/view/categories_view.dart';
+import 'package:flouka/features/notification/domain/entities/notification_entity.dart';
+import 'package:flouka/features/notification/presentation/pages/notification_page.dart';
+import 'package:flouka/features/notification/presentation/provider/notifications_provider.dart';
+import 'package:flouka/features/products/domain/entity/product_review_entity.dart';
+import 'package:flouka/features/reviews/presentation/views/review_view.dart';
+import 'package:flouka/features/tickets/domain/entities/ticket_entity.dart';
+import 'package:flouka/features/tickets/presentation/pages/tickets_page.dart';
+import 'package:flouka/features/tickets/presentation/provider/tickets_provider.dart';
+import 'package:flouka/features/wallet/domain/entities/operation_entity.dart';
+import 'package:flouka/features/wallet/presentation/pages/user_wallet_page.dart';
+import 'package:flouka/features/wallet/presentation/provider/wallet_provider.dart';
 import 'package:flouka/features/categories/presentation/providers/categories_provider.dart';
 import 'package:flouka/features/stores/domain/entity/store_details_entity.dart';
 import 'package:flouka/features/reels/domain/entity/reel_entity.dart';
@@ -272,5 +292,120 @@ final sampleScreens = <SampleScreen>[
       bio: 'Concept store à La Marsa : les marques tunisiennes réunies.', customersCount: 410, productsCount: 34,
       isFollowed: false,
     );
+  }),
+  SampleScreen('categories', () => const CategoriesView(), (c) {
+    Provider.of<CategoryProvider>(c, listen: false).setCategories([
+      CategoryEntity(
+        id: 1,
+        image: null,
+        icon: null,
+        name: 'Beauté',
+        parentId: null,
+        children: [
+          CategoryEntity(id: 11, image: null, icon: null, name: 'Sérums', parentId: 1),
+          CategoryEntity(id: 12, image: null, icon: null, name: 'Savons', parentId: 1),
+        ],
+      ),
+      CategoryEntity(
+        id: 2,
+        image: null,
+        icon: null,
+        name: 'Maison',
+        parentId: null,
+        children: [
+          CategoryEntity(id: 21, image: null, icon: null, name: 'Linge', parentId: 2),
+        ],
+      ),
+    ]);
+  }),
+  SampleScreen('notifications', () => const NotificationPage(), (c) {
+    Provider.of<NotificationProvider>(c, listen: false).notifications = [
+      NotificationEntity(
+        title: 'Commande expédiée',
+        description: 'Votre colis est en route.',
+        createdAt: DateTime(2026, 11, 18, 9, 30),
+      ),
+    ];
+  }),
+  SampleScreen('addresses', () => const SavedAddressesPage(), (c) {
+    Provider.of<AuthProvider>(c, listen: false).userEntity = UserEntity(
+      id: 1,
+      phone: '55111001',
+      email: null,
+      image: null,
+      name: 'Yasmine',
+      wallet: 40,
+      phoneCode: '216',
+      loginFrom: 'user',
+      token: null,
+      addressEntity: null,
+    );
+    Provider.of<AddressProvider>(c, listen: false).address = [
+      AddressEntity(
+        id: 1,
+        userId: 1,
+        phoneCode: '216',
+        cityEntity: CityEntity(id: 1, name: 'Tunis'),
+        areaEntity: AreaEntity(id: 1, name: 'La Marsa', cityEntity: null, cityId: 1),
+        areaId: 1,
+        isDefault: true,
+        addressName: 'Maison',
+        lat: 0,
+        lng: 0,
+        createdAt: '2026-11-18',
+        phone: '55111001',
+        address: '12 rue de la Marsa',
+        neighborhoodEntity: NeighborhoodEntity(id: 1, name: 'La Marsa', areaId: 1),
+      ),
+    ];
+  }),
+  SampleScreen('reviews', () => ReviewView(
+        review: ProductReviewEntity(
+          id: 1,
+          rating: 5,
+          comment: 'Je le rachète.',
+          createdAt: DateTime(2026, 11, 1),
+          images: const [],
+          user: ReviewUser(image: '', id: 1, name: 'Yasmine'),
+        ),
+      )),
+  SampleScreen('wallet', () => const UserWalletHome(), (c) {
+    final auth = Provider.of<AuthProvider>(c, listen: false);
+    auth.userEntity ??= UserEntity(
+      id: 1,
+      phone: '55111001',
+      email: null,
+      image: null,
+      name: 'Yasmine',
+      wallet: 40,
+      phoneCode: '216',
+      loginFrom: 'user',
+      token: null,
+      addressEntity: null,
+    );
+    auth.userEntity!.wallet = 40;
+    Provider.of<WalletProvider>(c, listen: false).myOperations = [
+      const OperationEntity(id: 1, userId: 1, price: '12', operation: 'refund', createdAt: '2026-11-18'),
+    ];
+    Provider.of<WalletProvider>(c, listen: false).paginationFinished = true;
+  }),
+  SampleScreen('tickets', () => const TicketsPage(), (c) {
+    Provider.of<TicketsProvider>(c, listen: false).tickets = [
+      TicketEntity(
+        id: 12,
+        userId: 1,
+        ticketCategory: const TicketProblemCategoryEntity(id: 1, name: 'Livraison'),
+        ticketCategoryId: 1,
+        title: 'Colis',
+        description: 'Le colis est en retard.',
+        reasonId: null,
+        important: 'medium',
+        status: 'pending',
+        createdAt: DateTime(2026, 11, 18),
+        updatedAt: DateTime(2026, 11, 18),
+        messages: const [],
+      ),
+    ];
+    Provider.of<TicketsProvider>(c, listen: false).paginationFinished = true;
   }),
 ];

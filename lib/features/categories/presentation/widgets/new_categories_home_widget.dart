@@ -24,8 +24,8 @@ class NewCategoriesHomeWidget extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.2.h),
           padding: EdgeInsets.symmetric(vertical: 0.2.h),
           decoration: BoxDecoration(
-            color: const Color(0xffE1F7FE),
-            borderRadius: BorderRadius.circular(10),
+            color: const Color(0xffF5F5F7),
+            borderRadius: BorderRadius.circular(4),
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(

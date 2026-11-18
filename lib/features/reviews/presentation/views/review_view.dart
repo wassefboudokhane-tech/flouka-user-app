@@ -1,82 +1,51 @@
+import 'package:flouka/core/config/app_color.dart';
+import 'package:flouka/core/config/app_spacing.dart';
+import 'package:flouka/core/config/app_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import '../../../language/presentation/provider/language_provider.dart';
 import '../../../products/domain/entity/product_review_entity.dart';
-import '../providres/review_provider.dart';
-import '../widgets/images_page_view_builder.dart';
-import '../widgets/rating_bottom_sheet_widget.dart';
 
 class ReviewView extends StatelessWidget {
   const ReviewView({super.key, required this.review});
   final ProductReviewEntity review;
+
   @override
   Widget build(BuildContext context) {
-    final reviewProvider = Provider.of<ReviewProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: AppColor.canvasColor,
       appBar: AppBar(
-        title: Text(LanguageProvider.translate("global","customer_reviews")),
+        backgroundColor: AppColor.canvasColor,
+        elevation: 0,
+        foregroundColor: AppColor.inkColor,
+        title: Text(
+          LanguageProvider.translate('global', 'customer_reviews'),
+          style: TextStyleClass.semiHeadStyle(color: AppColor.inkColor),
+        ),
       ),
-      body: SizedBox(width: double.infinity, height: double.infinity,
-        child: Stack(
+      body: Padding(
+        padding: const EdgeInsets.all(AppSpacing.pageGutter),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ImagesPageViewBuilder(images: review.images,),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: RatingBottomSheetWidget(review: review,),
+            Text(
+              review.user.name,
+              style: TextStyleClass.smallStyle(color: AppColor.mutedColor),
             ),
-            Positioned(
-              left: 4.w,
-              top: 35.h,
-              child: InkWell(
-                onTap: () {
-                  reviewProvider.pageController.previousPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    left: 10,
-                    top: 6,
-                    bottom: 6,
-                    right: 2,
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                for (var i = 0; i < 5; i++)
+                  Icon(
+                    i < review.rating ? Icons.star : Icons.star_border,
+                    size: 16,
+                    color: AppColor.inkColor,
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade700,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                ),
-              ),
+              ],
             ),
-            Positioned(
-              right: 4.w,
-              top: 35.h,
-              child: InkWell(
-                onTap: () {
-                  reviewProvider.pageController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    right: 6,
-                    top: 6,
-                    bottom: 6,
-                    left: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade700,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.arrow_forward_ios, color: Colors.white),
-                ),
-              ),
+            const SizedBox(height: 12),
+            Text(
+              review.comment,
+              style: TextStyleClass.smallStyle(color: AppColor.inkColor),
             ),
           ],
         ),

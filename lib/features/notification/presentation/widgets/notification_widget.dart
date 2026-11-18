@@ -66,8 +66,8 @@ class NotificationWidget extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: AppColor.primaryColor,
-                        shape: BoxShape.circle,
+                        color: AppColor.inkColor,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
                   )
