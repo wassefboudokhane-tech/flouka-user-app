@@ -89,6 +89,18 @@ class CartItemWidget extends StatelessWidget {
                       style: TextStyleClass.captionStyle(),
                     ),
                   ],
+                  for (final shop in cartEntity.alsoAt) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      LanguageProvider.translate(
+                        'cart',
+                        shop.deliverySaving > 0 ? 'also_free' : 'also_at',
+                      )
+                          .replaceAll('*shop*', shop.name)
+                          .replaceAll('*price*', shop.price.toString()),
+                      style: TextStyleClass.captionStyle(color: AppColor.inkColor),
+                    ),
+                  ],
                   const SizedBox(height: 8),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,

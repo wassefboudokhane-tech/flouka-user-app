@@ -102,6 +102,10 @@
     "subtotal": "المجموع الفرعي",
     "delivery_vendors": "التوصيل · *num* بائعين",
     "vendor_delivery": "24–48 س",
+    "parcels_now": "اليوم، *num* طرود",
+    "parcels_grouped": "مجموعة، *num* طرود",
+    "also_at": "متوفر أيضًا لدى *shop* بسعر *price* د.ت",
+    "also_free": "متوفر أيضًا لدى *shop* بسعر *price* د.ت، دون توصيل إضافي",
     "page_subtitle": "*items* منتجات · *vendors* بائعين",
     "validate_order": "تأكيد الطلب",
     "continue_shopping": "متابعة التسوق"

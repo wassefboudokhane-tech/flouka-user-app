@@ -102,6 +102,10 @@
     "subtotal": "Subtotal",
     "delivery_vendors": "Delivery · *num* vendors",
     "vendor_delivery": "24–48 h",
+    "parcels_now": "Today, *num* parcels",
+    "parcels_grouped": "Grouped, *num* parcels",
+    "also_at": "Also at *shop* for *price* TND",
+    "also_free": "Also at *shop* for *price* TND, no extra delivery",
     "page_subtitle": "*items* items · *vendors* vendors",
     "validate_order": "Place order",
     "continue_shopping": "Continue shopping"

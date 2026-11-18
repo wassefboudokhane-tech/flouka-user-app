@@ -102,6 +102,10 @@
     "subtotal": "Sous-total",
     "delivery_vendors": "Livraison · *num* vendeurs",
     "vendor_delivery": "24–48 h",
+    "parcels_now": "Aujourd'hui, *num* colis",
+    "parcels_grouped": "Regroupé, *num* colis",
+    "also_at": "Aussi chez *shop* à *price* TND",
+    "also_free": "Aussi chez *shop* à *price* TND, sans livraison en plus",
     "page_subtitle": "*items* articles · *vendors* vendeurs",
     "validate_order": "Valider la commande",
     "continue_shopping": "Continuer mes achats"

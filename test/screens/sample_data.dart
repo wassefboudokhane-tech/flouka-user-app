@@ -171,8 +171,18 @@ final sampleScreens = <SampleScreen>[
       creatorsEnabled: true,
     );
     Provider.of<CartProvider>(c, listen: false).data = [
-      CartEntity(id: 1, quantity: 1, product: sampleProducts[0], unitPrice: 40, storeId: 1, stock: 5),
-      CartEntity(id: 2, quantity: 2, product: sampleProducts[2], unitPrice: 12, storeId: 3, stock: 5),
+      CartEntity(
+        id: 1,
+        quantity: 1,
+        product: sampleProducts[0],
+        unitPrice: 40,
+        storeId: 1,
+        stock: 5,
+        parcelsNow: 2,
+        parcelsGrouped: 1,
+        alsoAt: const [CartAlsoAt(storeId: 2, name: 'Le Patio', price: 25, deliverySaving: 5)],
+      ),
+      CartEntity(id: 2, quantity: 2, product: sampleProducts[2], unitPrice: 12, storeId: 3, stock: 5, parcelsNow: 2, parcelsGrouped: 1),
     ];
   }),
   SampleScreen('explore', () => const ExploreView()),
@@ -205,8 +215,18 @@ final sampleScreens = <SampleScreen>[
       phone: null, whatsapp: null, version: 1, privacyLink: '', mustUpdate: false, packageName: null, appId: null,
     );
     Provider.of<CartProvider>(c, listen: false).data = [
-      CartEntity(id: 1, quantity: 1, product: sampleProducts[0], unitPrice: 40, storeId: 1, stock: 5),
-      CartEntity(id: 2, quantity: 2, product: sampleProducts[2], unitPrice: 12, storeId: 3, stock: 5),
+      CartEntity(
+        id: 1,
+        quantity: 1,
+        product: sampleProducts[0],
+        unitPrice: 40,
+        storeId: 1,
+        stock: 5,
+        parcelsNow: 2,
+        parcelsGrouped: 1,
+        alsoAt: const [CartAlsoAt(storeId: 2, name: 'Le Patio', price: 25, deliverySaving: 5)],
+      ),
+      CartEntity(id: 2, quantity: 2, product: sampleProducts[2], unitPrice: 12, storeId: 3, stock: 5, parcelsNow: 2, parcelsGrouped: 1),
     ];
   }),
   SampleScreen('store', () => const StoreDetailsPage(), (c) {

@@ -10,6 +10,9 @@ class CartModel extends CartEntity {
     super.variant,
     super.unitPrice, required super.storeId,
     super.stock,
+    super.alsoAt,
+    super.parcelsNow,
+    super.parcelsGrouped,
   });
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +28,19 @@ class CartModel extends CartEntity {
       variant: json['variant'] != null
           ? CartVariantModel.fromJson(json['variant'])
           : null,
+      alsoAt: [
+        if (json['also_at'] is List)
+          for (final row in json['also_at'])
+            if (row is Map)
+              CartAlsoAt(
+                storeId: convertStringToInt(row['store_id']),
+                name: (row['name'] ?? '').toString(),
+                price: convertDataToNum(row['price']) ?? 0,
+                deliverySaving: convertDataToNum(row['delivery_saving']) ?? 0,
+              ),
+      ],
+      parcelsNow: convertStringToInt(json['parcels_now'] ?? 1),
+      parcelsGrouped: convertStringToInt(json['parcels_grouped'] ?? 1),
     );
   }
 }
