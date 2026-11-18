@@ -7,6 +7,9 @@ class CreatorEntity {
   final String handle;
   final String name;
   final String? avatar;
+
+  /// Vertical cover. The portrait uses this, then the avatar.
+  final String? cover;
   final String bio;
   final String? niche;
 
@@ -32,6 +35,7 @@ class CreatorEntity {
     required this.handle,
     required this.name,
     required this.avatar,
+    this.cover,
     required this.bio,
     required this.niche,
     this.products = const [],

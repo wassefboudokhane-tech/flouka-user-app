@@ -5,7 +5,7 @@ import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
 import 'package:flouka/features/creators/presentation/providers/creators_provider.dart';
-import 'package:flouka/features/creators/presentation/widgets/creator_avatar.dart';
+import 'package:flouka/features/creators/presentation/widgets/creator_portrait.dart';
 import 'package:flouka/features/language/presentation/provider/language_provider.dart';
 import 'package:flouka/features/products/domain/entity/product_entity.dart';
 import 'package:flouka/features/products/presentation/widgets/hot_deals_home_container_widget.dart';
@@ -61,12 +61,9 @@ class CreatorStorefrontPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CreatorAvatar(
-                        creator: creator,
-                        size: 72,
-                        ringColor: AppColor.borderColor,
-                      ),
+                      CreatorPortrait(creator: creator, width: 108),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
