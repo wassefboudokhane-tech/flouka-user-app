@@ -171,12 +171,12 @@ class OrderDetailsView extends StatelessWidget {
                                   .goToAddTicketPage();
                             },
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: AppColor.deepColor,
-                              backgroundColor: AppColor.backgroundColor,
+                              foregroundColor: AppColor.inkColor,
+                              backgroundColor: AppColor.canvasColor,
                               side: BorderSide(color: AppColor.borderColor),
-                              minimumSize: const Size.fromHeight(50),
+                              minimumSize: const Size.fromHeight(48),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
                             child: Text(
@@ -202,9 +202,9 @@ class OrderDetailsView extends StatelessWidget {
                             style: FilledButton.styleFrom(
                               backgroundColor: AppColor.deepColor,
                               foregroundColor: Colors.white,
-                              minimumSize: const Size.fromHeight(50),
+                              minimumSize: const Size.fromHeight(48),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
                             child: Text(

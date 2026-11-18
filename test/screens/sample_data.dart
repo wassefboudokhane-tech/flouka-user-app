@@ -8,7 +8,11 @@ import 'package:flouka/features/stores/presentation/providers/store_details_prov
 import 'package:flouka/features/cart/presentation/views/checkout_view.dart';
 import 'package:flouka/features/stores/presentation/pages/store_details_page.dart';
 import 'package:flouka/core/widgets/flouka_boat_loader.dart';
+import 'package:flouka/features/orders/domain/entity/order_details_entity.dart';
+import 'package:flouka/features/orders/domain/entity/order_entity.dart' as orders;
+import 'package:flouka/features/orders/presentation/provider/order_details_provider.dart';
 import 'package:flouka/features/orders/presentation/provider/order_provider.dart';
+import 'package:flouka/features/orders/presentation/views/order_details_view.dart';
 import 'package:flouka/features/auth/presentation/views/login_view.dart';
 import 'package:flouka/features/favorite/presentation/views/favorite_view.dart';
 import 'package:flouka/features/navbar/presentation/views/explore_view.dart';
@@ -188,6 +192,39 @@ final sampleScreens = <SampleScreen>[
   SampleScreen('explore', () => const ExploreView()),
   SampleScreen('shop', () => const ShopProductsPage(), (c) {
     Provider.of<CategoriesProductSearchProvider>(c, listen: false).data = sampleProducts;
+  }),
+  SampleScreen('order', () => const OrderDetailsView(), (c) {
+    Provider.of<OrderDetailsProvider>(c, listen: false).data = OrderDetailsEntity(
+      id: 1842,
+      subTotal: 40,
+      tax: 0,
+      delivery: 0,
+      discount: 0,
+      deliveryPrice: 7,
+      total: 47,
+      paymentMethod: 'cash',
+      status: orders.OrderStatus.processing,
+      createdAt: '2026-11-18T09:30:00',
+      vendorOrder: orders.VendorOrderEntity(
+        id: 9,
+        store: orders.StoreEntity(id: 1, name: 'Atelier Zitouna'),
+        canRateStore: false,
+        items: [
+          orders.OrderItemEntity(
+            id: 1,
+            productId: 1,
+            quantity: 1,
+            price: 40,
+            status: orders.OrderItemStatus.shipped,
+            product: orders.ProductEntity(
+              id: 1,
+              title: 'Sérum figue de barbarie 30 ml',
+              finalPrice: 40,
+            ),
+          ),
+        ],
+      ),
+    );
   }),
   SampleScreen('orders', () => const OrdersView(), (c) {
     Provider.of<OrderProvider>(c, listen: false).needsLogin = true;
