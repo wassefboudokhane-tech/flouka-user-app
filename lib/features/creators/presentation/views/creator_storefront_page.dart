@@ -1,3 +1,5 @@
+import 'package:share_plus/share_plus.dart';
+import 'package:flouka/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flouka/core/config/app_color.dart';
 import 'package:flouka/core/config/app_radius.dart';
 import 'package:flouka/core/config/app_spacing.dart';
@@ -101,6 +103,8 @@ class CreatorStorefrontPage extends StatelessWidget {
                       ).copyWith(height: 1.45),
                     ),
                   ],
+                  const SizedBox(height: 14),
+                  _FollowShareRow(creator: creator),
                   if (_socials(creator).isNotEmpty) ...[
                     const SizedBox(height: 12),
                     Wrap(
@@ -114,6 +118,8 @@ class CreatorStorefrontPage extends StatelessWidget {
                               foregroundColor: AppColor.inkColor,
                               side: const BorderSide(color: Color(0xFF1A1A1A)),
                               visualDensity: VisualDensity.compact,
+                              textStyle: TextStyleClass.captionStyle().copyWith(fontSize: 12.5),
+                              shape: const RoundedRectangleBorder(),
                             ),
                             child: Text(label),
                           ),
@@ -298,6 +304,82 @@ class _BrandValidatedBadge extends StatelessWidget {
         '✓ ${LanguageProvider.translate('creators', 'brand_validated')}',
         style: TextStyleClass.captionStyle(color: AppColor.inkColor),
       ),
+    );
+  }
+}
+
+class _FollowShareRow extends StatelessWidget {
+  const _FollowShareRow({required this.creator});
+
+  final CreatorEntity creator;
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<CreatorsProvider>();
+    final following = provider.isFollowing(creator);
+    final count = provider.followersOf(creator);
+    final shape = const RoundedRectangleBorder();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: following
+                  ? FilledButton(
+                      onPressed: () => _toggle(context, provider),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColor.inkColor,
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(44),
+                        shape: shape,
+                      ),
+                      child: Text(LanguageProvider.translate('creators', 'following')),
+                    )
+                  : OutlinedButton(
+                      onPressed: () => _toggle(context, provider),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColor.inkColor,
+                        side: BorderSide(color: AppColor.inkColor),
+                        minimumSize: const Size.fromHeight(44),
+                        shape: shape,
+                      ),
+                      child: Text(LanguageProvider.translate('creators', 'follow')),
+                    ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => SharePlus.instance.share(
+                  ShareParams(text: '${creator.name}\n${creatorShareUrl(creator.id, creator.handle)}'),
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColor.inkColor,
+                  side: BorderSide(color: AppColor.inkColor),
+                  minimumSize: const Size.fromHeight(44),
+                  shape: shape,
+                ),
+                child: Text(LanguageProvider.translate('creators', 'share')),
+              ),
+            ),
+          ],
+        ),
+        if (count > 0) ...[
+          const SizedBox(height: 6),
+          Text(
+            LanguageProvider.translate('creators', 'followers').replaceAll('*num*', '$count'),
+            style: TextStyleClass.captionStyle(),
+          ),
+        ],
+      ],
+    );
+  }
+
+  void _toggle(BuildContext context, CreatorsProvider provider) {
+    provider.toggleFollow(
+      creator,
+      signedIn: AuthProvider.isLogin(),
+      signIn: () => Provider.of<AuthProvider>(context, listen: false).goToLoginView(replace: false),
     );
   }
 }

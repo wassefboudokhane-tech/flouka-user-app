@@ -80,6 +80,7 @@ final sampleCreator = CreatorEntity(
   handle: 'yasmine',
   name: 'Yasmine B.',
   avatar: null,
+  followersCount: 128,
   bio: 'Je teste tout sur ma peau avant d’en parler. Ici, uniquement ce que je rachète.',
   niche: 'Soin et beauté',
   products: sampleProducts,
@@ -102,7 +103,18 @@ final sampleScreens = <SampleScreen>[
   }),
   SampleScreen('product', () => const ProductsDetailsView(showAppBar: true), (c) {
     final details = Provider.of<ProductDetailsProvider>(c, listen: false);
-    details.data = sampleProducts.first;
+    final p = sampleProducts.first;
+    details.data = ProductEntity(
+      id: p.id, title: p.title, haveVariant: false, recommended: const [], description: p.description,
+      price: p.price, canRate: false, store: p.store, reviews: const [], related: const [], reviewImages: const [],
+      offerPrice: null, image: null, discountPercentage: null, images: const [], rate: 4.7, isFavorite: false,
+      stock: null, attributes: const [], variants: const [],
+      creatorVideos: const [
+        ProductCreatorVideo(id: 1, videoUrl: 'https://www.instagram.com/reel/a/', platform: 'instagram', creatorName: 'Yasmine B.', creatorHandle: 'yasmine'),
+        ProductCreatorVideo(id: 2, videoUrl: 'https://www.tiktok.com/@salma/video/1', platform: 'tiktok', creatorName: 'Salma', creatorHandle: 'salma'),
+        ProductCreatorVideo(id: 3, videoUrl: 'https://www.instagram.com/reel/b/', platform: 'instagram', creatorName: 'Nour', creatorHandle: 'nour'),
+      ],
+    );
     details.recommendedBy = sampleCreator;
   }),
   SampleScreen('cart', () => const CartView(), (c) {

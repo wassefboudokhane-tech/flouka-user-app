@@ -5,4 +5,5 @@ import 'package:flouka/features/creators/domain/entity/creator_entity.dart';
 abstract class CreatorRepo {
   Future<Either<DioException, List<CreatorEntity>>> getCreators();
   Future<Either<DioException, CreatorEntity?>> getCreator(int id);
+  Future<Either<DioException, bool>> toggleFollow(int id);
 }

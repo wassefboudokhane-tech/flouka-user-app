@@ -16,6 +16,9 @@ class CreatorRepoImpl implements CreatorRepo {
   }
 
   @override
+  Future<Either<DioException, bool>> toggleFollow(int id) => remote.toggleFollow(id);
+
+  @override
   Future<Either<DioException, CreatorEntity?>> getCreator(int id) async {
     final result = await remote.getCreator(id);
     return result.fold((l) => Left(l), (r) => Right(r));

@@ -1,3 +1,4 @@
+import 'package:flouka/features/products/presentation/widgets/product_creator_videos_widget.dart';
 import 'package:flouka/features/creators/presentation/widgets/creator_recommendation_banner.dart';
 import 'package:flouka/core/config/app_spacing.dart';
 import 'package:flouka/core/config/app_styles.dart';
@@ -229,6 +230,10 @@ class ProductsDetailsView extends StatelessWidget {
                             ],
                           ],
                         ),
+                        if (product.creatorVideos.isNotEmpty) ...[
+                          const SizedBox(height: 18),
+                          ProductCreatorVideosWidget(videos: product.creatorVideos),
+                        ],
                         const SizedBox(height: 13),
                         if (product.store != null)
                           ProductDetailsVendorTrustWidget(

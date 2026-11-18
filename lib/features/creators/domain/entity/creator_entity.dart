@@ -23,6 +23,10 @@ class CreatorEntity {
   /// Videos of validated collaborations, as links to where they were posted.
   final List<CreatorPostEntity> posts;
 
+  /// Whether the signed-in shopper follows this creator, and how many do.
+  final bool isFollow;
+  final int followersCount;
+
   const CreatorEntity({
     required this.id,
     required this.handle,
@@ -35,6 +39,8 @@ class CreatorEntity {
     this.tiktok,
     this.validatedProductIds = const {},
     this.posts = const [],
+    this.isFollow = false,
+    this.followersCount = 0,
   });
 
   String get initials {

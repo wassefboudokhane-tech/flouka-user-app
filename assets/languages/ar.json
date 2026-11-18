@@ -6,7 +6,11 @@
     "affiliate_note": "روابط تسويقية · صانع المحتوى يحصل على عمولة",
     "empty_picks": "لا توجد توصيات حالياً",
     "brand_validated": "معتمد من العلامة",
-    "posts_title": "منشورات"
+    "posts_title": "منشورات",
+    "follow": "متابعة",
+    "following": "تتابعه",
+    "share": "مشاركة",
+    "followers": "*num* متابع"
   },
   "on_boarding": {
     "Welcome!": "مرحبًا!",
@@ -678,5 +682,9 @@
   "success": {
     "success": "تمت العملية بنجاح",
     "added_to_cart": "تمت الإضافة إلى السلة."
+  },
+  "products": {
+    "creator_videos_title": "صوّروه",
+    "creator_videos_count": "*num* فيديوهات لصناع المحتوى"
   }
 }

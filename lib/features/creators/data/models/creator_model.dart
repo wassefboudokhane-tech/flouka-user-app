@@ -16,6 +16,8 @@ class CreatorModel extends CreatorEntity {
     super.tiktok,
     super.validatedProductIds,
     super.posts,
+    super.isFollow,
+    super.followersCount,
   });
 
   factory CreatorModel.fromJson(Map<String, dynamic> json) {
@@ -65,6 +67,8 @@ class CreatorModel extends CreatorEntity {
       tiktok: social(json['tiktok']),
       validatedProductIds: validated,
       posts: posts,
+      isFollow: json['is_follow'] == true || json['is_follow'] == 1,
+      followersCount: convertStringToInt(json['followers_count']),
     );
   }
 }

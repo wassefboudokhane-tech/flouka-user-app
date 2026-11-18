@@ -31,6 +31,7 @@ class ProductModel extends ProductEntity {
     required super.reviewImages,
     required super.discountTitle,
     required super.discountPercentage, required super.attributes, required super.variants, required super.haveVariant,
+    super.creatorVideos,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -110,6 +111,11 @@ class ProductModel extends ProductEntity {
       related: relatedProduct,
       recommended: recommendedProduct,
       variants: variants, haveVariant: convertDataToBool(json['have_variant']),
+      creatorVideos: [
+        if (json['creator_videos'] is List)
+          for (final v in json['creator_videos'] as List)
+            if (ProductCreatorVideo.fromJson(v) case final video?) video,
+      ],
     );
   }
 }

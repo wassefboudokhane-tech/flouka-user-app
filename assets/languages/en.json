@@ -6,7 +6,11 @@
     "affiliate_note": "Affiliate links · the creator earns a commission",
     "empty_picks": "No picks yet",
     "brand_validated": "Validated by the brand",
-    "posts_title": "Posts"
+    "posts_title": "Posts",
+    "follow": "Follow",
+    "following": "Following",
+    "share": "Share",
+    "followers": "*num* followers"
   },
   "on_boarding": {
     "Welcome!": "Welcome!",
@@ -678,5 +682,9 @@
   "success": {
     "success": "Operation completed successfully.",
     "added_to_cart": "Added to cart."
+  },
+  "products": {
+    "creator_videos_title": "Filmed by creators",
+    "creator_videos_count": "*num* creator videos"
   }
 }

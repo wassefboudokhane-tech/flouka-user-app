@@ -27,6 +27,12 @@ class CreatorRemoteDataSource {
     });
   }
 
+  /// Follows or unfollows; answers whether the shopper now follows.
+  Future<Either<DioException, bool>> toggleFollow(int id) async {
+    final response = await apiHandel.post('user/update_follow', {'type': 'creator', 'id': id});
+    return response.fold((l) => Left(l), (r) => Right(r.data is Map && r.data['data'] == true));
+  }
+
   Future<Either<DioException, CreatorModel?>> getCreator(int id) async {
     final response = await apiHandel.get('get_creator?id=$id');
     return response.fold((l) => Left(l), (r) {

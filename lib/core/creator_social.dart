@@ -36,3 +36,7 @@ String platformLabel(String? platform) {
   }
   return 'Video';
 }
+
+/// The creator's page on the website, with their ref so the share credits them.
+String creatorShareUrl(int id, String handle) =>
+    'https://flouka.tn/creators/$id?creator=${Uri.encodeQueryComponent(handle)}';

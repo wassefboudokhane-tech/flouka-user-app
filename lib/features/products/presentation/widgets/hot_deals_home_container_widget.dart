@@ -89,7 +89,7 @@ class HotDealsHomeContainerWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (product.discountPercentage != null)
+                  if ((product.discountPercentage ?? 0) > 0)
                     PositionedDirectional(
                       top: 8,
                       start: 8,

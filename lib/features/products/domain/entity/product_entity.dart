@@ -25,6 +25,9 @@ class ProductEntity {
   List<AttributeEntity> attributes;
   List<VariantEntity> variants;
 
+  /// Creators' videos of this product ("Ils l'ont filmé"), as links.
+  final List<ProductCreatorVideo> creatorVideos;
+
   ProductEntity({
     required this.id,
     required this.title,
@@ -47,7 +50,39 @@ class ProductEntity {
     required this.stock,
     required this.attributes,
     required this.variants,
+    this.creatorVideos = const [],
   });
+}
+
+class ProductCreatorVideo {
+  final int id;
+  final String videoUrl;
+  final String? platform;
+  final String creatorName;
+  final String creatorHandle;
+
+  const ProductCreatorVideo({
+    required this.id,
+    required this.videoUrl,
+    required this.platform,
+    required this.creatorName,
+    required this.creatorHandle,
+  });
+
+  /// Reads one entry of `creator_videos`; null when it has no link.
+  static ProductCreatorVideo? fromJson(dynamic json) {
+    if (json is! Map) return null;
+    final url = json['video_url']?.toString() ?? '';
+    final creator = json['creator'];
+    if (url.isEmpty || creator is! Map) return null;
+    return ProductCreatorVideo(
+      id: json['id'] is int ? json['id'] as int : int.tryParse('${json['id']}') ?? 0,
+      videoUrl: url,
+      platform: json['platform']?.toString(),
+      creatorName: (creator['name'] ?? '').toString(),
+      creatorHandle: (creator['handle'] ?? '').toString(),
+    );
+  }
 }
 class ProductImage {
   final String image;

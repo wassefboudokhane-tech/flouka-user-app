@@ -6,7 +6,11 @@
     "affiliate_note": "Liens affiliés · le créateur touche une commission",
     "empty_picks": "Aucune recommandation pour le moment",
     "brand_validated": "Validé par la marque",
-    "posts_title": "Publications"
+    "posts_title": "Publications",
+    "follow": "Suivre",
+    "following": "Abonné",
+    "share": "Partager",
+    "followers": "*num* abonnés"
   },
   "on_boarding": {
     "Welcome!": "Bienvenue !",
@@ -680,5 +684,9 @@
   "success": {
     "success": "Opération effectuée avec succès.",
     "added_to_cart": "Ajouté au panier."
+  },
+  "products": {
+    "creator_videos_title": "Ils l'ont filmé",
+    "creator_videos_count": "*num* vidéos de créateurs"
   }
 }
