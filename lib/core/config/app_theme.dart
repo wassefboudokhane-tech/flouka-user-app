@@ -68,7 +68,7 @@ RadioThemeData radioThemeData = RadioThemeData(
 );
 
 TabBarTheme tabBarTheme = TabBarTheme(
-  labelColor: AppColor.deepColor,
+  labelColor: AppColor.inkColor,
   indicatorSize: TabBarIndicatorSize.label,
   unselectedLabelColor: AppColor.mutedColor,
 );

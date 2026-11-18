@@ -56,11 +56,11 @@ class CheckoutView extends StatelessWidget {
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
-                                    color: AppColor.deepColor,
+                                    color: AppColor.inkColor,
                                     width: 2,
                                   ),
                                   bottom: BorderSide(
-                                    color: AppColor.deepColor,
+                                    color: AppColor.inkColor,
                                     width: 2,
                                   ),
                                 ),

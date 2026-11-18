@@ -1,3 +1,7 @@
+import 'package:flouka/features/stores/domain/entity/store_details_entity.dart';
+import 'package:flouka/features/stores/presentation/providers/store_details_provider.dart';
+import 'package:flouka/features/cart/presentation/views/checkout_view.dart';
+import 'package:flouka/features/stores/presentation/pages/store_details_page.dart';
 import 'package:flouka/core/widgets/flouka_boat_loader.dart';
 import 'package:flouka/features/orders/presentation/provider/order_provider.dart';
 import 'package:flouka/features/auth/presentation/views/login_view.dart';
@@ -152,4 +156,21 @@ final sampleScreens = <SampleScreen>[
   SampleScreen('favorites', () => const FavoriteView()),
   SampleScreen('settings', () => const SettingsView()),
   SampleScreen('login', () => const LoginView()),
+  SampleScreen('checkout', () => const CheckoutView(), (c) {
+    Provider.of<SettingsProvider>(c, listen: false).settingsEntity = SettingsEntity(
+      id: 1, tax: 0, deliveryPrice: 7, minFreeDelivery: 90, termsLink: '', aboutLink: '', email: null,
+      phone: null, whatsapp: null, version: 1, privacyLink: '', mustUpdate: false, packageName: null, appId: null,
+    );
+    Provider.of<CartProvider>(c, listen: false).data = [
+      CartEntity(id: 1, quantity: 1, product: sampleProducts[0], unitPrice: 40, storeId: 1, stock: 5),
+      CartEntity(id: 2, quantity: 2, product: sampleProducts[2], unitPrice: 12, storeId: 3, stock: 5),
+    ];
+  }),
+  SampleScreen('store', () => const StoreDetailsPage(), (c) {
+    Provider.of<StoreDetailsProvider>(c, listen: false).storeDetailsEntity = StoreDetailsEntity(
+      id: 3, name: 'Le Patio', image: null, cover: null, avgRating: 4.8, vendor: null,
+      bio: 'Concept store à La Marsa : les marques tunisiennes réunies.', customersCount: 410, productsCount: 34,
+      isFollowed: false,
+    );
+  }),
 ];

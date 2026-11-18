@@ -375,7 +375,8 @@
     "available": "Available",
     "out_of_stock": "Out of stock",
     "product": "Product",
-    "this_item_unavailable": "This item is currently unavailable"
+    "this_item_unavailable": "This item is currently unavailable",
+    "promo_code": "Promo code"
   },
   "orders": {
     "cancel_entire_order": "Cancel entire order",

@@ -106,11 +106,11 @@ class CartBubbleWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border(
                               top: BorderSide(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                                 width: 2,
                               ),
                               right: BorderSide(
-                                color: AppColor.deepColor,
+                                color: AppColor.inkColor,
                                 width: 2,
                               ),
                             ),

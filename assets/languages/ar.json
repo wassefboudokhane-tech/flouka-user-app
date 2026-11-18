@@ -375,7 +375,8 @@
     "available": "متوفر",
     "out_of_stock": "غير متوفر",
     "product": "منتج",
-    "this_item_unavailable": "هذا العنصر غير متوفر حاليًا"
+    "this_item_unavailable": "هذا العنصر غير متوفر حاليًا",
+    "promo_code": "رمز الخصم"
   },
   "orders": {
     "cancel_entire_order": "إلغاء الطلب بالكامل",

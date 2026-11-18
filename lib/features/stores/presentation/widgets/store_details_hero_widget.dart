@@ -41,18 +41,6 @@ class StoreDetailsHeroWidget extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Positioned(
-            top: -60,
-            right: -40,
-            child: Container(
-              width: 170,
-              height: 170,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.softColor,
-              ),
-            ),
-          ),
           Padding(
             padding: EdgeInsets.fromLTRB(
               AppSpacing.pageGutter,
@@ -277,15 +265,15 @@ class _StoreCta extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: filled ? AppColor.inkColor : Colors.transparent,
-      borderRadius: BorderRadius.circular(AppRadius.pill),
+      borderRadius: BorderRadius.circular(AppRadius.btn),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
+        borderRadius: BorderRadius.circular(AppRadius.btn),
         child: Container(
           height: 46,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.pill),
+            borderRadius: BorderRadius.circular(AppRadius.btn),
             border: filled
                 ? null
                 : Border.all(

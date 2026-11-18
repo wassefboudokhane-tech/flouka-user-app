@@ -28,7 +28,7 @@ class CheckoutProgressWidget extends StatelessWidget {
                     height: 4,
                     child: ColoredBox(
                       color: done || active
-                          ? AppColor.deepColor
+                          ? AppColor.inkColor
                           : AppColor.borderColor,
                     ),
                   ),
@@ -41,7 +41,7 @@ class CheckoutProgressWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyleClass.captionStyle(
                     color: active
-                        ? AppColor.deepColor
+                        ? AppColor.inkColor
                         : AppColor.mutedColor,
                   ).copyWith(
                     fontWeight: active ? FontWeight.w700 : FontWeight.w500,

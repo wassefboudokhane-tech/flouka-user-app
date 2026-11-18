@@ -39,7 +39,7 @@ class PaymentMthodItemWidget extends StatelessWidget {
             color: selected ? AppColor.softColor : AppColor.backgroundColor,
             borderRadius: BorderRadius.circular(AppRadius.btn),
             border: Border.all(
-              color: selected ? AppColor.deepColor : AppColor.borderColor,
+              color: selected ? AppColor.inkColor : AppColor.borderColor,
               width: selected ? 1.8 : 1,
             ),
           ),
@@ -50,7 +50,7 @@ class PaymentMthodItemWidget extends StatelessWidget {
                 children: [
                   SvgWidget(
                     svg: paymentMethodEntity.image,
-                    color: selected ? AppColor.deepColor : AppColor.mutedColor,
+                    color: selected ? AppColor.inkColor : AppColor.mutedColor,
                   ),
                   const SizedBox(width: 12),
                   Expanded(
