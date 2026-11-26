@@ -5,9 +5,14 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<string>fr</string>
 	<key>CFBundleDisplayName</key>
 	<string>Flouka</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>fr</string>
+		<string>ar</string>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +20,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>flouka</string>
+	<string>Flouka</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -43,82 +48,40 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
-
-
-
 	<key>LSApplicationQueriesSchemes</key>
-        	<array>
-            		<string>whatsapp</string>
-            		<string>comgooglemaps</string>
-                                    <string>baidumap</string>
-                                    <string>iosamap</string>
-                                    <string>waze</string>
-                                    <string>yandexmaps</string>
-                                    <string>yandexnavi</string>
-                                    <string>citymapper</string>
-                                    <string>mapswithme</string>
-                                    <string>osmandmaps</string>
-                                    <string>dgis</string>
-                                    <string>qqmap</string>
-                                    <string>here-location</string>
-                                    <string>tomtomgo</string>
-                                    <string>copilot</string>
-                                    <string>com.sygic.aura</string>
-                                    <string>nmap</string>
-                                    <string>kakaomap</string>
-                                    <string>tmap</string>
-                                    <string>szn-mapy</string>
-                                    <string>mappls</string>
-            	</array>
-        	<key>NSAppTransportSecurity</key>
-            	<dict>
-            		<key>NSAllowsArbitraryLoads</key>
-            		<true/>
-            	</dict>
-
-
-                	<key>NSCameraUsageDescription</key>
-                	<string>Flouka uses the camera so you can take photos for your profile and attach photos when chatting with other users about products or orders.</string>
-                	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-                	<string>Flouka uses your location while you are using the app and, when enabled, in the background to provide continuous location updates during active deliveries or navigation.</string>
-                	<key>NSLocationAlwaysUsageDescription</key>
-                	<string>This app needs access to location when in the background to get nearby orders.</string>
-                	<key>NSLocationWhenInUseUsageDescription</key>
-                	<string>Flouka uses your location to help you select your pickup or delivery location, display nearby listings, and calculate distances accurately.</string>
-                	<key>NSMicrophoneUsageDescription</key>
-                	<string>Flouka uses the microphone so you can record and send voice messages while chatting with other users about products or orders.</string>
-                	<key>NSPhotoLibraryUsageDescription</key>
-                	<string>Flouka accesses your photo library so you can choose a profile picture and attach existing photos in chat messages about products or orders.</string>
-                	<key>UIApplicationSceneManifest</key>
-                	<dict>
-                		<key>UISceneConfigurations</key>
-                		<dict/>
-                	</dict>
-
-                	<key>UIBackgroundModes</key>
-                	<array>
-                		<string>fetch</string>
-                		<string>remote-notification</string>
-                	</array>
- <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleTypeRole</key>
-                <string>Editor</string>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>com.googleusercontent.apps.284237387262-4bhtk7kbouj70qenakda9truc4rtsqjo</string>
-                </array>
-            </dict>
-        </array>
-<key>AssociatedDomains</key>
-		<array>
-			<string>applinks:floka.zeroonez.com</string>
-		</array>
-		<key>FlutterDeepLinkingEnabled</key>
-		<false/>
-
-
-
+	<array>
+		<string>https</string>
+		<string>http</string>
+		<string>whatsapp</string>
+	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Flouka accède à tes photos uniquement pour changer la photo de ta boutique créateur.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Flouka utilise l’appareil photo uniquement pour la photo de ta boutique créateur.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>flouka</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>signinwithapple</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>signinwithapple</string>
+			</array>
+		</dict>
+	</array>
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 </dict>
 </plist>

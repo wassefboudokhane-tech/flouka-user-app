@@ -3,34 +3,32 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>284237387262-4bhtk7kbouj70qenakda9truc4rtsqjo.apps.googleusercontent.com</string>
+	<string>placeholder.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.284237387262-4bhtk7kbouj70qenakda9truc4rtsqjo</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>284237387262-53rfi0lt65rha1au1qhb64up2s6i6aai.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.placeholder</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC2QWXMnHYZOZRgvmQ2RarzMtjDNdHK1UA</string>
+	<string>AIzaSyPLACEHOLDER-REPLACE-ME</string>
 	<key>GCM_SENDER_ID</key>
-	<string>284237387262</string>
+	<string>000000000000</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.zeroonez.flouka.user</string>
+	<string>app.flouka</string>
 	<key>PROJECT_ID</key>
-	<string>flouka-8213d</string>
+	<string>flouka-placeholder</string>
 	<key>STORAGE_BUCKET</key>
-	<string>flouka-8213d.firebasestorage.app</string>
+	<string>flouka-placeholder.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:284237387262:ios:9eb87849dbbd085af71caf</string>
+	<string>1:000000000000:ios:0000000000000000</string>
 </dict>
 </plist>

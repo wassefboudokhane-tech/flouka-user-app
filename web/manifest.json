@@ -1,11 +1,11 @@
 {
-    "name": "flouka",
-    "short_name": "flouka",
+    "name": "Flouka",
+    "short_name": "Flouka",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FFFFFF",
+    "theme_color": "#1F1F1F",
+    "description": "Vu chez eux, trouvé chez la marque.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
