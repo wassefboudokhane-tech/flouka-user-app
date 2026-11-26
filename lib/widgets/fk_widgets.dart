@@ -22,6 +22,7 @@ class FkSerif extends StatelessWidget {
     this.italic = false,
     this.center = false,
     this.maxLines,
+    this.shadows,
   });
   final String text;
   final double size;
@@ -29,6 +30,7 @@ class FkSerif extends StatelessWidget {
   final bool italic;
   final bool center;
   final int? maxLines;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class FkSerif extends StatelessWidget {
         height: 1.1,
         color: color,
         fontWeight: FontWeight.w400,
+        shadows: shadows,
       ),
     );
   }
@@ -325,21 +328,32 @@ class FkCollectionCard extends StatelessWidget {
 }
 
 class FkTopBar extends StatelessWidget {
-  const FkTopBar({super.key, this.title, this.dark = false, this.trailing = FkIconKind.share, this.onTrailing});
+  const FkTopBar({
+    super.key,
+    this.title,
+    this.dark = false,
+    this.overlay = false,
+    this.trailing = FkIconKind.share,
+    this.onTrailing,
+  });
   final String? title;
   final bool dark;
+  final bool overlay;
   final FkIconKind? trailing;
   final VoidCallback? onTrailing;
 
   @override
   Widget build(BuildContext context) {
-    final c = dark ? FkTokens.white : FkTokens.ink;
+    final onPhoto = overlay || dark;
+    final c = onPhoto ? FkTokens.white : FkTokens.ink;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: dark ? Colors.black.withValues(alpha: 0.28) : FkTokens.white,
-        border: dark ? null : const Border(bottom: BorderSide(color: FkTokens.line)),
-      ),
+      decoration: overlay
+          ? null
+          : BoxDecoration(
+              color: dark ? Colors.black.withValues(alpha: 0.28) : FkTokens.white,
+              border: dark ? null : const Border(bottom: BorderSide(color: FkTokens.line)),
+            ),
       child: Row(
         children: [
           GestureDetector(

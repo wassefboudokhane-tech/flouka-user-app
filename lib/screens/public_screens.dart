@@ -11,6 +11,10 @@ import 'package:flouka/state/flouka_state.dart';
 import 'package:flouka/widgets/fk_icons.dart';
 import 'package:flouka/widgets/fk_widgets.dart';
 
+const _heroTextShadows = <Shadow>[
+  Shadow(color: Color(0x8C000000), blurRadius: 12, offset: Offset(0, 1)),
+];
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -164,20 +168,79 @@ class _CreatorScreenState extends State<CreatorScreen> {
           Stack(
             children: [
               FkPhoto(creator.photo, ratio: 3 / 4),
-              const Positioned(top: 0, left: 0, right: 0, child: FkTopBar(dark: true)),
+              const Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FractionallySizedBox(
+                    heightFactor: 0.46,
+                    widthFactor: 1,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0x00000000),
+                            Color(0x8C000000),
+                            Color(0xC7000000),
+                          ],
+                          stops: [0, 0.42, 1],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                height: 88,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Color(0x6B000000), Color(0x00000000)],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Positioned(
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
-                  color: Colors.black.withValues(alpha: 0.42),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 40, 16, 16),
                   child: Column(
                     children: [
-                      FkSerif(l.selectedBy, size: 16, italic: true, color: FkTokens.white, center: true),
-                      FkSerif(creator.name(st.rtl), size: 34, color: FkTokens.white, center: true),
+                      FkSerif(
+                        l.selectedBy,
+                        size: 16,
+                        italic: true,
+                        color: FkTokens.white,
+                        center: true,
+                        shadows: _heroTextShadows,
+                      ),
+                      FkSerif(
+                        creator.name(st.rtl),
+                        size: 34,
+                        color: FkTokens.white,
+                        center: true,
+                        shadows: _heroTextShadows,
+                      ),
                       const SizedBox(height: 6),
-                      Text(creator.tagline(st.rtl), style: const TextStyle(fontSize: 11, color: FkTokens.white)),
+                      Text(
+                        creator.tagline(st.rtl),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: FkTokens.white,
+                          shadows: _heroTextShadows,
+                        ),
+                      ),
                       const SizedBox(height: 12),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -192,6 +255,17 @@ class _CreatorScreenState extends State<CreatorScreen> {
                         ],
                       ),
                     ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: FkTopBar(
+                  overlay: true,
+                  onTrailing: () => SharePlus.instance.share(
+                    ShareParams(text: '${FkEnv.instance.siteUrl}/shop/${creator.handle}'),
                   ),
                 ),
               ),

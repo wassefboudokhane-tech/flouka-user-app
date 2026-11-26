@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flouka/core/tokens.dart';
 
 enum FkIconKind {
@@ -32,8 +33,24 @@ class FkIcon extends StatelessWidget {
   final Color color;
   final double size;
 
+  static const _svgAssets = {
+    FkIconKind.ig: 'assets/icons/ig.svg',
+    FkIconKind.tt: 'assets/icons/tt.svg',
+    FkIconKind.yt: 'assets/icons/yt.svg',
+    FkIconKind.link: 'assets/icons/link.svg',
+  };
+
   @override
   Widget build(BuildContext context) {
+    final asset = _svgAssets[kind];
+    if (asset != null) {
+      return SvgPicture.asset(
+        asset,
+        width: size,
+        height: size,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+      );
+    }
     return CustomPaint(
       size: Size.square(size),
       painter: _FkIconPainter(kind, color),
@@ -165,27 +182,10 @@ class _FkIconPainter extends CustomPainter {
         path.lineTo(10, 17);
         path.lineTo(19, 7);
       case FkIconKind.link:
-        path.moveTo(10, 14);
-        path.lineTo(14, 10);
-        path.moveTo(8.5, 11.5);
-        path.lineTo(6.5, 13.5);
-        path.moveTo(11.5, 8.5);
-        path.lineTo(13.5, 6.5);
       case FkIconKind.ig:
-        path.addRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(3.5, 3.5, 17, 17), const Radius.circular(4.5)));
-        path.addOval(Rect.fromCircle(center: const Offset(12, 12), radius: 3.5));
-        canvas.drawCircle(const Offset(17, 7), 0.4, p);
       case FkIconKind.tt:
-        path.moveTo(14, 3.5);
-        path.lineTo(14, 15);
-        path.moveTo(14, 3.5);
-        path.cubicTo(14.3, 6.3, 16.4, 8.2, 19.5, 8.4);
       case FkIconKind.yt:
-        path.addRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(2.5, 6, 19, 12), const Radius.circular(4)));
-        path.moveTo(10, 9.3);
-        path.lineTo(15, 12);
-        path.lineTo(10, 14.7);
-        path.close();
+        break;
     }
     canvas.drawPath(path, p);
   }
